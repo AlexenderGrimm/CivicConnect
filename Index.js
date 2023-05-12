@@ -13,13 +13,25 @@ app.use(morgan('dev'));
 app.use(bodyParser.urlencoded({ extended: false })); 
 app.use(bodyParser.json()); 
  
-app.post('/legends', async (req, res) => { 
+app.post('/project', async (req, res) => { 
      
-    const firstName = req.body.firstName; 
-    const lastName = req.body.lastName; 
-    const birthDate = req.body.birthDate; 
- 
-    await db.insertLegend(firstName, lastName, birthDate); 
+    const fName = req.body.fName; 
+    const lName = req.body.lName; 
+    const email = req.body.email; 
+    const cityTown = req.body.cityTown;
+    const OrgSite = req.body.OrgSite;
+    const pnumber = req.body.pnumber;
+    const state = req.body.state;
+    const radio = req.body.radio;
+    const OrgName = req.body.OrgName;
+    const streetAddr = req.body.streetAddr;
+    const zip = req.body.zip;
+    const helpAvail = req.body.helpAvail;
+    const Description = req.body.Description;
+    const FileDrop = req.body.FileDrop;
+
+    await db.insertCompany(OrgName, streetAddr, cityTown, state, zip, fName, lName, pnumber, email);
+    await db.insertProject(Description, "Waiting", FileDrop);
  
     res.json({"result": "success"}); 
 }); 

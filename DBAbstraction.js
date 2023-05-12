@@ -19,7 +19,7 @@ class DBAbstraction {
 
     insertCompany(cname, street, city, state, zip, first, last, phone, email) 
     {
-        const sql = 'INSERT INTO Company (companyID, name, street, city, state, zip, rfirst, rlast, phone, email) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);';
+        const sql = 'INSERT INTO Company (name, street, city, state, zip, rfirst, rlast, phone, email) VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?);';
         return new Promise((resolve, reject) => { 
             this.db.run(sql, [cname, street, city, state, zip, first, last, phone, email], (err) => {                 
                 if(err) { 
@@ -33,7 +33,7 @@ class DBAbstraction {
 
     insertDepartment(dname, head)
     {
-        const sql = 'INSERT INTO Department (departmentID, name, head) VALUES (?, ?, ?);';
+        const sql = 'INSERT INTO Department ( name, head) VALUES (?, ?, ?);';
         return new Promise((resolve, reject) => { 
             this.db.run(sql, [dname, head], (err) => {                 
                 if(err) { 
@@ -47,7 +47,7 @@ class DBAbstraction {
 
     insertProject(pstatus, file) 
     {
-        const sql = 'INSERT INTO Project (projectID, name, pstatus, file) VALUES (?, ?, ?, ?);';
+        const sql = 'INSERT INTO Project (Description, pstatus, file) VALUES (?, ?, ?, ?);';
         return new Promise((resolve, reject) => { 
             this.db.run(sql, [pstatus, file], (err) => {                 
                 if(err) { 
@@ -61,7 +61,7 @@ class DBAbstraction {
 
     insertUser(first, last, role, email, phone) 
     {
-        const sql = 'INSERT INTO User (userID, first, last, role, email, phone) VALUES (?, ?, ?, ?, ?, ?);';
+        const sql = 'INSERT INTO User (first, last, role, email, phone) VALUES (?, ?, ?, ?, ?, ?);';
         return new Promise((resolve, reject) => { 
             this.db.run(sql, [first, last, role, email, phone], (err) => {                 
                 if(err) { 
