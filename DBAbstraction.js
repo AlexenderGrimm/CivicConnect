@@ -17,11 +17,11 @@ class DBAbstraction {
     } 
  
 
-    insertCompany(cname, street, city, state, zip, first, last, phone, email) 
+    insertCompany(cname, street, city, state, zip, first, last, phone, email, web) 
     {
-        const sql = 'INSERT INTO Company (name, street, city, state, zip, rfirst, rlast, phone, email) VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?);';
+        const sql = 'INSERT INTO Company (name, street, city, state, zip, rfirst, rlast, phone, email, companyWeb) VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);';
         return new Promise((resolve, reject) => { 
-            this.db.run(sql, [cname, street, city, state, zip, first, last, phone, email], (err) => {                 
+            this.db.run(sql, [cname, street, city, state, zip, first, last, phone, email, web], (err) => {                 
                 if(err) { 
                     reject(err); 
                 } else { 

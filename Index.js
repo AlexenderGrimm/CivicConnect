@@ -30,7 +30,7 @@ app.post('/project', async (req, res) => {
     const Description = req.body.Description;
     const FileDrop = req.body.FileDrop;
 
-    await db.insertCompany(OrgName, streetAddr, cityTown, state, zip, fName, lName, pnumber, email);
+    await db.insertCompany(OrgName, streetAddr, cityTown, state, zip, fName, lName, pnumber, email, web);
     await db.insertProject(Description, "Waiting", FileDrop);
  
     res.json({"result": "success"}); 
