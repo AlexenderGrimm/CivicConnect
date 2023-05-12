@@ -17,11 +17,11 @@ class DBAbstraction {
     } 
  
 
-    insertCompany(id, cname, street, city, state, zip, first, last, phone, email) 
+    insertCompany(cname, street, city, state, zip, first, last, phone, email) 
     {
         const sql = 'INSERT INTO Company (companyID, name, street, city, state, zip, rfirst, rlast, phone, email) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);';
         return new Promise((resolve, reject) => { 
-            this.db.run(sql, [id, cname, street, city, state, zip, first, last, phone, email], (err) => {                 
+            this.db.run(sql, [cname, street, city, state, zip, first, last, phone, email], (err) => {                 
                 if(err) { 
                     reject(err); 
                 } else { 
@@ -31,11 +31,11 @@ class DBAbstraction {
         }); 
     }
 
-    insertDepartment(id, dname, head)
+    insertDepartment(dname, head)
     {
         const sql = 'INSERT INTO Department (departmentID, name, head) VALUES (?, ?, ?);';
         return new Promise((resolve, reject) => { 
-            this.db.run(sql, [id, dname, head], (err) => {                 
+            this.db.run(sql, [dname, head], (err) => {                 
                 if(err) { 
                     reject(err); 
                 } else { 
@@ -45,11 +45,11 @@ class DBAbstraction {
         }); 
     }
 
-    insertProject(id, pname, pstatus, file) 
+    insertProject(pstatus, file) 
     {
         const sql = 'INSERT INTO Project (projectID, name, pstatus, file) VALUES (?, ?, ?, ?);';
         return new Promise((resolve, reject) => { 
-            this.db.run(sql, [id, pname, pstatus, file], (err) => {                 
+            this.db.run(sql, [pstatus, file], (err) => {                 
                 if(err) { 
                     reject(err); 
                 } else { 
@@ -59,11 +59,11 @@ class DBAbstraction {
         }); 
     }
 
-    insertUser(id, first, last, role, email, phone) 
+    insertUser(first, last, role, email, phone) 
     {
         const sql = 'INSERT INTO User (userID, first, last, role, email, phone) VALUES (?, ?, ?, ?, ?, ?);';
         return new Promise((resolve, reject) => { 
-            this.db.run(sql, [id, first, last, role, email, phone], (err) => {                 
+            this.db.run(sql, [first, last, role, email, phone], (err) => {                 
                 if(err) { 
                     reject(err); 
                 } else { 
