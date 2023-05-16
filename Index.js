@@ -15,9 +15,9 @@ app.use(bodyParser.json());
  
 app.post('/project', async (req, res) => { 
      
-    const fName = req.body.fName; 
-    const lName = req.body.lName; 
-    const email = req.body.email; 
+    const fName = req.body.fName;
+    const lName = req.body.lName;
+    const email = req.body.email;
     const cityTown = req.body.cityTown;
     const OrgSite = req.body.OrgSite;
     const pnumber = req.body.pnumber;
@@ -30,7 +30,7 @@ app.post('/project', async (req, res) => {
     const Description = req.body.Description;
     const FileDrop = req.body.FileDrop;
 
-    await db.insertCompany(OrgName, streetAddr, cityTown, state, zip, fName, lName, pnumber, email, web);
+    await db.insertCompany(OrgName, streetAddr, cityTown, state, zip, fName, lName, pnumber, email, OrgSite);
     await db.insertProject(Description, "Waiting", FileDrop);
  
     res.json({"result": "success"}); 
