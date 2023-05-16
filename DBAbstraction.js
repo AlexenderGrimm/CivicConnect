@@ -19,7 +19,7 @@ class DBAbstraction {
 
     insertCompany(cname, street, city, state, zip, first, last, phone, email, web) 
     {
-        const sql = 'INSERT INTO Company (name, street, city, state, zip, rfirst, rlast, phone, email, companyWeb) VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);';
+        const sql = 'INSERT INTO Company (name, street, city, state, zip, ContactFirst, ContactLast, phone, email, companyWeb) VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);';
         return new Promise((resolve, reject) => { 
             this.db.run(sql, [cname, street, city, state, zip, first, last, phone, email, web], (err) => {                 
                 if(err) { 
@@ -45,11 +45,11 @@ class DBAbstraction {
         }); 
     }
 
-    insertProject(pstatus, file) 
+    insertProject(Description, pstatus, file) 
     {
-        const sql = 'INSERT INTO Project (Description, pstatus, file) VALUES (?, ?, ?, ?);';
+        const sql = 'INSERT INTO Project (Description, pstatus, file) VALUES (?, ?, ?);';
         return new Promise((resolve, reject) => { 
-            this.db.run(sql, [pstatus, file], (err) => {                 
+            this.db.run(sql, [Description, pstatus, file], (err) => {                 
                 if(err) { 
                     reject(err); 
                 } else { 
