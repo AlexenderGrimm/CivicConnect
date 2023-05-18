@@ -94,7 +94,7 @@ class DBAbstraction {
     getCompanyByCity(city) 
     { 
         const sql = ` 
-            SELECT name, street, city, state, zip, rfirst, rlast, phone, email 
+            SELECT name, street, city, state, zip, ContactFirst, ContactLast, phone, email 
             FROM Company
             WHERE city = ? COLLATE NOCASE; 
         `; 
