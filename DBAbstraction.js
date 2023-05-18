@@ -73,6 +73,27 @@ class DBAbstraction {
         }); 
     }
 
+    getAllProjects()
+    {
+        const sql = `
+            SELECT Project.Description, Company.name, Company.phone, Department.name
+            FROM Project, Company, Department
+            WHERE Project.CompanyID = Company.CompanyID AND Project.DepartmentID = Department.DepartmentID;
+        `;
+
+        return new Promise((resolve, reject) => { 
+            this.db.get(sql, (err) => { 
+                if(err) { 
+                    reject(err); 
+                } else { 
+                    resolve(); 
+                } 
+            }); 
+        });
+
+        //rewrite based on how Austin plans to restructure the Database
+    }
+
     getCompanyByName(cname) 
     { 
         const sql = ` 

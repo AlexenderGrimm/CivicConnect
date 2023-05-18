@@ -11,6 +11,7 @@ const {authenticate} = require('@google-cloud/local-auth');
 const {google} = require('googleapis');
 const db = new DBAbstraction('./software_Data.db'); 
 const mmm = require('mmmagic');
+const { constants } = require('buffer');
 const magic = new mmm.Magic(mmm.MAGIC_MIME_TYPE);
 const app = express(); 
  
@@ -127,6 +128,22 @@ app.post('/project', async (req, res) => {
     await db.insertProject(Description, "Waiting", FileDrop);
  
     res.json({"result": "success"}); 
+});
+
+app.get('/', async (req, res) => { 
+     
+ /*  try { 
+    const allProjects = await db.getAllProjects(); 
+    if(allProjects) { 
+        res.json(allProjects); 
+    } else { 
+        res.json({"results": "none"}); 
+    } 
+} catch (err) { 
+    res.json({"results": "none"}); 
+} */
+
+//First draft of a get function for populating the table in faculty.html. still unsure of how to call this function from the html file itself, or if im supposed to be doing that in the first place
 }); 
  
 app.get('/cs-legend/:name', async (req, res) => { 
