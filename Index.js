@@ -10,7 +10,8 @@ const process = require('process');
 const {authenticate} = require('@google-cloud/local-auth');
 const {google} = require('googleapis');
 const db = new DBAbstraction('./software_Data.db'); 
- 
+const mmm = require('mmmagic');
+const magic = new mmm.Magic(mmm.MAGIC_MIME_TYPE);
 const app = express(); 
  
 app.use(morgan('dev'));
@@ -19,8 +20,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json()); 
 
 // If modifying these scopes, delete token.json.
-const SCOPES = ['https://www.googleapis.com/auth/gmail.readonly',
-'https://mail.google.com/',
+const SCOPES = ['https://mail.google.com/',
 'https://www.googleapis.com/auth/drive.metadata.readonly'];
 // The file token.json stores the user's access and refresh tokens, and is
 // created automatically when the authorization flow completes for the first
@@ -86,23 +86,25 @@ async function authorize() {
  *
  * @param {google.auth.OAuth2} auth An authorized OAuth2 client.
  */
-async function listLabels(auth) {
-  const gmail = google.gmail({version: 'v1', auth});
-  const res = await gmail.users.labels.list({
-    userId: 'me',
+async function listFiles(authClient) {
+  const drive = google.drive({version: 'v3', auth: authClient});
+  const res = await drive.files.list({
+    pageSize: 10,
+    fields: 'nextPageToken, files(id, name)',
   });
-  const labels = res.data.labels;
-  if (!labels || labels.length === 0) {
-    console.log('No labels found.');
+  const files = res.data.files;
+  if (files.length === 0) {
+    console.log('No files found.');
     return;
   }
-  console.log('Labels:');
-  labels.forEach((label) => {
-    console.log(`- ${label.name}`);
+
+  console.log('Files:');
+  files.map((file) => {
+    console.log(`${file.name} (${file.id})`);
   });
 }
 
-authorize().then(listLabels).catch(console.error);
+authorize().then(listFiles).catch(console.error);
 
 app.post('/project', async (req, res) => { 
      
