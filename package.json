@@ -15,6 +15,7 @@
     "body-parse": "^0.1.0",
     "express": "^4.18.2",
     "googleapis": "^105.0.0",
+    "mmmagic": "^0.5.3",
     "morgan": "^1.10.0",
     "sqlite3": "^5.1.6"
   }
