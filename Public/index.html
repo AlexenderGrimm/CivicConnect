@@ -69,6 +69,8 @@
         transition: 0.35s;
         margin-left: 80%;
         margin-top: 30px;
+        font-size: 17px;
+        font-family: Helvetica, sans-serif;
     }
 
     input:hover[type=submit] {
@@ -336,8 +338,61 @@
     .lastFormElems {
       margin: 0 auto;
       margin-left: 8px;
-      text-align: center;
       margin-right: 30px;
+      width: 50%;
+    }
+
+    .rightCol {
+      width: 50%;
+    }
+
+    .test-dropdown {
+      width: 35%;
+      position: relative;
+      float: right;
+      margin-right: 4px;
+      margin-left: 100px;
+    }
+
+    .test-dropdown-select {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      background-color: #fff;
+      cursor: pointer;
+    }
+    
+    .test-dropdown-select:hover {
+      border-color: #888;
+    }
+
+    .test-dropdown-select:focus {
+      border-color: #555;
+      outline: none;
+    }
+
+    .test-dropdown-options {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      z-index: 100;
+      width: 100%;
+      max-height: 200px;
+      overflow-y: auto;
+      border: 1px solid #ccc;
+      border-top: none;
+      border-radius: 0 0 4px 4px;
+      background-color: #fff;
+    }
+
+    .test-dropdown-option {
+      padding: 10px;
+      cursor: pointer;
+    }
+
+    .test-dropdown-option:hover {
+      background-color: #f2f2f2;
     }
     </style>
     
@@ -376,7 +431,7 @@ fading from the pic to white to better transition from the header to the form-->
     <input type="text" id="pnumber" name="pnumber" class="length2"  tabindex="6">
     <div class="custom-select">
       <select name="state" id="state">
-        <option  tabindex="9">State:</option>
+        <option tabindex="9">State:</option>
         <option value="alabama">Alabama</option>
         <option value="alaska">Alaska</option>
         <option value="arizona">Arizona</option>
@@ -450,20 +505,59 @@ fading from the pic to white to better transition from the header to the form-->
     <input type="text" id="zip" name="zip" class="length1" tabindex="10">
     <label for="helpAvail" class="label-style">If yes, how often can they contact you?</label>
     <input type="text" id="helpAvail" name="helpAvail" class="length3" tabindex="13">
-  </div>
 </div>
 
-<div class="lastFormElems">
-  <label for="Description" class="label-style">Please provide a description of the project (be as specific as you'd like):</label>
-  <textarea class="description" id="Description" name="Description" rows="4" cols="50" onfocus="this.focus();this.select()" tabindex="14">Provide a description here...</textarea>
-  <label for="FileDrop" class="label-style">Please provide any files that may help the students:</label>
-  <input type="file" id="FileDrop" name="FileDrop" class="length1" tabindex="15" multiple>
+<div class="row">
+  <div class="lastFormElems">
+    <label for="Description" class="label-style">Please provide a description of the project (be as specific as you'd like):</label>
+    <textarea class="description" id="Description" name="Description" rows="4" cols="50" onfocus="this.focus();this.select()" tabindex="14">Provide a description here...</textarea>
+    <label for="FileDrop" class="label-style">Please provide any files that may help the students:</label>
+    <input type="file" id="FileDrop" name="FileDrop" class="length1" tabindex="15" multiple>
+  </div>
+  <div class="test-dropdown">
+    <label for="multipleDrop" class="label-style">Select department(s) (CTRL click to select multiple):</label>
+    <select class="test-dropdown-select" multiple>
+    <div class="test-dropdown-options">
+      <option class="test-dropdown-option" value="1">GIS, mapping, spatial analytics</option>
+      <option class="test-dropdown-option" value="2">Graphic Design and Photography</option>
+      <option class="test-dropdown-option" value="3">Carthage Honors Program</option>
+      <option class="test-dropdown-option" value="4">Operations Management, Strategic Planning, Human Capital, and Start-Ups</option>
+      <option class="test-dropdown-option" value="2">Sociology & Criminal Justice</option>
+      <option class="test-dropdown-option" value="2">Healthcare pre-professions-Allied Health Science</option>
+      <option class="test-dropdown-option" value="2">History</option>
+      <option class="test-dropdown-option" value="2">Biology</option>
+      <option class="test-dropdown-option" value="2">Computer Science</option>
+      <option class="test-dropdown-option" value="2">Environmental Science</option>
+      <option class="test-dropdown-option" value="2">Public Relation (press releases, social media calendars, feature articles, event plans)</option>
+      <option class="test-dropdown-option" value="2">Geoscience</option>
+      <option class="test-dropdown-option" value="2">Clinical/Counseling Psychology</option>
+      <option class="test-dropdown-option" value="2">Engineering</option>
+      <option class="test-dropdown-option" value="2">Other</option>
+    </div>
+  </select>
 </div>
+</div>
+
+<input type="submit" value="Submit" tabindex="16">
 </form>
-</div>
 </body>
 
 <script>
+
+  const dropdownSelect = document.querySelector('.test-dropdown-select');
+  const dropdownOptions = document.querySelector('.test-dropdown-options');
+  const dropdownOptionItems = document.querySelectorAll('.test-dropdown-option');
+
+  dropdownSelect.addEventListener('click', function() {
+    dropdownOptions.classList.toggle('open');
+  });
+
+  dropdownOptionItems.forEach(function(option) {
+    option.addEventListener('click', function() {
+      option.classList.toggle('selected');
+    });
+  });
+
   var x, i, j, l, ll, selElmnt, a, b, c;
   /* Look for any elements with the class "custom-select": */
   x = document.getElementsByClassName("custom-select");

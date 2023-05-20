@@ -1,9 +1,9 @@
-'use strict' 
+'use strict'
  
-const express = require('express'); 
-const morgan = require('morgan'); 
-const bodyParser = require("body-parser"); 
-const DBAbstraction = require('./DBAbstraction'); 
+const express = require('express');
+const morgan = require('morgan');
+const bodyParser = require("body-parser");
+const DBAbstraction = require('./DBAbstraction');
 const fs = require('fs').promises;
 const path = require('path');
 const process = require('process');
@@ -16,8 +16,8 @@ const mmm = require('mmmagic'),
 
 app.use(morgan('dev'));
 app.use(express.static('public'));  
-app.use(bodyParser.urlencoded({ extended: false })); 
-app.use(bodyParser.json()); 
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
 
 // If modifying these scopes, delete token.json.
 const SCOPES = ['https://mail.google.com/',
@@ -35,11 +35,11 @@ const CREDENTIALS_PATH = path.join(process.cwd(), 'client_secret_credentials.jso
  */
 async function loadSavedCredentialsIfExist() {
   try {
-    const content = await fs.readFile(TOKEN_PATH);
-    const credentials = JSON.parse(content);
-    return google.auth.fromJSON(credentials);
+	const content = await fs.readFile(TOKEN_PATH);
+	const credentials = JSON.parse(content);
+	return google.auth.fromJSON(credentials);
   } catch (err) {
-    return null;
+	return null;
   }
 }
 
@@ -54,10 +54,10 @@ async function saveCredentials(client) {
   const keys = JSON.parse(content);
   const key = keys.installed || keys.web;
   const payload = JSON.stringify({
-    type: 'authorized_user',
-    client_id: key.client_id,
-    client_secret: key.client_secret,
-    refresh_token: client.credentials.refresh_token,
+	type: 'authorized_user',
+	client_id: key.client_id,
+	client_secret: key.client_secret,
+	refresh_token: client.credentials.refresh_token,
   });
   await fs.writeFile(TOKEN_PATH, payload);
 }
@@ -69,14 +69,14 @@ async function saveCredentials(client) {
 async function authorize() {
   let client = await loadSavedCredentialsIfExist();
   if (client) {
-    return client;
+	return client;
   }
   client = await authenticate({
-    scopes: SCOPES,
-    keyfilePath: CREDENTIALS_PATH,
+	scopes: SCOPES,
+	keyfilePath: CREDENTIALS_PATH,
   });
   if (client.credentials) {
-    await saveCredentials(client);
+	await saveCredentials(client);
   }
   return client;
 }
@@ -89,18 +89,18 @@ async function authorize() {
 async function listFiles(authClient) {
   const drive = google.drive({version: 'v3', auth: authClient});
   const res = await drive.files.list({
-    pageSize: 10,
-    fields: 'nextPageToken, files(id, name)',
+	pageSize: 10,
+	fields: 'nextPageToken, files(id, name)',
   });
   const files = res.data.files;
   if (files.length === 0) {
-    console.log('No files found.');
-    return;
+	console.log('No files found.');
+	return;
   }
 
   console.log('Files:');
   files.map((file) => {
-    console.log(`${file.name} (${file.id})`);
+	console.log(`${file.name} (${file.id})`);
   });
 }
 
@@ -108,8 +108,8 @@ authorize().then(listFiles).catch(console.error);
 
 app.post('/project', async (req, res) => { 
      
-    const fName = req.body.fName;
-    const lName = req.body.lName;
+    const fName = req.body.fname;
+    const lName = req.body.lname;
     const email = req.body.email;
     const cityTown = req.body.cityTown;
     const OrgSite = req.body.OrgSite;
@@ -130,32 +130,82 @@ app.post('/project', async (req, res) => {
         console.log(result);
     });
     await db.insertCompany(OrgName, streetAddr, cityTown, state, zip, fName, lName, pnumber, email, OrgSite);
-    await db.insertProject(Description, "Waiting");
-    res.json({"result": "success"}); 
-}); 
- 
-app.get('/cs-legend/:name', async (req, res) => { 
-    try { 
-        const legend = await db.getLegendByLastName(req.params.name); 
-        if(legend) { 
-            res.json(legend); 
-        } else { 
-            res.json({"results": "none"}); 
-        } 
-    } catch (err) { 
-        res.json({"results": "none"}); 
-    } 
-}); 
- 
-app.use((req, res) => { 
-    res.status(404).send(`<h2>Uh Oh!</h2><p>Sorry ${req.url} cannot be found here</p>`); 
-}); 
- 
-db.init() 
-    .then(() => { 
-        app.listen(53140, () => console.log('The server is up and running...')); 
-    }) 
-    .catch(err => { 
-        console.log('Problem setting up the database'); 
-        console.log(err); 
+    await db.getCompanyID(OrgName, fName, lName)
+    .then(companyID => {
+        const id = companyID;
+    db.insertProject(Description, "Waiting", id);
     });
+    
+
+	res.json({"result": "success"});
+});
+
+app.get('/everyproject', async (req, res) => {
+	 
+   try {
+	const allProjects = await db.getAllProjects();
+	if(allProjects) {
+    	res.json(allProjects);
+	} else {
+    	res.json({"results": "none"});
+	}
+} catch (err) {
+	res.json({"results": "none"});
+}
+
+//First draft of a get function for generating and populating the left-hand table in faculty.html. still unsure of how to call this function from the html file itself, or if im supposed to be doing that in the first place
+});
+
+app.get('/allinformation/:description', async (req, res) => {
+	try {
+    	const projectInfo = await db.getAllInformationByProjectDescription(req.params.description);
+    	if(projectInfo) {
+        	res.json(projectInfo);
+    	} else {
+        	res.json({"results": "none"});
+    	}
+	} catch (err) {
+    	res.json({"results": "none"});
+	}
+
+  //first draft of a get function for generating a table on the right-hand side of faculty.html with all the information about a project based on what project you clicked from the left-hand table
+});
+ 
+app.get('/cs-legend/:name', async (req, res) => {
+	try {
+    	const legend = await db.getLegendByLastName(req.params.name);
+    	if(legend) {
+        	res.json(legend);
+    	} else {
+        	res.json({"results": "none"});
+    	}
+	} catch (err) {
+    	res.json({"results": "none"});
+	}
+});
+ 
+app.get('/allLegends/:year', async (req, res) => {
+	try {
+    	const legends = await db.getAllLegendsBornOnOrAfter(Number(req.params.year));
+    	if(legends) {
+        	res.json(legends);
+    	} else {
+        	res.json({"results": "none"});
+    	}
+	} catch (err) {
+    	res.json({"results": "none"});
+	}
+});
+ 
+app.use((req, res) => {
+	res.status(404).send(`<h2>Uh Oh!</h2><p>Sorry ${req.url} cannot be found here</p>`);
+});
+ 
+db.init()
+	.then(() => {
+    	app.listen(53140, () => console.log('The server is up and running...'));
+	})
+	.catch(err => {
+    	console.log('Problem setting up the database');
+    	console.log(err);
+	});
