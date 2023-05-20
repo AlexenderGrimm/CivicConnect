@@ -9,12 +9,11 @@ const path = require('path');
 const process = require('process');
 const {authenticate} = require('@google-cloud/local-auth');
 const {google} = require('googleapis');
-const db = new DBAbstraction('./software_Data.db');
-const mmm = require('mmmagic');
-const { constants } = require('buffer');
-const magic = new mmm.Magic(mmm.MAGIC_MIME_TYPE);
-const app = express();
- 
+const db = new DBAbstraction('./software_Data.db'); 
+const app = express(); 
+const mmm = require('mmmagic'),
+    Magic = mmm.Magic;
+
 app.use(morgan('dev'));
 app.use(express.static('public'));  
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -22,7 +21,7 @@ app.use(bodyParser.json());
 
 // If modifying these scopes, delete token.json.
 const SCOPES = ['https://mail.google.com/',
-'https://www.googleapis.com/auth/drive.metadata.readonly'];
+'https://www.googleapis.com/auth/drive.metadata'];
 // The file token.json stores the user's access and refresh tokens, and is
 // created automatically when the authorization flow completes for the first
 // time.
@@ -124,7 +123,13 @@ app.post('/project', async (req, res) => {
     const Description = req.body.Description;
     const FileDrop = req.body.FileDrop;
     const depart = req.body.multipleDrop;
-
+    var magic = new Magic(mmm.MAGIC_MIME_TYPE);
+    var mType;
+    magic.detectFile(FileDrop, function(err, result) {
+        if (err) throw err;
+        mType = result;
+        console.log(result);
+    });
     await db.insertCompany(OrgName, streetAddr, cityTown, state, zip, fName, lName, pnumber, email, OrgSite);
     await db.getCompanyID(OrgName, fName, lName)
     .then(companyID => {
