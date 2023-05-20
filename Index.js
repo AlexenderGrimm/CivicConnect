@@ -126,6 +126,7 @@ app.post('/project', async (req, res) => {
     const helpAvail = req.body.helpAvail;
     const Description = req.body.Description;
     const FileDrop = req.body.FileDrop;
+    const depart = req.body.multipleDrop;
     var magic = new Magic(mmm.MAGIC_MIME_TYPE);
     var mType;
     magic.detectFile(FileDrop, function(err, result) {
@@ -137,12 +138,15 @@ app.post('/project', async (req, res) => {
     await db.getCompanyID(OrgName, fName, lName)
     .then(companyID => {
         const id = companyID;
-    db.insertProject(Description, "Waiting", id);
+        if(id){
+            db.insertProject(Description, "Waiting", FileDrop, radio, helpAvail, id); // need to add radio and helpAvail of contact.
+            res.json({"result": "success"});
+        }
+        else{
+            res.json({"result": "Failed to find or make company"});
+            
+        }
     });
-    await db.getProjectID(Description)
-    .then()
-
-	res.json({"result": "success"});
 });
 
 /* app.engine(
