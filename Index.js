@@ -104,8 +104,8 @@ authorize().then(listLabels).catch(console.error);
 
 app.post('/project', async (req, res) => { 
      
-    const fName = req.body.fName;
-    const lName = req.body.lName;
+    const fName = req.body.fname;
+    const lName = req.body.lname;
     const email = req.body.email;
     const cityTown = req.body.cityTown;
     const OrgSite = req.body.OrgSite;
@@ -120,10 +120,16 @@ app.post('/project', async (req, res) => {
     const FileDrop = req.body.FileDrop;
 
     await db.insertCompany(OrgName, streetAddr, cityTown, state, zip, fName, lName, pnumber, email, OrgSite);
-    await db.insertProject(Description, "Waiting", FileDrop);
+    await db.getCompanyID(OrgName, fName, lName)
+    .then(companyID => {
+        const id = companyID;
+    db.insertProject(Description, "Waiting", FileDrop, id);
+    });
+    
+
  
     res.json({"result": "success"}); 
-}); 
+ }); 
  
 app.get('/cs-legend/:name', async (req, res) => { 
     try { 

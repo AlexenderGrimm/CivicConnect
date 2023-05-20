@@ -19,7 +19,8 @@ class DBAbstraction {
 
     insertCompany(cname, street, city, state, zip, first, last, phone, email, web) 
     {
-        const sql = 'INSERT INTO Company (name, street, city, state, zip, ContactFirst, ContactLast, phone, email, companyWeb) VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);';
+        const sql = 'INSERT OR IGNORE INTO Company (name, street, city, state, zip, first, last, phone, email, companyWeb)'
+         + ' VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);';
         return new Promise((resolve, reject) => { 
             this.db.run(sql, [cname, street, city, state, zip, first, last, phone, email, web], (err) => {                 
                 if(err) { 
@@ -28,6 +29,7 @@ class DBAbstraction {
                     resolve(); 
                 } 
             }); 
+
         }); 
     }
 
@@ -45,18 +47,46 @@ class DBAbstraction {
         }); 
     }
 
-    insertProject(Description, pstatus, file) 
+    insertProject(Description, pstatus, file, id) 
     {
-        const sql = 'INSERT INTO Project (Description, pstatus, file) VALUES (?, ?, ?);';
+        
+        const sql = 'INSERT INTO Project (Description, pstatus, file, Date, CompanyID) VALUES (?, ?, ?, ?, ?);';
+        var currentDate = new Date(); 
+        var dateTime = currentDate.getMonth() + "/"
+            + currentDate.getDate()  + "/" 
+            + currentDate.getFullYear() + " @ "  
+            + currentDate.getHours() + ":"  
+            + currentDate.getMinutes() + ":" 
+            + currentDate.getSeconds();
         return new Promise((resolve, reject) => { 
-            this.db.run(sql, [Description, pstatus, file], (err) => {                 
+            this.db.run(sql, [Description, pstatus, file, dateTime, id], (err) => {                 
                 if(err) { 
                     reject(err); 
                 } else { 
                     resolve(); 
                 } 
             }); 
-        }); 
+        });
+    }
+
+    getCompanyID(name, fname, lname) {
+        const sql = `
+            SELECT companyID
+            FROM Company
+            WHERE name = ? COLLATE NOCASE
+            AND first = ? COLLATE NOCASE
+            AND last = ? COLLATE NOCASE;
+        `;
+    
+        return new Promise((resolve, reject) => {
+            this.db.get(sql, [name, fname, lname], (err, row) => {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve(row ? row.companyID : null);
+                }
+            });
+        });
     }
 
     insertUser(first, last, role, email, phone) 
@@ -88,6 +118,7 @@ class DBAbstraction {
                     resolve(row); 
                 } 
             }); 
+
         }); 
     } 
 
@@ -141,7 +172,8 @@ class DBAbstraction {
                 } else { 
                     resolve(row); 
                 } 
-            }); 
+            });
+
         }); 
     } 
 
