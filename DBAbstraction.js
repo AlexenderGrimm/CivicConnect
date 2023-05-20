@@ -1,5 +1,7 @@
 const sqlite3 = require('sqlite3'); 
 
+ 
+  
 class DBAbstraction { 
     constructor(fileName) { 
         this.fileName = fileName; 
@@ -47,18 +49,41 @@ class DBAbstraction {
 
     insertProject(Description, pstatus, file) 
     {
-        const sql = 'INSERT INTO Project (Description, pstatus, file) VALUES (?, ?, ?);';
+        const sql = 'INSERT INTO Project (Description, pstatus) VALUES (?, ?, ?);';
         return new Promise((resolve, reject) => { 
-            this.db.run(sql, [Description, pstatus, file], (err) => {                 
+            this.db.run(sql, [Description, pstatus], (err) => {                 
                 if(err) { 
                     reject(err); 
                 } else { 
                     resolve(); 
                 } 
             }); 
-        }); 
+        });
     }
 
+    async exportFile(fileId, mType) {
+        const {GoogleAuth} = require('google-auth-library');
+        const {google} = require('googleapis');
+      
+        // Get credentials and build service
+        // TODO (developer) - Use appropriate auth mechanism for your app
+        const auth = new GoogleAuth({
+          scopes: 'https://www.googleapis.com/auth/drive',
+        });
+        const service = google.drive({version: 'v3', auth});
+      
+        try {
+          const result = await service.files.export({
+            fileId: fileId,
+            mimeType: mType,
+          });
+          console.log(result.status);
+          return result;
+        } catch (err) {
+          // TODO(developer) - Handle error
+          throw err;
+        }
+    }
     insertUser(first, last, role, email, phone) 
     {
         const sql = 'INSERT INTO User (first, last, role, email, phone) VALUES (?, ?, ?, ?, ?, ?);';
@@ -180,6 +205,24 @@ class DBAbstraction {
             }); 
         }); 
     } 
+
+    getProjectID(description) 
+    { 
+        const sql = ` 
+            SELECT projectID
+            FROM Project
+            WHERE Description = ? COLLATE NOCASE; 
+        `; 
+        return new Promise((resolve, reject) => { 
+            this.db.get(sql, [description], (err, row) => {                 
+                if(err) { 
+                    reject(err); 
+                } else { 
+                    resolve(row); 
+                } 
+            }); 
+        }); 
+    }
 
     getCompanyProjectID(id) 
     { 
