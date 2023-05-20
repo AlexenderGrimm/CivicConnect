@@ -76,17 +76,17 @@ class DBAbstraction {
 	getAllProjects()
 	{
     	const sql = `
-        	SELECT Company.name, Company.phone, Project.Description, Department.name
+        	SELECT Company.name, Company.phone, Project.Description, Department.depName
         	FROM Project, Company, Department
         	WHERE Project.projectID = Company.companyID AND Project.projectID = Department.departmentID;
     	`;
 
     	return new Promise((resolve, reject) => {
-        	this.db.all(sql, (err) => {
+        	this.db.all(sql, [], (err, row) => {
             	if(err) {
                 	reject(err);
             	} else {
-                	resolve();
+                	resolve(row);
             	}
         	});
     	});
@@ -97,7 +97,7 @@ class DBAbstraction {
     getAllInformationByProjectDescription(descrip)
 	{
     	const sql = `
-        	SELECT Project.Description, Project.pstatus, Project.file, Department.name, Department.head, Company.name, Company.street, Company.city, Company.state, Company.zip, Company.first, Company.last, Company.phone, Company.email, Company.companyWeb, Company.ContactFirst, Company.ContactLast
+        	SELECT Project.Description, Project.pstatus, Project.file, Department.depName, Department.head, Company.name, Company.street, Company.city, Company.state, Company.zip, Company.first, Company.last, Company.phone, Company.email, Company.companyWeb, Company.ContactFirst, Company.ContactLast
         	FROM Project, Company, Department
         	WHERE Project.projectID = Company.companyID AND Project.projectID = Department.departmentID AND Project.Description = ? COLLATE NOCASE;
     	`;

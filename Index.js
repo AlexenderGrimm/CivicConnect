@@ -14,6 +14,11 @@ const mmm = require('mmmagic');
 const { constants } = require('buffer');
 const magic = new mmm.Magic(mmm.MAGIC_MIME_TYPE);
 const app = express();
+const handlebars = require('express-handlebars').create({defaultLayout: 'main'});
+
+
+app.engine('handlebars', handlebars.engine); 
+app.set('view engine', 'handlebars');
  
 app.use(morgan('dev'));
 app.use(express.static('public'));  
@@ -130,17 +135,46 @@ app.post('/project', async (req, res) => {
 	res.json({"result": "success"});
 });
 
-app.get('/everyproject', async (req, res) => {
+/* app.engine(
+  "hbs",
+  handlebars({
+    extname: "hbs",
+    defaultLayout: false
+  })
+); */
+
+/* app.get('/testView', (req, res) => { 
+     
+  const companyInfo = {
+    name: 'Mamoney Materials', 
+    street: '0123 45th St',
+    city: 'Kenosha',
+    state: 'Wisconsin',
+    zip: '53140',
+    first: 'Marck',
+    last: 'Mamoney',
+    phone: '262-287-4958',
+    email: 'mamoneymaterials@fakemail.com',
+    companyWeb: 'mamoneymaterials.com',
+    ContactFirst: 'Yes',
+    ContactLast: 'By Email'
+  }; 
+       
+  res.render('testCompanyView', companyInfo); 
+}); */
+
+
+app.get('/faculty', async (req, res) => {
 	 
    try {
 	const allProjects = await db.getAllProjects();
 	if(allProjects) {
-    	res.json(allProjects);
+    	res.render('leftHandTable', {projects: allProjects});
 	} else {
     	res.json({"results": "none"});
 	}
 } catch (err) {
-	res.json({"results": "none"});
+	res.json({"results": "error"});
 }
 
 //First draft of a get function for generating and populating the left-hand table in faculty.html. still unsure of how to call this function from the html file itself, or if im supposed to be doing that in the first place

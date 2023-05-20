@@ -1,0 +1,23 @@
+<table> 
+    <thead> 
+        <th>Company</th><th>Contact</th><th>Description</th><th>Department</th>
+    </thead> 
+ 
+    {{#each projects}} 
+        <tr> 
+            <td> 
+                {{this/name}}
+            </td> 
+            <td> 
+                {{this/phone}} 
+            </td> 
+            <td class="descrip-text"> 
+                {{this/Description}}
+            </td>
+            <td>
+                {{this/depName}}
+            </td>              
+        </tr> 
+    {{/each}} 
+ 
+</table>
