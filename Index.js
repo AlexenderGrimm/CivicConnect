@@ -123,17 +123,21 @@ app.post('/project', async (req, res) => {
     const helpAvail = req.body.helpAvail;
     const Description = req.body.Description;
     const FileDrop = req.body.FileDrop;
+    const depart = req.body.multipleDrop;
 
     await db.insertCompany(OrgName, streetAddr, cityTown, state, zip, fName, lName, pnumber, email, OrgSite);
     await db.getCompanyID(OrgName, fName, lName)
     .then(companyID => {
         const id = companyID;
-    db.insertProject(Description, "Waiting", FileDrop, id);
+        if(id){
+            db.insertProject(Description, "Waiting", FileDrop, radio, helpAvail, id); // need to add radio and helpAvail of contact.
+            res.json({"result": "success"});
+        }
+        else{
+            res.json({"result": "Failed to find or make company"});
+            
+        }
     });
-    
-
- 
-	res.json({"result": "success"});
 });
 
 app.get('/everyproject', async (req, res) => {
