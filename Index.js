@@ -9,17 +9,15 @@ const path = require('path');
 const process = require('process');
 const {authenticate} = require('@google-cloud/local-auth');
 const {google} = require('googleapis');
-const db = new DBAbstraction('./software_Data.db');
-const mmm = require('mmmagic');
-const { constants } = require('buffer');
-const magic = new mmm.Magic(mmm.MAGIC_MIME_TYPE);
-const app = express();
+const db = new DBAbstraction('./software_Data.db'); 
+const app = express(); 
+const mmm = require('mmmagic'),
+    Magic = mmm.Magic;
 const handlebars = require('express-handlebars').create({defaultLayout: 'main'});
 
 
 app.engine('handlebars', handlebars.engine); 
 app.set('view engine', 'handlebars');
- 
 app.use(morgan('dev'));
 app.use(express.static('public'));  
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -27,7 +25,7 @@ app.use(bodyParser.json());
 
 // If modifying these scopes, delete token.json.
 const SCOPES = ['https://mail.google.com/',
-'https://www.googleapis.com/auth/drive.metadata.readonly'];
+'https://www.googleapis.com/auth/drive.metadata'];
 // The file token.json stores the user's access and refresh tokens, and is
 // created automatically when the authorization flow completes for the first
 // time.
@@ -112,26 +110,38 @@ async function listFiles(authClient) {
 
 authorize().then(listFiles).catch(console.error);
 
-app.post('/project', async (req, res) => {
-	 
-	const fName = req.body.fName;
-	const lName = req.body.lName;
-	const email = req.body.email;
-	const cityTown = req.body.cityTown;
-	const OrgSite = req.body.OrgSite;
-	const pnumber = req.body.pnumber;
-	const state = req.body.state;
-	const radio = req.body.radio;
-	const OrgName = req.body.OrgName;
-	const streetAddr = req.body.streetAddr;
-	const zip = req.body.zip;
-	const helpAvail = req.body.helpAvail;
-	const Description = req.body.Description;
-	const FileDrop = req.body.FileDrop;
+app.post('/project', async (req, res) => { 
+     
+    const fName = req.body.fname;
+    const lName = req.body.lname;
+    const email = req.body.email;
+    const cityTown = req.body.cityTown;
+    const OrgSite = req.body.OrgSite;
+    const pnumber = req.body.pnumber;
+    const state = req.body.state;
+    const radio = req.body.radio;
+    const OrgName = req.body.OrgName;
+    const streetAddr = req.body.streetAddr;
+    const zip = req.body.zip;
+    const helpAvail = req.body.helpAvail;
+    const Description = req.body.Description;
+    const FileDrop = req.body.FileDrop;
+    var magic = new Magic(mmm.MAGIC_MIME_TYPE);
+    var mType;
+    magic.detectFile(FileDrop, function(err, result) {
+        if (err) throw err;
+        mType = result;
+        console.log(result);
+    });
+    await db.insertCompany(OrgName, streetAddr, cityTown, state, zip, fName, lName, pnumber, email, OrgSite);
+    await db.getCompanyID(OrgName, fName, lName)
+    .then(companyID => {
+        const id = companyID;
+    db.insertProject(Description, "Waiting", id);
+    });
+    await db.getProjectID(Description)
+    .then()
 
-	await db.insertCompany(OrgName, streetAddr, cityTown, state, zip, fName, lName, pnumber, email, OrgSite);
-	await db.insertProject(Description, "Waiting", FileDrop);
- 
 	res.json({"result": "success"});
 });
 
