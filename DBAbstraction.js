@@ -306,7 +306,7 @@ class DBAbstraction {
                 if(err) { 
                     reject(err); 
                 } else { 
-                    resolve(row); 
+                    resolve(row ? row.projectID : null); 
                 } 
             }); 
         }); 

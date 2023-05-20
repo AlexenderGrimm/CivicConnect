@@ -135,7 +135,8 @@ app.post('/project', async (req, res) => {
         const id = companyID;
     db.insertProject(Description, "Waiting", id);
     });
-    
+    await db.getProjectID(Description)
+    .then()
 
 	res.json({"result": "success"});
 });
