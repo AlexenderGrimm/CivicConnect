@@ -1,5 +1,5 @@
 const sqlite3 = require('sqlite3'); 
- 
+
 class DBAbstraction { 
     constructor(fileName) { 
         this.fileName = fileName; 

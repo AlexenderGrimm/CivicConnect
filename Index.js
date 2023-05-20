@@ -10,8 +10,6 @@ const process = require('process');
 const {authenticate} = require('@google-cloud/local-auth');
 const {google} = require('googleapis');
 const db = new DBAbstraction('./software_Data.db'); 
-const mmm = require('mmmagic');
-const magic = new mmm.Magic(mmm.MAGIC_MIME_TYPE);
 const app = express(); 
  
 app.use(morgan('dev'));
@@ -134,19 +132,6 @@ app.get('/cs-legend/:name', async (req, res) => {
         const legend = await db.getLegendByLastName(req.params.name); 
         if(legend) { 
             res.json(legend); 
-        } else { 
-            res.json({"results": "none"}); 
-        } 
-    } catch (err) { 
-        res.json({"results": "none"}); 
-    } 
-}); 
- 
-app.get('/allLegends/:year', async (req, res) => { 
-    try { 
-        const legends = await db.getAllLegendsBornOnOrAfter(Number(req.params.year)); 
-        if(legends) { 
-            res.json(legends); 
         } else { 
             res.json({"results": "none"}); 
         } 
