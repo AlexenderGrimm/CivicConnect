@@ -1,0 +1,70 @@
+<table> 
+    <thead> 
+        <th>Project Description</th><th>Status</th><th>Files</th><th>Date</th><th>Contactable</th><th>Available Time</th>
+        <th>Company Name</th><th>Address</th><th>City</th><th>State</th><th>Zip Code</th><th>First Name</th><th>Last Name</th><th>Phone Number</th><th>Email</th><th>Website</th>
+        <th>Department</th><th>Department Head</th><th>Department Head Email</th>
+    </thead> 
+ 
+    {{#each information}} 
+        <tr>
+            <td> 
+                {{this/Description}}
+            </td> 
+            <td> 
+                {{this/pstatus}} 
+            </td> 
+            <td>
+                {{this/file}}
+            </td>
+            <td>
+                {{this/Date}}
+            </td>
+            <td>
+                {{this/radio}}
+            </td>
+            <td>
+                {{this/helpAvail}}
+            </td>
+            <td>
+                {{this/name}}
+            </td>
+            <td>
+                {{this/street}}
+            </td>
+            <td>
+                {{this/city}}
+            </td>
+            <td>
+                {{this/state}}
+            </td>
+            <td>
+                {{this/zip}}
+            </td>
+            <td>
+                {{this/first}}
+            </td>
+            <td>
+                {{this/last}}
+            </td>
+            <td>
+                {{this/phone}}
+            </td>
+            <td>
+                {{this/email}}
+            </td>
+            <td>
+                {{this/companyWeb}}
+            </td>
+            <td>
+                {{this/depName}}
+            </td>
+            <td>
+                {{this/head}}
+            </td>
+            <td>
+                {{this/depEmail}}
+            </td>              
+        </tr> 
+    {{/each}} 
+ 
+</table>

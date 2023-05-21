@@ -114,19 +114,19 @@ input:hover[type=submit] {
 }
 
 .nonscrollable {
-    width: 50%;
+    width: 100%;
     padding-top: 20px;
     font-family: Helvetica, sans-serif;
 }
 
-.scrollable {
+/* .scrollable {
   width: 50%;
   padding-top: 20px;
   overflow-y: auto;
   height: 100%;
   font-family: Helvetica, sans-serif;
 
-}
+} */
 
 .row {
     /*display: -ms-flexbox; /* IE10 */
@@ -363,6 +363,4 @@ table, th, td {
 
 }
 
-table {width: 100%;}
-td.column_a {width: 30%;}
-td.column_b {width: 70%;}
+table {width: 90%;}

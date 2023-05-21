@@ -194,16 +194,16 @@ app.get('/faculty', async (req, res) => {
 //First draft of a get function for generating and populating the left-hand table in faculty.html. still unsure of how to call this function from the html file itself, or if im supposed to be doing that in the first place
 });
 
-app.get('/allinformation/:description', async (req, res) => {
+app.get('/allinformation/:projectid', async (req, res) => {
 	try {
-    	const projectInfo = await db.getAllInformationByProjectDescription(req.params.description);
+    	const projectInfo = await db.getAllInformationByProjectID(Number(req.params.projectid));
     	if(projectInfo) {
-        	res.json(projectInfo);
+        res.render('allInfoTable', {information: projectInfo});
     	} else {
         	res.json({"results": "none"});
     	}
 	} catch (err) {
-    	res.json({"results": "none"});
+    	res.json({"results": "error"});
 	}
 
   //first draft of a get function for generating a table on the right-hand side of faculty.html with all the information about a project based on what project you clicked from the left-hand table
