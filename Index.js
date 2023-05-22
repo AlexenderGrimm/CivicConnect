@@ -221,32 +221,6 @@ app.get('/allinformation/:projectid', async (req, res) => {
   //first draft of a get function for generating a table on the right-hand side of faculty.html with all the information about a project based on what project you clicked from the left-hand table
 });
  
-app.get('/cs-legend/:name', async (req, res) => {
-	try {
-    	const legend = await db.getLegendByLastName(req.params.name);
-    	if(legend) {
-        	res.json(legend);
-    	} else {
-        	res.json({"results": "none"});
-    	}
-	} catch (err) {
-    	res.json({"results": "none"});
-	}
-});
- 
-app.get('/allLegends/:year', async (req, res) => {
-	try {
-    	const legends = await db.getAllLegendsBornOnOrAfter(Number(req.params.year));
-    	if(legends) {
-        	res.json(legends);
-    	} else {
-        	res.json({"results": "none"});
-    	}
-	} catch (err) {
-    	res.json({"results": "none"});
-	}
-});
- 
 app.use((req, res) => {
 	res.status(404).send(`<h2>Uh Oh!</h2><p>Sorry ${req.url} cannot be found here</p>`);
 });
