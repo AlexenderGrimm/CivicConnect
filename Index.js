@@ -6,6 +6,7 @@ const bodyParser = require("body-parser");
 const DBAbstraction = require('./DBAbstraction');
 const fs = require('fs').promises;
 const path = require('path');
+const nodemailer = require("nodemailer");
 const process = require('process');
 const {authenticate} = require('@google-cloud/local-auth');
 const {google} = require('googleapis');
@@ -85,6 +86,34 @@ async function authorize() {
   return client;
 }
 
+async function mailer() {
+  
+  let transporter = nodemailer.createTransport({
+    host: "smtp.ethereal.email",
+    port: 465,
+    secure: false, // true for 465, false for other ports
+    auth: {
+      user: "fig23_civic_engagement@carthage.edu", // generated ethereal user
+      pass: "AustinCarolinaRickWenjie2023", // generated ethereal password
+    },
+  });
+
+  let info = await transporter.sendMail({
+    from: '"civic_engagement" <fig23_civic_engagement@carthage.edu>', // sender address
+    to: "fig23_civic_engagement@carthage.edu", // list of receivers
+    subject: "Hello", // Subject line
+    text: "I hope this message gets delivered!", // plain text body
+  }, (err, info) => {
+    console.log(info.envelope);
+    console.log(info.messageId);
+});
+
+  console.log("Message sent: %s", info.messageId);
+
+}
+
+
+
 /**
  * Lists the labels in the user's account.
  *
@@ -108,56 +137,62 @@ async function listFiles(authClient) {
   });
 }
 
+//mailer().catch(console.error);
 authorize().then(listFiles).catch(console.error);
 
 app.post('/project', async (req, res) => { 
      
-    const fName = req.body.fname;
-    const lName = req.body.lname;
-    const email = req.body.email;
-    const cityTown = req.body.cityTown;
-    const OrgSite = req.body.OrgSite;
-    const pnumber = req.body.pnumber;
-    const state = req.body.state;
-    const radio = req.body.radio;
-    const OrgName = req.body.OrgName;
-    const streetAddr = req.body.streetAddr;
-    const zip = req.body.zip;
-    const helpAvail = req.body.helpAvail;
-    const Description = req.body.Description;
-    const FileDrop = req.body.FileDrop;
-    const depart = req.body.multipleDrop;
-    var magic = new Magic(mmm.MAGIC_MIME_TYPE);
-    var mType;
-    // magic.detectFile(FileDrop, function(err, result) {
-    //     if (err) throw err;
-    //     mType = result;
-    //     console.log(result);
-    // });
-    await db.insertCompany(OrgName, streetAddr, cityTown, state, zip, fName, lName, pnumber, email, OrgSite);
-    await db.getCompanyID(OrgName, fName, lName)
-    .then(companyID => {
-        const id = companyID;
-        if(id){
-            db.insertProject(Description, "Waiting", FileDrop == "" ? "Nothing" : FileDrop, radio, helpAvail, id); // need to add radio and helpAvail of contact.
-        }
-        else{
-            res.json({"result": "Failed to find or make company"});
-            
-        }
-    });
-    await db.getProjectID(Description)
-    .then(projectID => {
-      const id = projectID;
+  const fName = req.body.fname;
+  const lName = req.body.lname;
+  const email = req.body.email;
+  const cityTown = req.body.cityTown;
+  const OrgSite = req.body.OrgSite;
+  const pnumber = req.body.pnumber;
+  const state = req.body.state;
+  const radio = req.body.radio;
+  const OrgName = req.body.OrgName;
+  const Comp = req.body.Comp;
+  const streetAddr = req.body.streetAddr;
+  const zip = req.body.zip;
+  const helpAvail = req.body.helpAvail;
+  const Description = req.body.Description;
+  const FileDrop = req.body.FileDrop;
+  const depart = req.body.multipleDrop;
+  var magic = new Magic(mmm.MAGIC_MIME_TYPE);
+  var mType;
+  // magic.detectFile(FileDrop, function(err, result) {
+  //     if (err) throw err;
+  //     mType = result;
+  //     console.log(result);
+  // });
+  await db.insertCompany(OrgName, streetAddr, cityTown, state, zip, fName, lName, pnumber, email, OrgSite);
+  await db.getCompanyID(OrgName, fName, lName)
+  .then(companyID => {
+      const id = companyID;
       if(id){
-        for (var i = 0; i < depart.length; i++) {
-          db.insertProjectDepartment(depart[i], id);
-        }
+          db.insertProject(Description, "Waiting", FileDrop == "" ? "Nothing" : FileDrop, Comp, radio, helpAvail, id); // need to add radio and helpAvail of contact.
       }
       else{
-        res.json({"result": "Failed to find or make Project"});
+          res.json({"result": "Failed to find or make company"});
+          exit();
       }
-    });
+  });
+  await db.getProjectID(Description)
+  .then(projectID => {
+    const id = projectID;
+    if(id){
+      for (var i = 0; i < depart.length; i++) {
+        db.insertProjectDepartment(depart[i], id);
+      }
+    }
+    else{
+      res.json({"result": "Failed to find or make Project"});
+      exit();
+    }
+  });
+
+  mailer();
+
   res.json({"result": "success"});
 });
 

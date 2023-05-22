@@ -421,23 +421,25 @@ fading from the pic to white to better transition from the header to the form-->
 <form action="/project" method="post">
 <div class="row">
   <div class="col2"> <!--First Column-->
-    <label for="fname" class="label-style">First Name</label>
+    <label for="fname" class="label-style">First Name*</label>
     <input type="text" id="fname" name="fname" class="length1"  tabindex="2" required>
-    <label for="email" class="label-style">Contact Email</label>
+    <label for="email" class="label-style">Contact Email*</label>
     <input type="text" id="email" name="email" class="length3"  tabindex="5" required>
-    <label for="cityTown" class="label-style">City/Town</label>
+    <label for="cityTown" class="label-style">City/Town*</label>
     <input type="text" id="cityTown" name="cityTown" class="length2" tabindex="8" required>
     <label for="OrgSite" class="label-style">Website of Business/Org</label>
     <input type="text" id="OrgSite" name="OrgSite" class="length3" tabindex="11"> 
+    <label for="Comp" class="label-style">Anticipated Completion/Timeline*</label>
+    <input type="text" id="Comp" name="Comp" class="length3" tabindex="14" required>
   </div>
   <div class="col2"> <!--Second Column-->
-    <label for="lname" class="label-style">Last Name</label>
+    <label for="lname" class="label-style">Last Name*</label>
     <input type="text" id="lname" name="lname" class="length1"  tabindex="3" required>
-    <label for="pnumber" class="label-style">Phone Number</label>
+    <label for="pnumber" class="label-style">Phone Number*</label>
     <input type="text" id="pnumber" name="pnumber" class="length2"  tabindex="6" required>
     <div class="custom-select">
       <select name="state" id="state" required>
-        <option tabindex="9">State:</option>
+        <option tabindex="9">State*:</option>
         <option value="alabama">Alabama</option>
         <option value="alaska">Alaska</option>
         <option value="arizona">Arizona</option>
@@ -493,21 +495,21 @@ fading from the pic to white to better transition from the header to the form-->
     <div>
       <p class="label-style">Can students contact you for assistance?</p>
       <label class="radioButtons">Yes
-        <input type="radio" name="radio" value="an">
+        <input type="radio" name="radio" value="on">
         <span class="checkmark" tabindex="12"></span>
       </label>
       <label class="radioButtons">No
         <input type="radio" name="radio" value="off">
-        <span class="checkmark" tabindex="12" onkeypress=""></span>
+        <span class="checkmark" tabindex="12"></span>
       </label>
     </div>
   </div>
   <div class="col2"> <!--Third Column-->
-    <label for="OrgName" class="label-style">Business/Organization Name</label>
+    <label for="OrgName" class="label-style">Business/Organization Name*</label>
     <input type="text" id="OrgName" name="OrgName" class="length2"  tabindex="4" required>
-    <label for="streetAddr" class="label-style">Street Address (of Business/Org)</label>
+    <label for="streetAddr" class="label-style">Street Address* (of Business/Org)</label>
     <input type="text" id="streetAddr" name="streetAddr" class="length3" tabindex="7" required>
-    <label for="zip" class="label-style">Zip Code</label>
+    <label for="zip" class="label-style">Zip Code*</label>
     <input type="text" id="zip" name="zip" class="length1" tabindex="10" required>
     <label for="helpAvail" class="label-style">If yes, how often can they contact you?</label>
     <input type="text" id="helpAvail" name="helpAvail" class="length3" tabindex="13">
@@ -516,12 +518,12 @@ fading from the pic to white to better transition from the header to the form-->
 <div class="row">
   <div class="lastFormElems">
     <label for="Description" class="label-style">Please provide a description of the project (be as specific as you'd like):</label>
-    <textarea class="description" id="Description" name="Description" rows="4" cols="50" max-width=48% onfocus="this.focus();this.select()" tabindex="14">Provide a description here...</textarea>
+    <textarea class="description" id="Description" name="Description" rows="4" cols="50" max-width=48% onfocus="this.focus();this.select()" tabindex="15">Provide a description here...</textarea>
     <label for="FileDrop" class="label-style">Please provide any files that may help the students:</label>
-    <input type="file" id="FileDrop" name="FileDrop" class="length1" tabindex="15" multiple>
+    <input type="file" id="FileDrop" name="FileDrop" class="length1" tabindex="16" multiple>
   </div>
   <div class="test-dropdown">
-    <label for="multipleDrop" class="label-style">Select department(s) (CTRL click to select multiple):</label>
+    <label for="multipleDrop" class="label-style">Select department(s)* (CTRL click to select multiple):</label>
     <select name="multipleDrop" id="multipleDrop" class="test-dropdown-select" multiple required>  
       <div class="test-dropdown-options">
         <option class="test-dropdown-option" value="1">Biology</option>
@@ -543,8 +545,7 @@ fading from the pic to white to better transition from the header to the form-->
     </select>
 </div>
 </div>
-
-<input type="submit" value="Submit" tabindex="16">
+<input type="submit" value="Submit" tabindex="17">
 </form>
 </body>
 

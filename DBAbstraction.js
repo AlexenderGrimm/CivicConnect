@@ -59,10 +59,10 @@ class DBAbstraction {
     	});
 	}
 
-    insertProject(Description, pstatus, file, radio, helpAvail, id) 
+    insertProject(Description, pstatus, file, comp, radio, helpAvail, id) 
     {
         
-        const sql = 'INSERT INTO Project (Description, pstatus, file, Date, radio, helpAvail, CompanyID) VALUES (?, ?, ?, ?, ?, ?, ?);';
+        const sql = 'INSERT OR IGNORE INTO Project (Description, pstatus, file, TimeLine, Date, radio, helpAvail, CompanyID) VALUES (?, ?, ?, ?, ?, ?, ?, ?);';
         var currentDate = new Date(); 
         var dateTime = currentDate.getMonth() + "/"
             + currentDate.getDate()  + "/" 
@@ -71,7 +71,7 @@ class DBAbstraction {
             + currentDate.getMinutes() + ":" 
             + currentDate.getSeconds();
         return new Promise((resolve, reject) => { 
-            this.db.run(sql, [Description, pstatus, file, dateTime, radio, helpAvail, id], (err) => {                 
+            this.db.run(sql, [Description, pstatus, file, comp, dateTime, radio, helpAvail, id], (err) => {                 
                 if(err) { 
                     reject(err); 
                 } else { 
