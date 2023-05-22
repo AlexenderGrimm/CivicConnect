@@ -13,10 +13,13 @@
   "dependencies": {
     "@google-cloud/local-auth": "^2.1.0",
     "body-parse": "^0.1.0",
+    "cors": "^2.8.5",
     "express": "^4.18.2",
+    "express-fileupload": "^1.4.0",
     "googleapis": "^105.0.0",
-    "mmmagic": "^0.5.3",
+    "lodash": "^4.17.21",
     "morgan": "^1.10.0",
+    "nodemailer": "^6.9.2",
     "sqlite3": "^5.1.6"
   }
 }
