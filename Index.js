@@ -15,11 +15,15 @@ const {google} = require('googleapis');
 const db = new DBAbstraction('./software_Data.db'); 
 const app = express(); 
 //let transporter = nodemailer.createTransport(options[, defaults])
+const handlebars = require('express-handlebars').create({defaultLayout: 'main'});
+
 
 app.use(cors());
 app.use(fileUpload({
     createParentPath: true
 }));
+app.engine('handlebars', handlebars.engine); 
+app.set('view engine', 'handlebars');
 app.use(morgan('dev'));
 app.use(express.static('public'));  
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -148,63 +152,113 @@ app.post('/project', async (req, res) => {
   //await db.exportFile(FileDrop.id, FileDrop.mimetype);
 
 	res.json({"result": "success"});
+    const fName = req.body.fname;
+    const lName = req.body.lname;
+    const email = req.body.email;
+    const cityTown = req.body.cityTown;
+    const OrgSite = req.body.OrgSite;
+    const pnumber = req.body.pnumber;
+    const state = req.body.state;
+    const radio = req.body.radio;
+    const OrgName = req.body.OrgName;
+    const streetAddr = req.body.streetAddr;
+    const zip = req.body.zip;
+    const helpAvail = req.body.helpAvail;
+    const Description = req.body.Description;
+    const FileDrop = req.body.FileDrop;
+    const depart = req.body.multipleDrop;
+    var magic = new Magic(mmm.MAGIC_MIME_TYPE);
+    var mType;
+    // magic.detectFile(FileDrop, function(err, result) {
+    //     if (err) throw err;
+    //     mType = result;
+    //     console.log(result);
+    // });
+    await db.insertCompany(OrgName, streetAddr, cityTown, state, zip, fName, lName, pnumber, email, OrgSite);
+    await db.getCompanyID(OrgName, fName, lName)
+    .then(companyID => {
+        const id = companyID;
+        if(id){
+            db.insertProject(Description, "Waiting", FileDrop == "" ? "Nothing" : FileDrop, radio, helpAvail, id); // need to add radio and helpAvail of contact.
+        }
+        else{
+            res.json({"result": "Failed to find or make company"});
+            
+        }
+    });
+    await db.getProjectID(Description)
+    .then(projectID => {
+      const id = projectID;
+      if(id){
+        for (var i = 0; i < depart.length; i++) {
+          db.insertProjectDepartment(depart[i], id);
+        }
+      }
+      else{
+        res.json({"result": "Failed to find or make Project"});
+      }
+    });
+  res.json({"result": "success"});
 });
 
-app.get('/everyproject', async (req, res) => {
+/* app.engine(
+  "hbs",
+  handlebars({
+    extname: "hbs",
+    defaultLayout: false
+  })
+); */
+
+/* app.get('/testView', (req, res) => { 
+     
+  const companyInfo = {
+    name: 'Mamoney Materials', 
+    street: '0123 45th St',
+    city: 'Kenosha',
+    state: 'Wisconsin',
+    zip: '53140',
+    first: 'Marck',
+    last: 'Mamoney',
+    phone: '262-287-4958',
+    email: 'mamoneymaterials@fakemail.com',
+    companyWeb: 'mamoneymaterials.com',
+    ContactFirst: 'Yes',
+    ContactLast: 'By Email'
+  }; 
+       
+  res.render('testCompanyView', companyInfo); 
+}); */
+
+
+app.get('/faculty', async (req, res) => {
 	 
    try {
 	const allProjects = await db.getAllProjects();
 	if(allProjects) {
-    	res.json(allProjects);
+    	res.render('leftHandTable', {projects: allProjects});
 	} else {
     	res.json({"results": "none"});
 	}
 } catch (err) {
-	res.json({"results": "none"});
+	res.json({"results": "error"});
 }
 
 //First draft of a get function for generating and populating the left-hand table in faculty.html. still unsure of how to call this function from the html file itself, or if im supposed to be doing that in the first place
 });
 
-app.get('/allinformation/:description', async (req, res) => {
+app.get('/allinformation/:projectid', async (req, res) => {
 	try {
-    	const projectInfo = await db.getAllInformationByProjectDescription(req.params.description);
+    	const projectInfo = await db.getAllInformationByProjectID(Number(req.params.projectid));
     	if(projectInfo) {
-        	res.json(projectInfo);
+        res.render('allInfoTable', {information: projectInfo});
     	} else {
         	res.json({"results": "none"});
     	}
 	} catch (err) {
-    	res.json({"results": "none"});
+    	res.json({"results": "error"});
 	}
 
   //first draft of a get function for generating a table on the right-hand side of faculty.html with all the information about a project based on what project you clicked from the left-hand table
-});
- 
-app.get('/cs-legend/:name', async (req, res) => {
-	try {
-    	const legend = await db.getLegendByLastName(req.params.name);
-    	if(legend) {
-        	res.json(legend);
-    	} else {
-        	res.json({"results": "none"});
-    	}
-	} catch (err) {
-    	res.json({"results": "none"});
-	}
-});
- 
-app.get('/allLegends/:year', async (req, res) => {
-	try {
-    	const legends = await db.getAllLegendsBornOnOrAfter(Number(req.params.year));
-    	if(legends) {
-        	res.json(legends);
-    	} else {
-        	res.json({"results": "none"});
-    	}
-	} catch (err) {
-    	res.json({"results": "none"});
-	}
 });
  
 app.use((req, res) => {

@@ -18,6 +18,7 @@
       box-shadow: inset 0 0 60px rgba(0, 0, 0, 1);
       border-bottom: 12px solid rgb(238, 42, 55);
       display: flex;
+      flex-wrap: wrap;
       justify-content: center;
       align-items: center;
       color: #fff;
@@ -41,8 +42,9 @@
 
     /* Title and Description Container */
     .title-description {
+      margin-right: 10%;
       text-align: center;
-      margin-right: 25%;
+      flex: 1;
     }
 
     /* Title Text */
@@ -342,6 +344,10 @@
       width: 50%;
     }
 
+    textarea {
+        max-width: 100%;
+    }
+
     .rightCol {
       width: 50%;
     }
@@ -416,21 +422,21 @@ fading from the pic to white to better transition from the header to the form-->
 <div class="row">
   <div class="col2"> <!--First Column-->
     <label for="fname" class="label-style">First Name</label>
-    <input type="text" id="fname" name="fname" class="length1"  tabindex="2">
+    <input type="text" id="fname" name="fname" class="length1"  tabindex="2" required>
     <label for="email" class="label-style">Contact Email</label>
-    <input type="text" id="email" name="email" class="length3"  tabindex="5">
+    <input type="text" id="email" name="email" class="length3"  tabindex="5" required>
     <label for="cityTown" class="label-style">City/Town</label>
-    <input type="text" id="cityTown" name="cityTown" class="length2" tabindex="8">
+    <input type="text" id="cityTown" name="cityTown" class="length2" tabindex="8" required>
     <label for="OrgSite" class="label-style">Website of Business/Org</label>
     <input type="text" id="OrgSite" name="OrgSite" class="length3" tabindex="11"> 
   </div>
   <div class="col2"> <!--Second Column-->
     <label for="lname" class="label-style">Last Name</label>
-    <input type="text" id="lname" name="lname" class="length1"  tabindex="3">
+    <input type="text" id="lname" name="lname" class="length1"  tabindex="3" required>
     <label for="pnumber" class="label-style">Phone Number</label>
-    <input type="text" id="pnumber" name="pnumber" class="length2"  tabindex="6">
+    <input type="text" id="pnumber" name="pnumber" class="length2"  tabindex="6" required>
     <div class="custom-select">
-      <select name="state" id="state">
+      <select name="state" id="state" required>
         <option tabindex="9">State:</option>
         <option value="alabama">Alabama</option>
         <option value="alaska">Alaska</option>
@@ -487,22 +493,22 @@ fading from the pic to white to better transition from the header to the form-->
     <div>
       <p class="label-style">Can students contact you for assistance?</p>
       <label class="radioButtons">Yes
-        <input type="radio" name="radio">
+        <input type="radio" name="radio" value="an">
         <span class="checkmark" tabindex="12"></span>
       </label>
       <label class="radioButtons">No
-        <input type="radio" name="radio">
-        <span class="checkmark" tabindex="12"></span>
+        <input type="radio" name="radio" value="off">
+        <span class="checkmark" tabindex="12" onkeypress=""></span>
       </label>
     </div>
   </div>
   <div class="col2"> <!--Third Column-->
     <label for="OrgName" class="label-style">Business/Organization Name</label>
-    <input type="text" id="OrgName" name="OrgName" class="length2"  tabindex="4">
+    <input type="text" id="OrgName" name="OrgName" class="length2"  tabindex="4" required>
     <label for="streetAddr" class="label-style">Street Address (of Business/Org)</label>
-    <input type="text" id="streetAddr" name="streetAddr" class="length3" tabindex="7">
+    <input type="text" id="streetAddr" name="streetAddr" class="length3" tabindex="7" required>
     <label for="zip" class="label-style">Zip Code</label>
-    <input type="text" id="zip" name="zip" class="length1" tabindex="10">
+    <input type="text" id="zip" name="zip" class="length1" tabindex="10" required>
     <label for="helpAvail" class="label-style">If yes, how often can they contact you?</label>
     <input type="text" id="helpAvail" name="helpAvail" class="length3" tabindex="13">
 </div>
@@ -510,31 +516,31 @@ fading from the pic to white to better transition from the header to the form-->
 <div class="row">
   <div class="lastFormElems">
     <label for="Description" class="label-style">Please provide a description of the project (be as specific as you'd like):</label>
-    <textarea class="description" id="Description" name="Description" rows="4" cols="50" onfocus="this.focus();this.select()" tabindex="14">Provide a description here...</textarea>
+    <textarea class="description" id="Description" name="Description" rows="4" cols="50" max-width=48% onfocus="this.focus();this.select()" tabindex="14">Provide a description here...</textarea>
     <label for="FileDrop" class="label-style">Please provide any files that may help the students:</label>
     <input type="file" id="FileDrop" name="FileDrop" class="length1" tabindex="15" multiple>
   </div>
   <div class="test-dropdown">
     <label for="multipleDrop" class="label-style">Select department(s) (CTRL click to select multiple):</label>
-    <select class="test-dropdown-select" multiple>
-    <div class="test-dropdown-options">
-      <option class="test-dropdown-option" value="1">GIS, mapping, spatial analytics</option>
-      <option class="test-dropdown-option" value="2">Graphic Design and Photography</option>
-      <option class="test-dropdown-option" value="3">Carthage Honors Program</option>
-      <option class="test-dropdown-option" value="4">Operations Management, Strategic Planning, Human Capital, and Start-Ups</option>
-      <option class="test-dropdown-option" value="2">Sociology & Criminal Justice</option>
-      <option class="test-dropdown-option" value="2">Healthcare pre-professions-Allied Health Science</option>
-      <option class="test-dropdown-option" value="2">History</option>
-      <option class="test-dropdown-option" value="2">Biology</option>
-      <option class="test-dropdown-option" value="2">Computer Science</option>
-      <option class="test-dropdown-option" value="2">Environmental Science</option>
-      <option class="test-dropdown-option" value="2">Public Relation (press releases, social media calendars, feature articles, event plans)</option>
-      <option class="test-dropdown-option" value="2">Geoscience</option>
-      <option class="test-dropdown-option" value="2">Clinical/Counseling Psychology</option>
-      <option class="test-dropdown-option" value="2">Engineering</option>
-      <option class="test-dropdown-option" value="2">Other</option>
-    </div>
-  </select>
+    <select name="multipleDrop" id="multipleDrop" class="test-dropdown-select" multiple required>  
+      <div class="test-dropdown-options">
+        <option class="test-dropdown-option" value="1">Biology</option>
+        <option class="test-dropdown-option" value="2">Carthage Honors Program</option>
+        <option class="test-dropdown-option" value="3">Clinical/Counseling Psychology</option>
+        <option class="test-dropdown-option" value="4">Computer Science</option>
+        <option class="test-dropdown-option" value="5">Engineering</option>
+        <option class="test-dropdown-option" value="6">Environmental Science</option>
+        <option class="test-dropdown-option" value="7">GIS, mapping, spatial analytics</option>
+        <option class="test-dropdown-option" value="8">Geoscience</option>
+        <option class="test-dropdown-option" value="9">Graphic Design and Photography</option>
+        <option class="test-dropdown-option" value="10">Healthcare pre-professions-Allied Health Science</option>
+        <option class="test-dropdown-option" value="11">History</option>
+        <option class="test-dropdown-option" value="12">Operations Management, Strategic Planning, Human Capital, and Start-Ups</option>
+        <option class="test-dropdown-option" value="14">Public Relation (press releases, social media calendars, feature articles, event plans)</option>
+        <option class="test-dropdown-option" value="15">Sociology & Criminal Justice</option>
+        <option class="test-dropdown-option" value="13">Other</option>
+      </div>
+    </select>
 </div>
 </div>
 

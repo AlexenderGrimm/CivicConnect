@@ -16,6 +16,18 @@ class DBAbstraction {
     	});
 	}
  
+	insertProjectDepartment(departmentID, projectID){
+		const sql = 'INSERT INTO ProjectDepartment (departmentID, projectID) VALUES (?, ?)';
+		return new Promise((resolve, reject) => { 
+            this.db.run(sql, [departmentID, projectID], (err) => {                 
+                if(err) { 
+                    reject(err); 
+                } else { 
+                    resolve(); 
+                } 
+            }); 
+        }); 
+	}
 
     insertCompany(cname, street, city, state, zip, first, last, phone, email, web) 
     {
@@ -47,10 +59,10 @@ class DBAbstraction {
     	});
 	}
 
-    insertProject(Description, pstatus, file, id) 
+    insertProject(Description, pstatus, file, radio, helpAvail, id) 
     {
         
-        const sql = 'INSERT INTO Project (Description, pstatus, file, Date, CompanyID) VALUES (?, ?, ?, ?, ?);';
+        const sql = 'INSERT INTO Project (Description, pstatus, file, Date, radio, helpAvail, CompanyID) VALUES (?, ?, ?, ?, ?, ?, ?);';
         var currentDate = new Date(); 
         var dateTime = currentDate.getMonth() + "/"
             + currentDate.getDate()  + "/" 
@@ -59,7 +71,7 @@ class DBAbstraction {
             + currentDate.getMinutes() + ":" 
             + currentDate.getSeconds();
         return new Promise((resolve, reject) => { 
-            this.db.run(sql, [Description, pstatus, file, dateTime, id], (err) => {                 
+            this.db.run(sql, [Description, pstatus, file, dateTime, radio, helpAvail, id], (err) => {                 
                 if(err) { 
                     reject(err); 
                 } else { 
@@ -129,17 +141,18 @@ class DBAbstraction {
 	getAllProjects()
 	{
     	const sql = `
-        	SELECT Company.name, Company.phone, Project.Description, Department.name
-        	FROM Project, Company, Department
-        	WHERE Project.projectID = Company.companyID AND Project.projectID = Department.departmentID;
+		SELECT Company.name, Company.phone, Project.Description, Department.depName, Project.projectID
+		FROM Project, Company, Department
+		INNER JOIN ProjectDepartment ON Project.projectID = ProjectDepartment.projectID AND Department.departmentID = ProjectDepartment.departmentID
+		WHERE Project.CompanyID = Company.companyID;
     	`;
 
     	return new Promise((resolve, reject) => {
-        	this.db.all(sql, (err) => {
+        	this.db.all(sql, [], (err, row) => {
             	if(err) {
                 	reject(err);
             	} else {
-                	resolve();
+                	resolve(row);
             	}
         	});
     	});
@@ -147,16 +160,21 @@ class DBAbstraction {
     	//rewrite based on how Austin plans to restructure the Database
 	}
 
-    getAllInformationByProjectDescription(descrip)
+    getAllInformationByProjectID(proID)
 	{
+		if(!Number.isInteger(proID)) { 
+            return null; 
+        }
+		 
     	const sql = `
-        	SELECT Project.Description, Project.pstatus, Project.file, Department.name, Department.head, Company.name, Company.street, Company.city, Company.state, Company.zip, Company.first, Company.last, Company.phone, Company.email, Company.companyWeb, Company.ContactFirst, Company.ContactLast
-        	FROM Project, Company, Department
-        	WHERE Project.projectID = Company.companyID AND Project.projectID = Department.departmentID AND Project.Description = ? COLLATE NOCASE;
+		SELECT Project.projectID, Project.Description, Project.pstatus, Project.file, Project.Date, Project.radio, Project.helpAvail, Company.name, Company.street, Company.city, Company.state, Company.zip, Company.first, Company.last, Company.phone, Company.email, Company.companyWeb, Department.depName, Department.head, Department.depEmail
+		FROM Project, Company, Department
+		INNER JOIN ProjectDepartment ON Project.projectID = ProjectDepartment.projectID AND Department.departmentID = ProjectDepartment.departmentID
+        	WHERE Project.CompanyID = Company.companyID AND Project.projectID = ?;
     	`;
 
     	return new Promise((resolve, reject) => {
-        	this.db.get(sql, [descrip], (err, row) => {
+        	this.db.get(sql, [proID], (err, row) => {
             	if(err) {
                 	reject(err);
             	} else {
