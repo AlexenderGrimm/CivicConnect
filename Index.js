@@ -133,6 +133,7 @@ app.post('/project', async (req, res) => {
   const zip = req.body.zip;
   const helpAvail = req.body.helpAvail;
   const Description = req.body.Description;
+  const depart = req.body.multipleDrop;
   /*if (!req.files) {
     return res.status(400).send("No files were uploaded.");
   }
@@ -142,38 +143,7 @@ app.post('/project', async (req, res) => {
   const fileMime = FileDrop.mimetype;
   console.log(FileDrop.id);
   console.log(FileDrop.mimetype);*/
-  await db.insertCompany(OrgName, streetAddr, cityTown, state, zip, fName, lName, pnumber, email, OrgSite);
-  await db.getCompanyID(OrgName, fName, lName)
-  .then(companyID => {
-    const id = companyID;
-    db.insertProject(Description, "Waiting");
-  });
-  
   //await db.exportFile(FileDrop.id, FileDrop.mimetype);
-
-	res.json({"result": "success"});
-    const fName = req.body.fname;
-    const lName = req.body.lname;
-    const email = req.body.email;
-    const cityTown = req.body.cityTown;
-    const OrgSite = req.body.OrgSite;
-    const pnumber = req.body.pnumber;
-    const state = req.body.state;
-    const radio = req.body.radio;
-    const OrgName = req.body.OrgName;
-    const streetAddr = req.body.streetAddr;
-    const zip = req.body.zip;
-    const helpAvail = req.body.helpAvail;
-    const Description = req.body.Description;
-    const FileDrop = req.body.FileDrop;
-    const depart = req.body.multipleDrop;
-    var magic = new Magic(mmm.MAGIC_MIME_TYPE);
-    var mType;
-    // magic.detectFile(FileDrop, function(err, result) {
-    //     if (err) throw err;
-    //     mType = result;
-    //     console.log(result);
-    // });
     await db.insertCompany(OrgName, streetAddr, cityTown, state, zip, fName, lName, pnumber, email, OrgSite);
     await db.getCompanyID(OrgName, fName, lName)
     .then(companyID => {
