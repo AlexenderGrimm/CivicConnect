@@ -111,11 +111,11 @@ async function mailer() {
     subject: "Hello", // Subject line
     text: "I hope this message gets delivered!", // plain text body
   }, (err, info) => {
-    console.log(info.envelope);
-    console.log(info.messageId);
-});
+    //console.log(info.envelope);
+    //console.log(info.messageId);
+  });
 
-  console.log("Message sent: %s", info.messageId);
+  //console.log("Message sent: %s", info.messageId);
 
 }
 
@@ -159,30 +159,21 @@ app.post('/project', async (req, res) => {
   const state = req.body.state;
   const radio = req.body.radio;
   const OrgName = req.body.OrgName;
-<<<<<<< HEAD
   const Comp = req.body.Comp;
-=======
->>>>>>> 5098d2a364360635f9e4bf6b4149eba86c120546
   const streetAddr = req.body.streetAddr;
   const zip = req.body.zip;
   const helpAvail = req.body.helpAvail;
   const Description = req.body.Description;
-<<<<<<< HEAD
+
   const FileDrop = req.body.FileDrop;
   const depart = req.body.multipleDrop;
-  var magic = new Magic(mmm.MAGIC_MIME_TYPE);
-  var mType;
+  //var magic = new Magic(mmm.MAGIC_MIME_TYPE);
+  //var mType;
   // magic.detectFile(FileDrop, function(err, result) {
   //     if (err) throw err;
   //     mType = result;
   //     console.log(result);
   // });
-  await db.insertCompany(OrgName, streetAddr, cityTown, state, zip, fName, lName, pnumber, email, OrgSite);
-  await db.getCompanyID(OrgName, fName, lName)
-  .then(companyID => {
-      const id = companyID;
-=======
-  const depart = req.body.multipleDrop;
   /*if (!req.files) {
     return res.status(400).send("No files were uploaded.");
   }
@@ -193,29 +184,16 @@ app.post('/project', async (req, res) => {
   console.log(FileDrop.id);
   console.log(FileDrop.mimetype);*/
   //await db.exportFile(FileDrop.id, FileDrop.mimetype);
-    await db.insertCompany(OrgName, streetAddr, cityTown, state, zip, fName, lName, pnumber, email, OrgSite);
-    await db.getCompanyID(OrgName, fName, lName)
-    .then(companyID => {
-        const id = companyID;
-        if(id){
-            db.insertProject(Description, "Waiting", FileDrop == "" ? "Nothing" : FileDrop, radio, helpAvail, id); // need to add radio and helpAvail of contact.
-        }
-        else{
-            res.json({"result": "Failed to find or make company"});
-            
-        }
-    });
-    await db.getProjectID(Description)
-    .then(projectID => {
-      const id = projectID;
->>>>>>> 5098d2a364360635f9e4bf6b4149eba86c120546
-      if(id){
-          db.insertProject(Description, "Waiting", FileDrop == "" ? "Nothing" : FileDrop, Comp, radio, helpAvail, id); // need to add radio and helpAvail of contact.
-      }
-      else{
-          res.json({"result": "Failed to find or make company"});
-          exit();
-      }
+  await db.insertCompany(OrgName, streetAddr, cityTown, state, zip, fName, lName, pnumber, email, OrgSite);
+  await db.getCompanyID(OrgName, fName, lName)
+  .then(companyID => {
+    const id = companyID;
+    if(id){
+      db.insertProject(Description, "Waiting", FileDrop == "" ? "Nothing" : FileDrop, Comp, radio, helpAvail, id);
+    }
+    else{
+      res.json({"result": "Failed to find or make company"});
+    }
   });
   await db.getProjectID(Description)
   .then(projectID => {
