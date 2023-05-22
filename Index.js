@@ -129,24 +129,36 @@ app.post('/project', async (req, res) => {
     const depart = req.body.multipleDrop;
     var magic = new Magic(mmm.MAGIC_MIME_TYPE);
     var mType;
-    magic.detectFile(FileDrop, function(err, result) {
-        if (err) throw err;
-        mType = result;
-        console.log(result);
-    });
+    // magic.detectFile(FileDrop, function(err, result) {
+    //     if (err) throw err;
+    //     mType = result;
+    //     console.log(result);
+    // });
     await db.insertCompany(OrgName, streetAddr, cityTown, state, zip, fName, lName, pnumber, email, OrgSite);
     await db.getCompanyID(OrgName, fName, lName)
     .then(companyID => {
         const id = companyID;
         if(id){
-            db.insertProject(Description, "Waiting", FileDrop, radio, helpAvail, id); // need to add radio and helpAvail of contact.
-            res.json({"result": "success"});
+            db.insertProject(Description, "Waiting", FileDrop == "" ? "Nothing" : FileDrop, radio, helpAvail, id); // need to add radio and helpAvail of contact.
         }
         else{
             res.json({"result": "Failed to find or make company"});
             
         }
     });
+    await db.getProjectID(Description)
+    .then(projectID => {
+      const id = projectID;
+      if(id){
+        for (var i = 0; i < depart.length; i++) {
+          db.insertProjectDepartment(depart[i], id);
+        }
+      }
+      else{
+        res.json({"result": "Failed to find or make Project"});
+      }
+    });
+  res.json({"result": "success"});
 });
 
 /* app.engine(
