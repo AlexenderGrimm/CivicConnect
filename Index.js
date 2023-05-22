@@ -107,7 +107,7 @@ async function mailer() {
 
   let info = await transporter.sendMail({
     from: '"civic_engagement" <fig23_civic_engagement@carthage.edu>', // sender address
-    to: "fig23_civic_engagement@carthage.edu", // list of receivers
+    to: "fig23_civic_engagement@carthage.edu, Afischer1@carthage.edu", // list of receivers
     subject: "Hello", // Subject line
     text: "I hope this message gets delivered!", // plain text body
   }, (err, info) => {

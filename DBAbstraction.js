@@ -142,10 +142,11 @@ class DBAbstraction {
 	{
     	const sql = `
 		SELECT Company.name, Company.phone, Project.Description, Department.depName, Project.projectID
-		FROM Project, Company, Department
-		INNER JOIN ProjectDepartment ON Project.projectID = ProjectDepartment.projectID AND Department.departmentID = ProjectDepartment.departmentID
-		WHERE Project.CompanyID = Company.companyID;
-    	`;
+		FROM Project, Company, Department, ProjectDepartment
+		WHERE Project.CompanyID = Company.companyID
+		AND Project.projectID = ProjectDepartment.projectID
+		AND Department.departmentID = ProjectDepartment.departmentID
+		;`;
 
     	return new Promise((resolve, reject) => {
         	this.db.all(sql, [], (err, row) => {
@@ -167,14 +168,16 @@ class DBAbstraction {
         }
 		 
     	const sql = `
-		SELECT Project.projectID, Project.Description, Project.pstatus, Project.file, Project.Date, Project.radio, Project.helpAvail, Company.name, Company.street, Company.city, Company.state, Company.zip, Company.first, Company.last, Company.phone, Company.email, Company.companyWeb, Department.depName, Department.head, Department.depEmail
-		FROM Project, Company, Department
-		INNER JOIN ProjectDepartment ON Project.projectID = ProjectDepartment.projectID AND Department.departmentID = ProjectDepartment.departmentID
-        	WHERE Project.CompanyID = Company.companyID AND Project.projectID = ?;
-    	`;
+		SELECT Project.Description, Project.pstatus, Project.file, Project.Date, Project.radio, Project.helpAvail, Company.name, Company.street, Company.city, Company.state, Company.zip, Company.first, Company.last, Company.phone, Company.email, Company.companyWeb, Department.depName, Department.head, Department.depEmail
+		FROM Project, Company, Department, ProjectDepartment
+		WHERE Project.CompanyID = Company.companyID 
+		AND Project.projectID = ?
+		AND Project.projectID = ProjectDepartment.projectID 
+		AND Department.departmentID = ProjectDepartment.departmentID
+		;`;
 
     	return new Promise((resolve, reject) => {
-        	this.db.get(sql, [proID], (err, row) => {
+        	this.db.all(sql, [proID], (err, row) => {
             	if(err) {
                 	reject(err);
             	} else {
