@@ -1,8 +1,11 @@
 'use strict'
  
 const express = require('express');
+const fileUpload = require('express-fileupload')
 const morgan = require('morgan');
 const bodyParser = require("body-parser");
+const cors = require('cors');
+const _ = require('lodash');
 const DBAbstraction = require('./DBAbstraction');
 const fs = require('fs').promises;
 const path = require('path');
@@ -12,21 +15,25 @@ const {authenticate} = require('@google-cloud/local-auth');
 const {google} = require('googleapis');
 const db = new DBAbstraction('./software_Data.db'); 
 const app = express(); 
-const mmm = require('mmmagic'),
-    Magic = mmm.Magic;
+//let transporter = nodemailer.createTransport(options[, defaults])
 const handlebars = require('express-handlebars').create({defaultLayout: 'main'});
 
 
+app.use(cors());
+app.use(fileUpload({
+    createParentPath: true
+}));
 app.engine('handlebars', handlebars.engine); 
 app.set('view engine', 'handlebars');
 app.use(morgan('dev'));
 app.use(express.static('public'));  
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 // If modifying these scopes, delete token.json.
 const SCOPES = ['https://mail.google.com/',
-'https://www.googleapis.com/auth/drive.metadata'];
+'https://www.googleapis.com/auth/drive.metadata',
+'https://www.googleapis.com/auth/gmail.send'];
 // The file token.json stores the user's access and refresh tokens, and is
 // created automatically when the authorization flow completes for the first
 // time.
@@ -140,6 +147,7 @@ async function listFiles(authClient) {
 //mailer().catch(console.error);
 authorize().then(listFiles).catch(console.error);
 
+
 app.post('/project', async (req, res) => { 
      
   const fName = req.body.fname;
@@ -151,11 +159,15 @@ app.post('/project', async (req, res) => {
   const state = req.body.state;
   const radio = req.body.radio;
   const OrgName = req.body.OrgName;
+<<<<<<< HEAD
   const Comp = req.body.Comp;
+=======
+>>>>>>> 5098d2a364360635f9e4bf6b4149eba86c120546
   const streetAddr = req.body.streetAddr;
   const zip = req.body.zip;
   const helpAvail = req.body.helpAvail;
   const Description = req.body.Description;
+<<<<<<< HEAD
   const FileDrop = req.body.FileDrop;
   const depart = req.body.multipleDrop;
   var magic = new Magic(mmm.MAGIC_MIME_TYPE);
@@ -169,6 +181,34 @@ app.post('/project', async (req, res) => {
   await db.getCompanyID(OrgName, fName, lName)
   .then(companyID => {
       const id = companyID;
+=======
+  const depart = req.body.multipleDrop;
+  /*if (!req.files) {
+    return res.status(400).send("No files were uploaded.");
+  }
+  let FileDrop = req.body.FileDrop;
+  console.log(FileDrop);
+  const fileId = FileDrop.id;
+  const fileMime = FileDrop.mimetype;
+  console.log(FileDrop.id);
+  console.log(FileDrop.mimetype);*/
+  //await db.exportFile(FileDrop.id, FileDrop.mimetype);
+    await db.insertCompany(OrgName, streetAddr, cityTown, state, zip, fName, lName, pnumber, email, OrgSite);
+    await db.getCompanyID(OrgName, fName, lName)
+    .then(companyID => {
+        const id = companyID;
+        if(id){
+            db.insertProject(Description, "Waiting", FileDrop == "" ? "Nothing" : FileDrop, radio, helpAvail, id); // need to add radio and helpAvail of contact.
+        }
+        else{
+            res.json({"result": "Failed to find or make company"});
+            
+        }
+    });
+    await db.getProjectID(Description)
+    .then(projectID => {
+      const id = projectID;
+>>>>>>> 5098d2a364360635f9e4bf6b4149eba86c120546
       if(id){
           db.insertProject(Description, "Waiting", FileDrop == "" ? "Nothing" : FileDrop, Comp, radio, helpAvail, id); // need to add radio and helpAvail of contact.
       }
