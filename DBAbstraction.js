@@ -16,6 +16,18 @@ class DBAbstraction {
     	});
 	}
  
+	insertProjectDepartment(departmentID, projectID){
+		const sql = 'INSERT INTO ProjectDepartment (departmentID, projectID) VALUES (?, ?)';
+		return new Promise((resolve, reject) => { 
+            this.db.run(sql, [departmentID, projectID], (err) => {                 
+                if(err) { 
+                    reject(err); 
+                } else { 
+                    resolve(); 
+                } 
+            }); 
+        }); 
+	}
 
     insertCompany(cname, street, city, state, zip, first, last, phone, email, web) 
     {
