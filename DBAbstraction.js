@@ -168,7 +168,7 @@ class DBAbstraction {
         }
 		 
     	const sql = `
-		SELECT Project.Description, Project.pstatus, Project.file, Project.TimeLine, Project.Date, Project.radio, Project.helpAvail, Company.name, Company.street, Company.city, Company.state, Company.zip, Company.first, Company.last, Company.phone, Company.email, Company.companyWeb, Department.depName, Department.head, Department.depEmail
+		SELECT Project.projectID, Project.Description, Project.pstatus, Project.file, Project.TimeLine, Project.Date, Project.radio, Project.helpAvail, Company.name, Company.street, Company.city, Company.state, Company.zip, Company.first, Company.last, Company.phone, Company.email, Company.companyWeb, Department.depName, Department.head, Department.depEmail
 		FROM Project, Company, Department, ProjectDepartment
 		WHERE Project.CompanyID = Company.companyID 
 		AND Project.projectID = ?
@@ -188,6 +188,33 @@ class DBAbstraction {
 
     	//rewrite based on how much information Austin wants the right-hand generated tables to contain
 	}
+
+	updateProjectStatus(proID)
+    {
+   	 const sql = `
+   	 UPDATE Project
+   	 SET pstatus =
+   	 CASE
+   	 WHEN pstatus = 'Incomplete' THEN 'Complete'
+   	 WHEN pstatus = 'Waiting' THEN 'Incomplete'
+   	 WHEN pstatus = 'Complete' THEN 'Incomplete'
+   	 ELSE 'Waiting' END
+   	 WHERE projectID = ? COLLATE NOCASE;
+   	 `;
+
+    
+   	 return new Promise((resolve, reject) => {
+   		 this.db.run(sql, [proID], (err) => {            	 
+            	if(err) {
+                	reject(err);
+            	} else {
+                	resolve();
+            	}
+        	});
+   	 });
+
+    }
+
 
 	getCompanyByName(cname)
 	{

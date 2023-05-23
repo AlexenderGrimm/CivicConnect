@@ -273,6 +273,18 @@ app.get('/allinformation/:projectid', async (req, res) => {
 
   //first draft of a get function for generating a table on the right-hand side of faculty.html with all the information about a project based on what project you clicked from the left-hand table
 });
+
+app.get('/allinformation/statusupdate/:projectid/', async (req, res) => {
+  try {
+	await db.updateProjectStatus(req.params.projectid);
+
+  } catch (err) {
+	res.json({"results": "error"});
+  }
+  res.json({"results": "success!"});
+ 
+});
+
  
 app.use((req, res) => {
 	res.status(404).send(`<h2>Uh Oh!</h2><p>Sorry ${req.url} cannot be found here</p>`);
