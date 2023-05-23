@@ -141,7 +141,7 @@ class DBAbstraction {
 	getAllProjects()
 	{
     	const sql = `
-		SELECT Company.name, Company.phone, Project.Description, Department.depName, Project.projectID
+		SELECT Company.name, Company.phone, Project.Description, Project.Date, Project.pstatus, Department.depName, Project.projectID
 		FROM Project, Company, Department, ProjectDepartment
 		WHERE Project.CompanyID = Company.companyID
 		AND Project.projectID = ProjectDepartment.projectID
@@ -158,7 +158,103 @@ class DBAbstraction {
         	});
     	});
 
-    	//rewrite based on how Austin plans to restructure the Database
+    	
+	}
+
+	getAllProjectsSortByCompany()
+	{
+    	const sql = `
+		SELECT Company.name, Company.phone, Project.Description, Project.Date, Project.pstatus, Department.depName, Project.projectID
+		FROM Project, Company, Department, ProjectDepartment
+		WHERE Project.CompanyID = Company.companyID
+		AND Project.projectID = ProjectDepartment.projectID
+		AND Department.departmentID = ProjectDepartment.departmentID
+		ORDER BY Company.name;
+		;`;
+
+    	return new Promise((resolve, reject) => {
+        	this.db.all(sql, [], (err, row) => {
+            	if(err) {
+                	reject(err);
+            	} else {
+                	resolve(row);
+            	}
+        	});
+    	});
+
+    	
+	}
+
+	getAllProjectsSortByDate()
+	{
+    	const sql = `
+		SELECT Company.name, Company.phone, Project.Description, Project.Date, Project.pstatus, Department.depName, Project.projectID
+		FROM Project, Company, Department, ProjectDepartment
+		WHERE Project.CompanyID = Company.companyID
+		AND Project.projectID = ProjectDepartment.projectID
+		AND Department.departmentID = ProjectDepartment.departmentID
+		ORDER BY Project.Date
+		;`;
+
+    	return new Promise((resolve, reject) => {
+        	this.db.all(sql, [], (err, row) => {
+            	if(err) {
+                	reject(err);
+            	} else {
+                	resolve(row);
+            	}
+        	});
+    	});
+
+    	
+	}
+
+	getAllProjectsSortByStatus()
+	{
+    	const sql = `
+		SELECT Company.name, Company.phone, Project.Description, Project.Date, Project.pstatus, Department.depName, Project.projectID
+		FROM Project, Company, Department, ProjectDepartment
+		WHERE Project.CompanyID = Company.companyID
+		AND Project.projectID = ProjectDepartment.projectID
+		AND Department.departmentID = ProjectDepartment.departmentID
+		ORDER BY project.pstatus
+		;`;
+
+    	return new Promise((resolve, reject) => {
+        	this.db.all(sql, [], (err, row) => {
+            	if(err) {
+                	reject(err);
+            	} else {
+                	resolve(row);
+            	}
+        	});
+    	});
+
+    	
+	}
+
+	getAllProjectsSortByDepartment()
+	{
+    	const sql = `
+		SELECT Company.name, Company.phone, Project.Description, Project.Date, Project.pstatus, Department.depName, Project.projectID
+		FROM Project, Company, Department, ProjectDepartment
+		WHERE Project.CompanyID = Company.companyID
+		AND Project.projectID = ProjectDepartment.projectID
+		AND Department.departmentID = ProjectDepartment.departmentID
+		ORDER BY Department.depName
+		;`;
+
+    	return new Promise((resolve, reject) => {
+        	this.db.all(sql, [], (err, row) => {
+            	if(err) {
+                	reject(err);
+            	} else {
+                	resolve(row);
+            	}
+        	});
+    	});
+
+    	
 	}
 
     getAllInformationByProjectID(proID)
@@ -186,7 +282,7 @@ class DBAbstraction {
         	});
     	});
 
-    	//rewrite based on how much information Austin wants the right-hand generated tables to contain
+    	
 	}
 
 	updateProjectStatus(proID)

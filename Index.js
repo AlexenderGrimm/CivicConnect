@@ -258,6 +258,70 @@ app.get('/faculty', async (req, res) => {
 //First draft of a get function for generating and populating the left-hand table in faculty.html. still unsure of how to call this function from the html file itself, or if im supposed to be doing that in the first place
 });
 
+app.get('/faculty/company', async (req, res) => {
+	 
+  try {
+ const allProjects = await db.getAllProjectsSortByCompany();
+ if(allProjects) {
+     res.render('leftHandTable', {projects: allProjects});
+ } else {
+     res.json({"results": "none"});
+ }
+} catch (err) {
+ res.json({"results": "error"});
+}
+
+//First draft of a get function for generating and populating the left-hand table in faculty.html. still unsure of how to call this function from the html file itself, or if im supposed to be doing that in the first place
+});
+
+app.get('/faculty/date', async (req, res) => {
+	 
+  try {
+ const allProjects = await db.getAllProjectsSortByDate();
+ if(allProjects) {
+     res.render('leftHandTable', {projects: allProjects});
+ } else {
+     res.json({"results": "none"});
+ }
+} catch (err) {
+ res.json({"results": "error"});
+}
+
+//First draft of a get function for generating and populating the left-hand table in faculty.html. still unsure of how to call this function from the html file itself, or if im supposed to be doing that in the first place
+});
+
+app.get('/faculty/status', async (req, res) => {
+	 
+  try {
+ const allProjects = await db.getAllProjectsSortByStatus();
+ if(allProjects) {
+     res.render('leftHandTable', {projects: allProjects});
+ } else {
+     res.json({"results": "none"});
+ }
+} catch (err) {
+ res.json({"results": "error"});
+}
+
+//First draft of a get function for generating and populating the left-hand table in faculty.html. still unsure of how to call this function from the html file itself, or if im supposed to be doing that in the first place
+});
+
+app.get('/faculty/department', async (req, res) => {
+	 
+  try {
+ const allProjects = await db.getAllProjectsSortByDepartment();
+ if(allProjects) {
+     res.render('leftHandTable', {projects: allProjects});
+ } else {
+     res.json({"results": "none"});
+ }
+} catch (err) {
+ res.json({"results": "error"});
+}
+
+//First draft of a get function for generating and populating the left-hand table in faculty.html. still unsure of how to call this function from the html file itself, or if im supposed to be doing that in the first place
+});
+
 app.get('/allinformation/:projectid', async (req, res) => {
 	try {
     	const projectInfo = await db.getAllInformationByProjectID(Number(req.params.projectid));
