@@ -197,7 +197,7 @@ class DBAbstraction {
    	 CASE
    	 WHEN pstatus = 'Incomplete' THEN 'Complete'
    	 WHEN pstatus = 'Waiting' THEN 'Incomplete'
-   	 WHEN pstatus = 'Complete' THEN 'Incomplete'
+   	 WHEN pstatus = 'Complete' THEN 'Waiting'
    	 ELSE 'Waiting' END
    	 WHERE projectID = ? COLLATE NOCASE;
    	 `;

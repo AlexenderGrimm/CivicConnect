@@ -164,7 +164,6 @@ app.post('/project', async (req, res) => {
   const zip = req.body.zip;
   const helpAvail = req.body.helpAvail;
   const Description = req.body.Description;
-
   const FileDrop = req.body.FileDrop;
   const depart = req.body.multipleDrop;
   //var magic = new Magic(mmm.MAGIC_MIME_TYPE);

@@ -119,6 +119,7 @@ input:hover[type=submit] {
 .nonscrollable {
     width: 100%;
     padding-top: 20px;
+    font-size: 15px;
     font-family: Helvetica, sans-serif;
 }
 
