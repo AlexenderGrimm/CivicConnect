@@ -344,8 +344,8 @@ app.get('/allinformation/statusupdate/:projectid/', async (req, res) => {
   } catch (err) {
 	res.json({"results": "error"});
   }
-  res.json({"results": "success!"});
- 
+  res.redirect('/allinformation/' + req.params.projectid);
+  //res.json({"results": "success!"});
 });
 
  
