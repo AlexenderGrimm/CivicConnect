@@ -98,7 +98,7 @@ async function mailer() {
   let transporter = nodemailer.createTransport({
     host: "smtp.ethereal.email",
     port: 465,
-    secure: false, // true for 465, false for other ports
+    secure: true, // true for 465, false for other ports
     auth: {
       user: "fig23_civic_engagement@carthage.edu", // generated ethereal user
       pass: "AustinCarolinaRickWenjie2023", // generated ethereal password
@@ -155,7 +155,7 @@ app.post('/project', async (req, res) => {
   const email = req.body.email;
   const cityTown = req.body.cityTown;
   const OrgSite = req.body.OrgSite;
-  const pnumber = req.body.pnumber;
+  const pNumber = req.body.pNumber;
   const state = req.body.state;
   const radio = req.body.radio;
   const OrgName = req.body.OrgName;
@@ -166,24 +166,7 @@ app.post('/project', async (req, res) => {
   const Description = req.body.Description;
   const FileDrop = req.body.FileDrop;
   const depart = req.body.multipleDrop;
-  //var magic = new Magic(mmm.MAGIC_MIME_TYPE);
-  //var mType;
-  // magic.detectFile(FileDrop, function(err, result) {
-  //     if (err) throw err;
-  //     mType = result;
-  //     console.log(result);
-  // });
-  /*if (!req.files) {
-    return res.status(400).send("No files were uploaded.");
-  }
-  let FileDrop = req.body.FileDrop;
-  console.log(FileDrop);
-  const fileId = FileDrop.id;
-  const fileMime = FileDrop.mimetype;
-  console.log(FileDrop.id);
-  console.log(FileDrop.mimetype);*/
-  //await db.exportFile(FileDrop.id, FileDrop.mimetype);
-  await db.insertCompany(OrgName, streetAddr, cityTown, state, zip, fName, lName, pnumber, email, OrgSite);
+  await db.insertCompany(OrgName, streetAddr, cityTown, state, zip, fName, lName, pNumber, email, OrgSite);
   await db.getCompanyID(OrgName, fName, lName)
   .then(companyID => {
     const id = companyID;
@@ -212,34 +195,6 @@ app.post('/project', async (req, res) => {
 
   res.json({"result": "success"});
 });
-
-/* app.engine(
-  "hbs",
-  handlebars({
-    extname: "hbs",
-    defaultLayout: false
-  })
-); */
-
-/* app.get('/testView', (req, res) => { 
-     
-  const companyInfo = {
-    name: 'Mamoney Materials', 
-    street: '0123 45th St',
-    city: 'Kenosha',
-    state: 'Wisconsin',
-    zip: '53140',
-    first: 'Marck',
-    last: 'Mamoney',
-    phone: '262-287-4958',
-    email: 'mamoneymaterials@fakemail.com',
-    companyWeb: 'mamoneymaterials.com',
-    ContactFirst: 'Yes',
-    ContactLast: 'By Email'
-  }; 
-       
-  res.render('testCompanyView', companyInfo); 
-}); */
 
 
 app.get('/faculty', async (req, res) => {
