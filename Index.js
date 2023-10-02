@@ -17,7 +17,10 @@ const db = new DBAbstraction('./software_Data.db');
 const app = express(); 
 //let transporter = nodemailer.createTransport(options[, defaults])
 const handlebars = require('express-handlebars').create({defaultLayout: 'main'});
-
+var sortComp = false;
+var sortDate = false;
+var sortStat = false;
+var sortDep = false;
 
 app.use(cors());
 app.use(fileUpload({
@@ -216,7 +219,18 @@ app.get('/faculty', async (req, res) => {
 app.get('/faculty/company', async (req, res) => {
 	 
   try {
- const allProjects = await db.getAllProjectsSortByCompany();
+    var allProjects;
+    if(sortComp){
+        allProjects = await db.getAllProjectsReverseSortByCompany();
+        sortComp = false;
+    }
+    else{
+        allProjects = await db.getAllProjectsSortByCompany();
+        sortComp = true;
+        sortDate = false;
+        sortStat = false;
+        sortDep = false;
+    }
  if(allProjects) {
      res.render('leftHandTable', {projects: allProjects});
  } else {
@@ -232,8 +246,19 @@ app.get('/faculty/company', async (req, res) => {
 app.get('/faculty/date', async (req, res) => {
 	 
   try {
- const allProjects = await db.getAllProjectsSortByDate();
- if(allProjects) {
+    var allProjects;
+    if(sortDate){
+        allProjects = await db.getAllProjectsReverseSortByDate();
+        sortDate = false;
+    }
+    else{
+        allProjects = await db.getAllProjectsSortByDate();
+        sortComp = false;
+        sortDate = true;
+        sortStat = false;
+        sortDep = false;
+    }
+if(allProjects) {
      res.render('leftHandTable', {projects: allProjects});
  } else {
      res.json({"results": "none"});
@@ -248,7 +273,18 @@ app.get('/faculty/date', async (req, res) => {
 app.get('/faculty/status', async (req, res) => {
 	 
   try {
- const allProjects = await db.getAllProjectsSortByStatus();
+    var allProjects;
+    if(sortStat){
+        allProjects = await db.getAllProjectsReverseSortByStatus();
+        sortStat = false;
+    }
+    else{
+        allProjects = await db.getAllProjectsSortByStatus();
+        sortComp = false;
+        sortDate = false;
+        sortStat = true;
+        sortDep = false;
+    }
  if(allProjects) {
      res.render('leftHandTable', {projects: allProjects});
  } else {
@@ -264,7 +300,18 @@ app.get('/faculty/status', async (req, res) => {
 app.get('/faculty/department', async (req, res) => {
 	 
   try {
- const allProjects = await db.getAllProjectsSortByDepartment();
+    var allProjects;
+    if(sortDep){
+        allProjects = await db.getAllProjectsReverseSortByDepartment();
+        sortDep = false;
+    }
+    else{
+        allProjects = await db.getAllProjectsSortByDepartment();
+        sortComp = false;
+        sortDate = false;
+        sortStat = false;
+        sortDep = true;
+    }
  if(allProjects) {
      res.render('leftHandTable', {projects: allProjects});
  } else {
@@ -280,6 +327,22 @@ app.get('/faculty/department', async (req, res) => {
 app.get('/allinformation/:projectid', async (req, res) => {
 	try {
     	const projectInfo = await db.getAllInformationByProjectID(Number(req.params.projectid));
+    	if(projectInfo) {
+        res.render('allInfoTable', {information: projectInfo});
+    	} else {
+        	res.json({"results": "none"});
+    	}
+	} catch (err) {
+    	res.json({"results": "error"});
+	}
+
+  //first draft of a get function for generating a table on the right-hand side of faculty.html with all the information about a project based on what project you clicked from the left-hand table
+});
+
+
+app.get('/faculty/sort', async (req, res) => {
+	try {
+    	const projectInfo = await db.getAllInformationSearch(res.body.Search);
     	if(projectInfo) {
         res.render('allInfoTable', {information: projectInfo});
     	} else {

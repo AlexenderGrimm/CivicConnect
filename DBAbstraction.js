@@ -161,6 +161,33 @@ class DBAbstraction {
     	
 	}
 
+    getAllInformationSearch(Search)
+    {
+        const sql = `
+		SELECT Company.name, Company.phone, Project.Description, Project.Date, Project.pstatus, Department.depName, Project.projectID
+		FROM Project, Company, Department, ProjectDepartment
+		WHERE Project.CompanyID = Company.companyID
+		AND Project.projectID = ProjectDepartment.projectID
+		AND Department.departmentID = ProjectDepartment.departmentID
+        AND (Department.depName = ? COLLATE NOCASE
+            OR Project.pstatus = ? COLLATE NOCASE
+            OR Project.Description = ? COLLATE NOCASE
+            OR Company.Name = ? COLLATE NOCASE)
+		;`;
+        return new Promise((resolve, reject) => { 
+            this.db.run(sql, [Search, Search, Search, Search], (err) => {                 
+                if(err) { 
+                    reject(err); 
+                } else { 
+                    resolve(); 
+                } 
+            }); 
+        }); 
+
+    }
+
+
+
 	getAllProjectsSortByCompany()
 	{
     	const sql = `
@@ -170,6 +197,30 @@ class DBAbstraction {
 		AND Project.projectID = ProjectDepartment.projectID
 		AND Department.departmentID = ProjectDepartment.departmentID
 		ORDER BY Company.name;
+		;`;
+
+    	return new Promise((resolve, reject) => {
+        	this.db.all(sql, [], (err, row) => {
+            	if(err) {
+                	reject(err);
+            	} else {
+                	resolve(row);
+            	}
+        	});
+    	});
+
+    	
+	}
+
+    getAllProjectsReverseSortByCompany()
+	{
+    	const sql = `
+		SELECT Company.name, Company.phone, Project.Description, Project.Date, Project.pstatus, Department.depName, Project.projectID
+		FROM Project, Company, Department, ProjectDepartment
+		WHERE Project.CompanyID = Company.companyID
+		AND Project.projectID = ProjectDepartment.projectID
+		AND Department.departmentID = ProjectDepartment.departmentID
+		ORDER BY Company.name DESC;
 		;`;
 
     	return new Promise((resolve, reject) => {
@@ -208,8 +259,29 @@ class DBAbstraction {
 
     	
 	}
+    getAllProjectsReverseSortByDate()
+	{
+    	const sql = `
+		SELECT Company.name, Company.phone, Project.Description, Project.Date, Project.pstatus, Department.depName, Project.projectID
+		FROM Project, Company, Department, ProjectDepartment
+		WHERE Project.CompanyID = Company.companyID
+		AND Project.projectID = ProjectDepartment.projectID
+		AND Department.departmentID = ProjectDepartment.departmentID
+		ORDER BY Project.Date DESC
+		;`;
 
-	getAllProjectsSortByStatus()
+    	return new Promise((resolve, reject) => {
+        	this.db.all(sql, [], (err, row) => {
+            	if(err) {
+                	reject(err);
+            	} else {
+                	resolve(row);
+            	}
+        	});
+    	});
+	}
+
+    getAllProjectsSortByStatus()
 	{
     	const sql = `
 		SELECT Company.name, Company.phone, Project.Description, Project.Date, Project.pstatus, Department.depName, Project.projectID
@@ -229,9 +301,32 @@ class DBAbstraction {
             	}
         	});
     	});
-
-    	
 	}
+
+
+	getAllProjectsReverseSortByStatus()
+	{
+    	const sql = `
+		SELECT Company.name, Company.phone, Project.Description, Project.Date, Project.pstatus, Department.depName, Project.projectID
+		FROM Project, Company, Department, ProjectDepartment
+		WHERE Project.CompanyID = Company.companyID
+		AND Project.projectID = ProjectDepartment.projectID
+		AND Department.departmentID = ProjectDepartment.departmentID
+		ORDER BY project.pstatus DESC
+		;`;
+
+    	return new Promise((resolve, reject) => {
+        	this.db.all(sql, [], (err, row) => {
+            	if(err) {
+                	reject(err);
+            	} else {
+                	resolve(row);
+            	}
+        	});
+    	});
+	}
+
+
 
 	getAllProjectsSortByDepartment()
 	{
@@ -252,9 +347,29 @@ class DBAbstraction {
                 	resolve(row);
             	}
         	});
-    	});
+    	});	
+	}
 
-    	
+    getAllProjectsReverseSortByDepartment()
+	{
+    	const sql = `
+		SELECT Company.name, Company.phone, Project.Description, Project.Date, Project.pstatus, Department.depName, Project.projectID
+		FROM Project, Company, Department, ProjectDepartment
+		WHERE Project.CompanyID = Company.companyID
+		AND Project.projectID = ProjectDepartment.projectID
+		AND Department.departmentID = ProjectDepartment.departmentID
+		ORDER BY Department.depName DESC
+		;`;
+
+    	return new Promise((resolve, reject) => {
+        	this.db.all(sql, [], (err, row) => {
+            	if(err) {
+                	reject(err);
+            	} else {
+                	resolve(row);
+            	}
+        	});
+    	});
 	}
 
     getAllInformationByProjectID(proID)
@@ -281,8 +396,6 @@ class DBAbstraction {
             	}
         	});
     	});
-
-    	
 	}
 
 	updateProjectStatus(proID)
