@@ -20,7 +20,7 @@ const handlebars = require('express-handlebars').create({defaultLayout: 'main'})
 var sortComp = false;
 var sortDate = false;
 var sortStat = false;
-var sortDep = false;
+var sortDep = true;
 
 app.use(cors());
 app.use(fileUpload({
@@ -195,23 +195,34 @@ app.post('/project', async (req, res) => {
   });
 
   mailer();
-
-  res.json({"result": "success"});
+  res.redirect('');
+  
 });
-
 
 app.get('/faculty', async (req, res) => {
 	 
    try {
-	const allProjects = await db.getAllProjects();
-	if(allProjects) {
-    	res.render('leftHandTable', {projects: allProjects});
-	} else {
-    	res.json({"results": "none"});
-	}
-} catch (err) {
-	res.json({"results": "error"});
-}
+	    const allProjects = await db.getAllProjects();
+	    if(allProjects) {
+        	res.render('leftHandTable', {projects: allProjects});
+	    } else {
+        	res.json({"results": "none"});
+	    }
+    } catch (err) {
+	    res.json({"results": "Faculty"});
+    }
+});
+
+app.post('/faculty/Search', async (req, res) => {
+    try {
+        if(req.body.Search == ""){
+            res.redirect('http://localhost:53140/faculty')
+        }
+        const allProjects = await db.getAllProjectsSearch("%" + req.body.Search + "%");
+        res.render('leftHandTable', {projects: allProjects});        
+    } catch (err) {
+        res.json({"results": err.message});
+    }
 
 //First draft of a get function for generating and populating the left-hand table in faculty.html. still unsure of how to call this function from the html file itself, or if im supposed to be doing that in the first place
 });
@@ -327,22 +338,6 @@ app.get('/faculty/department', async (req, res) => {
 app.get('/allinformation/:projectid', async (req, res) => {
 	try {
     	const projectInfo = await db.getAllInformationByProjectID(Number(req.params.projectid));
-    	if(projectInfo) {
-        res.render('allInfoTable', {information: projectInfo});
-    	} else {
-        	res.json({"results": "none"});
-    	}
-	} catch (err) {
-    	res.json({"results": "error"});
-	}
-
-  //first draft of a get function for generating a table on the right-hand side of faculty.html with all the information about a project based on what project you clicked from the left-hand table
-});
-
-
-app.get('/faculty/sort', async (req, res) => {
-	try {
-    	const projectInfo = await db.getAllInformationSearch(res.body.Search);
     	if(projectInfo) {
         res.render('allInfoTable', {information: projectInfo});
     	} else {

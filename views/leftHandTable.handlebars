@@ -1,17 +1,17 @@
-<form action="http://localhost:53140/faculty/Sort" method="post" enctype="multipart/form-data">
-    <label for="Search" class="label-style">Search</label>
-    <input type="text" id="Search" name="Search" class="length1"  tabindex="2" required>
+<form action="http://localhost:53140/faculty/Search" method="post" enctype="application/x-www-form-urlencoded">
+      <input type="text" id="Search" name="Search" class="length1" tabindex="1">
+      <button type="button" tabindex="2">search</button>
 </form>
+<br>
 
-
-<table> 
+<table class="table-striped table-hover table-interactive" overflow-y="hidden" > 
     <thead> 
-        <th><a href="http://localhost:53140/faculty/company" tabindex="1" class="noVisual">Company</a></th>
-        <th>Contact</th>
+        <th width="13%"><a href="http://localhost:53140/faculty/company" tabindex="1" class="noVisual">Company</a></th>
+        <th width="7%">Contact</th>
         <th width="40%">Description</th>
-        <th><a href="http://localhost:53140/faculty/date" tabindex="1" class="noVisual">Submission Date</a></th>
-        <th><a href="http://localhost:53140/faculty/status" tabindex="1" class="noVisual">Status</a></th>
-        <th><a href="http://localhost:53140/faculty/department" tabindex="1" class="noVisual">Department</a></th>
+        <th width="10%"><a href="http://localhost:53140/faculty/date" tabindex="1" class="noVisual">Submission Date</a></th>
+        <th width="10%"><a href="http://localhost:53140/faculty/status" tabindex="1" class="noVisual">Status</a></th>
+        <th width="20%"><a href="http://localhost:53140/faculty/department" tabindex="1" class="noVisual">Department</a></th>
     </thead> 
  
     {{#each projects}} 
@@ -22,6 +22,6 @@
             <td>{{this/Date}}</td>
             <td>{{this/pstatus}}</td>
             <td>{{this/depName}}</td>
-        </tr> 
-    {{/each}} 
+        </tr>
+    {{/each}}
 </table>

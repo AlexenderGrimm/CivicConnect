@@ -124,6 +124,7 @@ class DBAbstraction {
           throw err;
         }
     }
+
     insertUser(first, last, role, email, phone) 
     {
         const sql = 'INSERT INTO User (first, last, role, email, phone) VALUES (?, ?, ?, ?, ?, ?);';
@@ -146,6 +147,7 @@ class DBAbstraction {
 		WHERE Project.CompanyID = Company.companyID
 		AND Project.projectID = ProjectDepartment.projectID
 		AND Department.departmentID = ProjectDepartment.departmentID
+        ORDER BY Department.depName
 		;`;
 
     	return new Promise((resolve, reject) => {
@@ -157,36 +159,33 @@ class DBAbstraction {
             	}
         	});
     	});
-
-    	
 	}
 
-    getAllInformationSearch(Search)
+    getAllProjectsSearch(Search)
     {
-        const sql = `
-		SELECT Company.name, Company.phone, Project.Description, Project.Date, Project.pstatus, Department.depName, Project.projectID
+        const sql = `SELECT Company.name, Company.phone, Project.Description, Project.Date, Project.pstatus, Department.depName, Project.projectID
 		FROM Project, Company, Department, ProjectDepartment
 		WHERE Project.CompanyID = Company.companyID
 		AND Project.projectID = ProjectDepartment.projectID
 		AND Department.departmentID = ProjectDepartment.departmentID
-        AND (Department.depName = ? COLLATE NOCASE
-            OR Project.pstatus = ? COLLATE NOCASE
-            OR Project.Description = ? COLLATE NOCASE
-            OR Company.Name = ? COLLATE NOCASE)
-		;`;
+        AND (
+            Department.depName like ? COLLATE NOCASE
+            OR Project.pstatus like ? COLLATE NOCASE
+            OR Project.Description like ? COLLATE NOCASE
+            OR Company.Name like ? COLLATE NOCASE
+            OR Company.first like ? COLLATE NOCASE
+        );
+        `;
         return new Promise((resolve, reject) => { 
-            this.db.run(sql, [Search, Search, Search, Search], (err) => {                 
+            this.db.all(sql, [Search, Search, Search, Search, Search], (err, row) => {                 
                 if(err) { 
                     reject(err); 
                 } else { 
-                    resolve(); 
+                    resolve(row); 
                 } 
             }); 
         }); 
-
     }
-
-
 
 	getAllProjectsSortByCompany()
 	{
@@ -208,8 +207,6 @@ class DBAbstraction {
             	}
         	});
     	});
-
-    	
 	}
 
     getAllProjectsReverseSortByCompany()
@@ -232,8 +229,6 @@ class DBAbstraction {
             	}
         	});
     	});
-
-    	
 	}
 
 	getAllProjectsSortByDate()
@@ -256,9 +251,8 @@ class DBAbstraction {
             	}
         	});
     	});
-
-    	
 	}
+
     getAllProjectsReverseSortByDate()
 	{
     	const sql = `
