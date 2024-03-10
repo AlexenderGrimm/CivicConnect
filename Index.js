@@ -30,7 +30,7 @@ app.engine('handlebars', handlebars.engine);
 app.set('view engine', 'handlebars');
 app.use(morgan('dev'));
 app.use(express.static('public'));  
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 // If modifying these scopes, delete token.json.
@@ -42,6 +42,10 @@ const SCOPES = ['https://mail.google.com/',
 // time.
 const TOKEN_PATH = path.join(process.cwd(), 'token.json');
 const CREDENTIALS_PATH = path.join(process.cwd(), 'client_secret_credentials.json');
+
+process.on('uncaughtException', function (err) {
+  console.log(err);
+}); 
 
 /**
  * Reads previously authorized credentials from the save file.
@@ -96,30 +100,55 @@ async function authorize() {
   return client;
 }
 
-async function mailer() {
+async function mailer(bodyParser) {
   
-  let transporter = nodemailer.createTransport({
-    host: "smtp.ethereal.email",
+  console.log(bodyParser);
+
+  const output = `
+    <p>You have a new project request</p>
+    <h3>Contact deatils</h3>
+    <ul>
+      <li>Name: ${bodyParser.fName} ${bodyParser.lName}</li>
+      <li>Company: ${bodyParser.OrgName}</li>
+      <li>Email: ${bodyParser.email}</li>
+    </ul>
+    <h3>Project description</h3>
+    <p>description: ${bodyParser.Description}</p>
+  `;
+
+   // create reusable transporter object using the default SMTP transport
+   let transporter = nodemailer.createTransport({
+    service: "Gmail",
+    host: "smtp.gmail.com",
     port: 465,
     secure: true, // true for 465, false for other ports
     auth: {
-      user: "fig23_civic_engagement@carthage.edu", // generated ethereal user
-      pass: "AustinCarolinaRickWenjie2023", // generated ethereal password
+        user: 'afischer1@carthage.edu', // generated ethereal user fig23_civic_engagement@carthage.edu austinf0912@gmail.com
+        pass: 'csrl lbqr uape wlkk'  // generated ethereal password AustinCarolinaRickWenjie2023    dkaw pkvq rxin lwzl
     },
+    tls:{
+      rejectUnauthorized:false
+    }
   });
 
-  let info = await transporter.sendMail({
-    from: '"civic_engagement" <fig23_civic_engagement@carthage.edu>', // sender address
-    to: "fig23_civic_engagement@carthage.edu, Afischer1@carthage.edu", // list of receivers
-    subject: "Hello", // Subject line
-    text: "I hope this message gets delivered!", // plain text body
-  }, (err, info) => {
-    //console.log(info.envelope);
-    //console.log(info.messageId);
+  // setup email data with unicode symbols
+  let mailOptions = {
+      from: '"Civic Connect mailer" <afischer1@carthage.edu>', // sender address
+      to: 'afischer1@carthage.edu, austinf0912@gmail.com', // list of receivers
+      subject: 'Civic Connect Request', // Subject line
+      html: output // html body
+  };
+
+  // send mail with defined transport object
+  transporter.sendMail(mailOptions, (error, info) => {
+      if (error) {
+          return console.log(error);
+      }
+      console.log('Message sent: %s', info.messageId);   
+      console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info));
+
   });
-
-  //console.log("Message sent: %s", info.messageId);
-
+  console.log(mailOptions);
 }
 
 
@@ -194,9 +223,9 @@ app.post('/project', async (req, res) => {
     }
   });
 
-  mailer();
-  res.redirect('');
-  
+  mailer(req.body);
+
+  res.send('Thank you for your project submission.');
 });
 
 app.get('/faculty', async (req, res) => {
