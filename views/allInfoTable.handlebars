@@ -1,8 +1,9 @@
 <table class="table-striped table-hover">  
+
     <thead> 
-        <th>Project ID</th><th width="25%" overflow-wrap="break-word">Project Description</th><th>Status</th><th>Files</th><th>Timeline</th><th>Date</th><th>Contactable</th><th>Available Time</th>
+        <th>Project ID</th><th width="25%" overflow-wrap="break-word">Project Description</th><th>Status</th><th>Timeline</th><th>Date</th><th>Contactable</th><th>Available Time</th>
         <th>Company Name</th><th>Address</th><th>City</th><th>State</th><th>Zip Code</th><th>First Name</th><th>Last Name</th><th>Phone Number</th><th>Email</th><th>Website</th>
-        <th>Department</th><th>Department Head</th><th>Department Head Email</th>
+        <th>Department</th><th>Department Head</th><th>Department Head Email</th><th>Delete</th>
     </thead> 
  
     {{#each information}} 
@@ -10,7 +11,6 @@
             <td>{{this.projectID}}</td>
             <td>{{this.Description}}</td> 
             <td><a href="statusupdate/{{this.projectID}}" tabindex="2">{{this/pstatus}}</a> </td> 
-            <td>{{this.file}}</td>
             <td>{{this.TimeLine}}</td>
             <td>{{this.Date}}</td>
             <td>{{this.radio}}</td>
@@ -27,8 +27,27 @@
             <td>{{this.companyWeb}}</td>
             <td>{{this.depName}}</td>
             <td>{{this.head}}</td>
-            <td>{{this.depEmail}}</td>              
+            <td>{{this.depEmail}}</td>  
+            <td><a href="deleteDepartment/{{this.projectID}}" tabindex="2">Delete</a></td>   
         </tr> 
     {{/each}} 
- 
+
 </table>
+
+{{!-- <!-- Form for deletion -->
+<form id="deleteForm" action="/allinformation/delete" method="RUN" style="margin: 50px;">
+    <!-- Hidden input field to store projectID -->
+    <input type="hidden" id="projectIDToDelete" name="projectIDToDelete">
+    <button type="submit" tabindex="3">Delete</button>
+</form>
+
+<script>
+    // Populate the hidden input field with the first projectID
+    document.addEventListener("DOMContentLoaded", function() {
+        // Get the first projectID
+        var firstProjectID = document.querySelector('.table-striped.table-hover tbody tr:first-child td:first-child').innerText;
+        
+        // Set the value of the hidden input field
+        document.getElementById('projectIDToDelete').value = firstProjectID;
+    });
+</script> --}}

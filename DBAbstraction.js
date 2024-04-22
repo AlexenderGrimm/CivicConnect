@@ -70,6 +70,7 @@ class DBAbstraction {
             + currentDate.getHours() + ":"  
             + currentDate.getMinutes() + ":" 
             + currentDate.getSeconds();
+		console.log(dateTime);
         return new Promise((resolve, reject) => { 
             this.db.run(sql, [Description, pstatus, file, comp, dateTime, radio, helpAvail, id], (err) => {                 
                 if(err) { 
@@ -417,7 +418,27 @@ class DBAbstraction {
    	 });
 
     }
+	deleteProject(proID)
+    {
+   	 const sql = `
+   		DELETE FROM ProjectDepartment
+		WHERE projectID = ? COLLATE NOCASE;
 
+		DELETE FROM Project
+		WHERE projectID = ? COLLATE NOCASE;
+   	 `;
+
+   	 return new Promise((resolve, reject) => {
+   		 this.db.run(sql, [proID], (err) => {            	 
+            	if(err) {
+                	reject(err);
+            	} else {
+                	resolve();
+            	}
+        	});
+   	 });
+
+    }
 
 	getCompanyByName(cname)
 	{

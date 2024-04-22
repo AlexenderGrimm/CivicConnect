@@ -47,73 +47,21 @@ process.on('uncaughtException', function (err) {
   console.log(err);
 }); 
 
-/**
- * Reads previously authorized credentials from the save file.
- *
- * @return {Promise<OAuth2Client|null>}
- */
-async function loadSavedCredentialsIfExist() {
-  try {
-	const content = await fs.readFile(TOKEN_PATH);
-	const credentials = JSON.parse(content);
-	return google.auth.fromJSON(credentials);
-  } catch (err) {
-	return null;
-  }
-}
-
-/**
- * Serializes credentials to a file compatible with GoogleAUth.fromJSON.
- *
- * @param {OAuth2Client} client
- * @return {Promise<void>}
- */
-async function saveCredentials(client) {
-  const content = await fs.readFile(CREDENTIALS_PATH);
-  const keys = JSON.parse(content);
-  const key = keys.installed || keys.web;
-  const payload = JSON.stringify({
-	type: 'authorized_user',
-	client_id: key.client_id,
-	client_secret: key.client_secret,
-	refresh_token: client.credentials.refresh_token,
-  });
-  await fs.writeFile(TOKEN_PATH, payload);
-}
-
-/**
- * Load or request or authorization to call APIs.
- *
- */
-async function authorize() {
-  let client = await loadSavedCredentialsIfExist();
-  if (client) {
-	return client;
-  }
-  client = await authenticate({
-	scopes: SCOPES,
-	keyfilePath: CREDENTIALS_PATH,
-  });
-  if (client.credentials) {
-	await saveCredentials(client);
-  }
-  return client;
-}
 
 async function mailer(bodyParser) {
-  
-  console.log(bodyParser);
 
   const output = `
     <p>You have a new project request</p>
     <h3>Contact deatils</h3>
     <ul>
-      <li>Name: ${bodyParser.fName} ${bodyParser.lName}</li>
+      <li>Name: ${bodyParser.fname} ${bodyParser.lname}</li>
       <li>Company: ${bodyParser.OrgName}</li>
       <li>Email: ${bodyParser.email}</li>
     </ul>
     <h3>Project description</h3>
-    <p>description: ${bodyParser.Description}</p>
+    <p>${bodyParser.Description}</p>
+    <br></br>
+    <p>${bodyParser.FileDrop}</p>
   `;
 
    // create reusable transporter object using the default SMTP transport
@@ -151,37 +99,7 @@ async function mailer(bodyParser) {
   console.log(mailOptions);
 }
 
-
-
-/**
- * Lists the labels in the user's account.
- *
- * @param {google.auth.OAuth2} auth An authorized OAuth2 client.
- */
-async function listFiles(authClient) {
-  const drive = google.drive({version: 'v3', auth: authClient});
-  const res = await drive.files.list({
-	pageSize: 10,
-	fields: 'nextPageToken, files(id, name)',
-  });
-  const files = res.data.files;
-  if (files.length === 0) {
-	console.log('No files found.');
-	return;
-  }
-
-  console.log('Files:');
-  files.map((file) => {
-	console.log(`${file.name} (${file.id})`);
-  });
-}
-
-//mailer().catch(console.error);
-authorize().then(listFiles).catch(console.error);
-
-
 app.post('/project', async (req, res) => { 
-     
   const fName = req.body.fname;
   const lName = req.body.lname;
   const email = req.body.email;
@@ -196,8 +114,9 @@ app.post('/project', async (req, res) => {
   const zip = req.body.zip;
   const helpAvail = req.body.helpAvail;
   const Description = req.body.Description;
-  const FileDrop = req.body.FileDrop;
+  var FileDrop = req.body.uploadfile;
   const depart = req.body.multipleDrop;
+  console.log(req.body);
   await db.insertCompany(OrgName, streetAddr, cityTown, state, zip, fName, lName, pNumber, email, OrgSite);
   await db.getCompanyID(OrgName, fName, lName)
   .then(companyID => {
@@ -238,7 +157,7 @@ app.get('/faculty', async (req, res) => {
         	res.json({"results": "none"});
 	    }
     } catch (err) {
-	    res.json({"results": "Faculty"});
+	    res.json({"results": err.message});
     }
 });
 
@@ -379,16 +298,33 @@ app.get('/allinformation/:projectid', async (req, res) => {
   //first draft of a get function for generating a table on the right-hand side of faculty.html with all the information about a project based on what project you clicked from the left-hand table
 });
 
-app.get('/allinformation/statusupdate/:projectid/', async (req, res) => {
+app.get('/allinformation/statusupdate/:projectid', async (req, res) => {
   try {
-	await db.updateProjectStatus(req.params.projectid);
+	await db.updateProjectStatus(Number(req.params.projectid));
 
   } catch (err) {
 	res.json({"results": "error"});
   }
   res.redirect('/allinformation/' + req.params.projectid);
-  //res.json({"results": "success!"});
 });
+
+app.post('/allinformation/delete', async (req, res) => {
+  const projectIdToDelete = req.body.projectIDToDelete; // Assuming projectIDToDelete is a string
+  console.log(projectIdToDelete);
+  try {
+    
+      // Use projectIdToDelete to delete the project from your database
+      await db.deleteProject(Number(projectIdToDelete));
+      
+      // Redirect to the desired page after successful deletion
+      res.redirect('/faculty'); // Adjust the redirect URL as needed
+  } catch (error) {
+      // Handle any errors that occur during deletion
+      console.error('Error deleting project:', error);
+      res.status(500).send('Internal Server Error'); // Respond with an appropriate error message
+  }
+});
+
 
  
 app.use((req, res) => {

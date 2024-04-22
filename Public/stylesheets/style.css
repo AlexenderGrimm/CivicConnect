@@ -16,7 +16,7 @@
   overflow-x: hidden;
   align-items: center;
   color: #fff;
-  margin: -8px;
+  margin: 0px;
 }
 
 /* Logo Container - Left */
@@ -146,7 +146,9 @@ input:hover[type=submit] {
     display: flex;
     /*-ms-flex-wrap: wrap; /* IE10 */
     flex-wrap: wrap;
-    margin: 15px 7px;
+    margin-right: 15px;
+    margin-left: 15px; 
+    overflow-x: auto;
 }
 .dropbtn {
     background-color: rgb(238, 42, 55);
@@ -356,9 +358,9 @@ height: 20px;
 
 .lastFormElems {
   margin: 0 auto;
-  margin-left: 8px;
-  text-align: center;
-  margin-right: 30px;
+  margin-left: 15px;
+  text-align: left;
+  margin-right: 8px;
 }
 
 .descrip-text {
@@ -432,4 +434,16 @@ text-align: left;
 
   .test-dropdown-option:hover {
     background-color: #f2f2f2;
+  }
+  
+
+  .table-striped>tbody>tr:nth-child(odd)>td, .table-striped>tbody>tr:nth-child(odd)>th {
+    background-color: white; 
+  }
+  .table-striped>tbody>tr:nth-child(even)>td, .table-striped>tbody>tr:nth-child(even)>th {
+    background-color: #d3ccbd; 
+  }
+  .table-hover tbody tr:hover td, .table-hover tbody tr:hover th {
+    background-color: #7a222e;
+    color: white;
   }

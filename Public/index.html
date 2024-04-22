@@ -2,12 +2,14 @@
 <html lang="en-US">
 <head>
 <meta charset="utf-8"> 
-<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=yes">
 <link rel="stylesheet" href="/stylesheets/style.css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 <title>Carthage Civic Connect</title>
     <link rel="icon" type="image/x-icon" href="/images/bookflame.png">
 </head>
-<header class="header">
+
+<header class="header" style="margin:-8px">
   <div class="logo-left">
     <a href="https://www.carthage.edu/" tabindex="1">
     <img src="./images/bookmark.png" alt="Logo Left" height="125px">
@@ -22,7 +24,7 @@
 fading from the pic to white to better transition from the header to the form-->
 <body>
 <form action="/project" method="post" enctype="multipart/form-data" enctype="application/x-www-form-urlencoded">
-<div class="row">
+<div class="row" style="margin:1%">
   <div class="col2"> <!--First Column-->
     <label for="fname" class="label-style">First Name*</label>
     <input selected type="text" id="fname" name="fname" class="length1"  tabindex="2" required>
@@ -40,59 +42,62 @@ fading from the pic to white to better transition from the header to the form-->
     <input type="text" id="lname" name="lname" class="length1"  tabindex="3" required>
     <label for="pNumber" class="label-style">Phone Number*</label>
     <input type="text" id="pNumber" name="pNumber" class="length2"  tabindex="6" required>
-    <div class="custom-select">
-      <select name="state" id="state" required>
-        <option tabindex="9">State*:</option>
-        <option value="alabama">Alabama</option>
-        <option value="alaska">Alaska</option>
-        <option value="arizona">Arizona</option>
-        <option value="arkansas">Arkansas</option>
-        <option value="california">California</option>
-        <option value="colorado">Colorado</option>
-        <option value="connecticut">Connecticut</option>
-        <option value="delaware">Delaware</option>
-        <option value="florida">Florida</option>
-        <option value="georgia">Georgia</option>
-        <option value="hawaii">Hawaii</option>
-        <option value="idaho">Idaho</option>
-        <option value="illinois">Illinois</option>
-        <option value="indiana">Indiana</option>
-        <option value="iowa">Iowa</option>
-        <option value="kansas">Kansas</option>
-        <option value="kentucky">Kentucky</option>
-        <option value="louisiana">Louisiana</option>
-        <option value="maine">Maine</option>
-        <option value="maryland">Maryland</option>
-        <option value="massachusetts">Massachusetts</option>
-        <option value="michigan">Michigan</option>
-        <option value="minnesota">Minnesota</option>
-        <option value="mississippi">Mississippi</option>
-        <option value="missouri">Missouri</option>
-        <option value="montana">Montana</option>
-        <option value="nebraska">Nebraska</option>
-        <option value="nevada">Nevada</option>
-        <option value="new-hampshire">New Hampshire</option>
-        <option value="new-jersey">New Jersey</option>
-        <option value="new-mexico">New Mexico</option>
-        <option value="new-york">New York</option>
-        <option value="north-carolina">North Carolina</option>
-        <option value="north-dakota">North Dakota</option>
-        <option value="ohio">Ohio</option>
-        <option value="oklahoma">Oklahoma</option>
-        <option value="oregon">Oregon</option>
-        <option value="pennsylvania">Pennsylvania</option>
-        <option value="rhode-island">Rhode Island</option>
-        <option value="south-carolina">South Carolina</option>
-        <option value="south-dakota">South Dakota</option>
-        <option value="tennessee">Tennessee</option>
-        <option value="texas">Texas</option>
-        <option value="utah">Utah</option>
-        <option value="vermont">Vermont</option>
-        <option value="virginia">Virginia</option>
-        <option value="washington">Washington</option>
-        <option value="west-virginia">West Virginia</option>
-        <option value="wisconsin">Wisconsin</option>
-        <option value="wyoming">Wyoming</option>
+    <br><br>
+    <div class="dropdown">
+      <select class="btn btn-secondary dropdown-toggle" type="button" name="state" id="state" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" required>
+        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+          <option class="dropdown-item" selected="selected" hidden="hidden">State*</option>
+          <option class="dropdown-item" value="alabama">Alabama</option>
+          <option class="dropdown-item" value="alaska">Alaska</option>
+          <option class="dropdown-item" value="arizona">Arizona</option>
+          <option class="dropdown-item" value="arkansas">Arkansas</option>
+          <option class="dropdown-item" value="california">California</option>
+          <option class="dropdown-item" value="colorado">Colorado</option>
+          <option class="dropdown-item" value="connecticut">Connecticut</option>
+          <option class="dropdown-item" value="delaware">Delaware</option>
+          <option class="dropdown-item" value="florida">Florida</option>
+          <option class="dropdown-item" value="georgia">Georgia</option>
+          <option class="dropdown-item" value="hawaii">Hawaii</option>
+          <option class="dropdown-item" value="idaho">Idaho</option>
+          <option class="dropdown-item" value="illinois">Illinois</option>
+          <option class="dropdown-item" value="indiana">Indiana</option>
+          <option class="dropdown-item" value="iowa">Iowa</option>
+          <option class="dropdown-item" value="kansas">Kansas</option>
+          <option class="dropdown-item" value="kentucky">Kentucky</option>
+          <option class="dropdown-item" value="louisiana">Louisiana</option>
+          <option class="dropdown-item" value="maine">Maine</option>
+          <option class="dropdown-item" value="maryland">Maryland</option>
+          <option class="dropdown-item" value="massachusetts">Massachusetts</option>
+          <option class="dropdown-item" value="michigan">Michigan</option>
+          <option class="dropdown-item" value="minnesota">Minnesota</option>
+          <option class="dropdown-item" value="mississippi">Mississippi</option>
+          <option class="dropdown-item" value="missouri">Missouri</option>
+          <option class="dropdown-item" value="montana">Montana</option>
+          <option class="dropdown-item" value="nebraska">Nebraska</option>
+          <option class="dropdown-item" value="nevada">Nevada</option>
+          <option class="dropdown-item" value="new-hampshire">New Hampshire</option>
+          <option class="dropdown-item" value="new-jersey">New Jersey</option>
+          <option class="dropdown-item" value="new-mexico">New Mexico</option>
+          <option class="dropdown-item" value="new-york">New York</option>
+          <option class="dropdown-item" value="north-carolina">North Carolina</option>
+          <option class="dropdown-item" value="north-dakota">North Dakota</option>
+          <option class="dropdown-item" value="ohio">Ohio</option>
+          <option class="dropdown-item" value="oklahoma">Oklahoma</option>
+          <option class="dropdown-item" value="oregon">Oregon</option>
+          <option class="dropdown-item" value="pennsylvania">Pennsylvania</option>
+          <option class="dropdown-item" value="rhode-island">Rhode Island</option>
+          <option class="dropdown-item" value="south-carolina">South Carolina</option>
+          <option class="dropdown-item" value="south-dakota">South Dakota</option>
+          <option class="dropdown-item" value="tennessee">Tennessee</option>
+          <option class="dropdown-item" value="texas">Texas</option>
+          <option class="dropdown-item" value="utah">Utah</option>
+          <option class="dropdown-item" value="vermont">Vermont</option>
+          <option class="dropdown-item" value="virginia">Virginia</option>
+          <option class="dropdown-item" value="washington">Washington</option>
+          <option class="dropdown-item" value="west-virginia">West Virginia</option>
+          <option class="dropdown-item" value="wisconsin">Wisconsin</option>
+          <option class="dropdown-item" value="wyoming">Wyoming</option>
+        </div>
       </select>
     </div>
     <div>
@@ -117,16 +122,10 @@ fading from the pic to white to better transition from the header to the form-->
     <label for="helpAvail" class="label-style">If yes, how often can they contact you?</label>
     <input type="text" id="helpAvail" name="helpAvail" class="length3" tabindex="13">
 </div>
-
 <div class="row">
   <div class="lastFormElems">
     <label for="Description" class="label-style">Please provide a description of the project (be as specific as you'd like):</label>
-    <textarea class="description" id="Description" name="Description" rows="4" cols="50" max-width=48% onfocus="this.focus();this.select()" tabindex="15">Provide a description here...</textarea>
-    <br><br><br>
-    <div class="mb-3">
-        <label for="formFileMultiple" class="form-label">Please provide any relevant documentation for the project: </label>
-        <input class="form-control" type="file" id="formFileMultiple" multiple>
-      </div>
+    <textarea class="description" id="Description" name="Description" rows="4" cols="50" max-width=48% onfocus="this.focus();this.select()" tabindex="15" style="text-align: left;">Provide a description here...</textarea>
   </div>
   <div class="test-dropdown">
     <label for="multipleDrop" class="label-style">Select department(s)* (CTRL click to select multiple):</label>
@@ -154,6 +153,7 @@ fading from the pic to white to better transition from the header to the form-->
 <input type="submit" value="Submit" tabindex="17">
 </form>
 </body>
+
 
 <script>
 
