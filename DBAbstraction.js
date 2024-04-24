@@ -59,17 +59,11 @@ class DBAbstraction {
     	});
 	}
 
-    insertProject(Description, pstatus, file, comp, radio, helpAvail, id) 
+    insertProject(Description, pstatus, file, comp, radio, helpAvail, id, dateTime) 
     {
         
         const sql = 'INSERT OR IGNORE INTO Project (Description, pstatus, file, TimeLine, Date, radio, helpAvail, CompanyID) VALUES (?, ?, ?, ?, ?, ?, ?, ?);';
-        var currentDate = new Date(); 
-        var dateTime = currentDate.getMonth() + "/"
-            + currentDate.getDate()  + "/" 
-            + currentDate.getFullYear() + " @ "  
-            + currentDate.getHours() + ":"  
-            + currentDate.getMinutes() + ":" 
-            + currentDate.getSeconds();
+        
 		console.log(dateTime);
         return new Promise((resolve, reject) => { 
             this.db.run(sql, [Description, pstatus, file, comp, dateTime, radio, helpAvail, id], (err) => {                 
@@ -601,6 +595,24 @@ class DBAbstraction {
             }); 
         }); 
     } 
+
+	getDepartmentEmail(id)
+	{
+    	const sql = `
+		SELECT depEmail
+		FROM Department
+		WHERE departmentID = ? COLLATE NOCASE;
+    	`;
+    	return new Promise((resolve, reject) => {
+        	this.db.get(sql, [id], (err, row) => {
+            	if(err) {
+                	reject(err);
+            	} else {
+                	resolve(row);
+            	}
+        	});
+    	});
+	}
 
 	getProjectDepartmentID(id)
 	{

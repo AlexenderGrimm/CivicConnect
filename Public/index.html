@@ -44,8 +44,9 @@ fading from the pic to white to better transition from the header to the form-->
     <input type="text" id="pNumber" name="pNumber" class="length2"  tabindex="6" required>
     <br><br>
     <div class="dropdown">
-      <select class="btn btn-secondary dropdown-toggle" type="button" name="state" id="state" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" required>
-        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+      <select class="btn btn-secondary dropdown-toggle" type="button" name="state" id="state" 
+      style="background-color:rgb(238, 39, 56);color: white;" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" required>
+        <div class="dropdown-menu"  aria-labelledby="dropdownMenuButton">
           <option class="dropdown-item" selected="selected" hidden="hidden">State*</option>
           <option class="dropdown-item" value="alabama">Alabama</option>
           <option class="dropdown-item" value="alaska">Alaska</option>
@@ -125,12 +126,20 @@ fading from the pic to white to better transition from the header to the form-->
 <div class="row">
   <div class="lastFormElems">
     <label for="Description" class="label-style">Please provide a description of the project (be as specific as you'd like):</label>
-    <textarea class="description" id="Description" name="Description" rows="4" cols="50" max-width=48% onfocus="this.focus();this.select()" tabindex="15" style="text-align: left;">Provide a description here...</textarea>
+    <textarea class="description" id="Description" name="Description" rows="4" cols="50" max-width=48% onfocus="this.focus();this.select()"
+     tabindex="15" style="text-align: left;">Provide a description here...</textarea>
   </div>
   <div class="test-dropdown">
     <label for="multipleDrop" class="label-style">Select department(s)* (CTRL click to select multiple):</label>
     <select name="multipleDrop" id="multipleDrop" class="test-dropdown-select" multiple required>  
-      <div class="test-dropdown-options">
+      <div class="test-dropdown-options">    
+<!--####################################################################################################################################
+########################################################################################################################################
+
+                                      Code Break 1
+
+########################################################################################################################################
+########################################################################################################################################-->
         <option class="test-dropdown-option" value="1">Biology</option>
         <option class="test-dropdown-option" value="2">Carthage Honors Program</option>
         <option class="test-dropdown-option" value="3">Clinical/Counseling Psychology</option>
@@ -146,6 +155,13 @@ fading from the pic to white to better transition from the header to the form-->
         <option class="test-dropdown-option" value="14">Public Relation (press releases, social media calendars, feature articles, event plans)</option>
         <option class="test-dropdown-option" value="15">Sociology & Criminal Justice</option>
         <option class="test-dropdown-option" value="13">Other</option>
+<!--####################################################################################################################################
+########################################################################################################################################
+
+                                      End of Code Break 1
+
+########################################################################################################################################
+########################################################################################################################################-->
       </div>
     </select>
 </div>
