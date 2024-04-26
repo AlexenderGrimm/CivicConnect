@@ -22,6 +22,9 @@ var sortDate = false;
 var sortStat = false;
 var sortDep = true;
 
+var USER = 'afischer1@carthage.edu'; // generated ethereal user fig23_civic_engagement@carthage.edu austinf0912@gmail.com
+var PASS = 'csrl lbqr uape wlkk';
+
 app.use(cors());
 app.use(fileUpload({
     createParentPath: true
@@ -71,8 +74,8 @@ async function mailer(bodyParser) {
     port: 465,
     secure: true, // true for 465, false for other ports
     auth: {
-        user: 'afischer1@carthage.edu', // generated ethereal user fig23_civic_engagement@carthage.edu austinf0912@gmail.com
-        pass: 'csrl lbqr uape wlkk'  // generated ethereal password AustinCarolinaRickWenjie2023    dkaw pkvq rxin lwzl
+        user: USER, // generated ethereal user fig23_civic_engagement@carthage.edu austinf0912@gmail.com
+        pass: PASS  // generated ethereal password AustinCarolinaRickWenjie2023    dkaw pkvq rxin lwzl
     },
     tls:{
       rejectUnauthorized:false
@@ -114,7 +117,6 @@ app.post('/project', async (req, res) => {
   const zip = req.body.zip;
   const helpAvail = req.body.helpAvail;
   const Description = req.body.Description;
-  var FileDrop = req.body.uploadfile;
   const depart = req.body.multipleDrop;
   console.log(req.body);
   await db.insertCompany(OrgName, streetAddr, cityTown, state, zip, fName, lName, pNumber, email, OrgSite);
