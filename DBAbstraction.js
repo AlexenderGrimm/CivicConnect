@@ -96,30 +96,6 @@ class DBAbstraction {
         });
     }
 
-    async exportFile(fileId, mType) {
-        const {GoogleAuth} = require('google-auth-library');
-        const {google} = require('googleapis');
-      
-        // Get credentials and build service
-        // TODO (developer) - Use appropriate auth mechanism for your app
-        const auth = new GoogleAuth({
-          scopes: 'https://www.googleapis.com/auth/drive',
-        });
-        const service = google.drive({version: 'v3', auth});
-      
-        try {
-          const result = await service.files.export({
-            fileId: fileId,
-            mimeType: mType,
-          });
-          console.log(result.status);
-          return result;
-        } catch (err) {
-          // TODO(developer) - Handle error
-          throw err;
-        }
-    }
-
     insertUser(first, last, role, email, phone) 
     {
         const sql = 'INSERT INTO User (first, last, role, email, phone) VALUES (?, ?, ?, ?, ?, ?);';

@@ -4,6 +4,9 @@ var emailAddresses= [/*1*/"adassow@carthage.edu", /*2*/"nscharnick@carthage.edu"
 /*5*/"rnagel@carthage.edu",/*6*/"srubinfeld@carthage.edu", /*7*/"wsun@carthage.edu", /*8*/"jmast@carthage.edu", /*9*/"lhuaracha@carthage.edu", 
 /*10*/"ljensen@carthage.edu", /*11*/"smitchell@carthage.edu",/*12*/"jtenuta@carthage.edu", /*13*/"fig23_civic_engagement@carthage.edu" , 
 /*14*/"cpalmer5@carthage.edu", /*15*/"rmatthews@carthage.edu"]
+
+var USER = 'afischer1@carthage.edu'; // generated ethereal user fig23_civic_engagement@carthage.edu austinf0912@gmail.com
+var PASS = 'csrl lbqr uape wlkk';
  
 const express = require('express');
 const fileUpload = require('express-fileupload')
@@ -16,9 +19,13 @@ const fs = require('fs').promises;
 const path = require('path');
 const nodemailer = require("nodemailer");
 const process = require('process');
-const {authenticate} = require('@google-cloud/local-auth');
-const {google} = require('googleapis');
 const db = new DBAbstraction('./software_Data.db'); 
+const passport = require('passport');
+const OneLoginStrategy = require('passport-openidconnect').Strategy;
+const session = require('express-session');
+require('dotenv').config();
+const router = express.Router();
+
 const app = express(); 
 //let transporter = nodemailer.createTransport(options[, defaults])
 const handlebars = require('express-handlebars').create({defaultLayout: 'main'});
@@ -26,9 +33,6 @@ var sortComp = false;
 var sortDate = false;
 var sortStat = false;
 var sortDep = true;
-
-var USER = 'afischer1@carthage.edu'; // generated ethereal user fig23_civic_engagement@carthage.edu austinf0912@gmail.com
-var PASS = 'csrl lbqr uape wlkk';
 
 app.use(cors());
 app.use(fileUpload({
@@ -41,19 +45,44 @@ app.use(express.static('public'));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
-// If modifying these scopes, delete token.json.
-const SCOPES = ['https://mail.google.com/',
-'https://www.googleapis.com/auth/drive.metadata',
-'https://www.googleapis.com/auth/gmail.send'];
-// The file token.json stores the user's access and refresh tokens, and is
-// created automatically when the authorization flow completes for the first
-// time.
-const TOKEN_PATH = path.join(process.cwd(), 'token.json');
-const CREDENTIALS_PATH = path.join(process.cwd(), 'client_secret_credentials.json');
+// Configure session middleware
+app.use(session({
+    secret: 'secret squirrel',
+    resave: false,
+    saveUninitialized: true
+  }));
 
-process.on('uncaughtException', function (err) {
-  console.log(err);
-}); 
+// Configure Passport.js
+passport.use(new OneLoginStrategy({
+    issuer: process.env.OIDC_BASE_URI + '/oidc/2',
+    clientID: process.env.OIDC_CLIENT_ID,
+    clientSecret: process.env.OIDC_CLIENT_SECRET,
+    authorizationURL: process.env.OIDC_BASE_URI + '/oidc/2/auth',
+    userInfoURL: process.env.OIDC_BASE_URI + '/oidc/2/me',
+    tokenURL: process.env.OIDC_BASE_URI + '/oidc/2/token',
+    callbackURL: process.env.OIDC_REDIRECT_URI,
+    passReqToCallback: true
+  }, (req, issuer, userId, profile, accessToken, refreshToken, params, cb) => {
+    // Save tokens to session
+    req.session.accessToken = accessToken;
+    req.session.idToken = params['id_token'];
+    return cb(null, profile);
+  }));
+  
+  passport.serializeUser((user, done) => done(null, user));
+  passport.deserializeUser((obj, done) => done(null, obj));
+  
+  // Initialize Passport middleware
+  app.use(passport.initialize());
+  app.use(passport.session());
+  
+  // Middleware to check authentication
+  function ensureAuthenticated(req, res, next) {
+    if (req.isAuthenticated()) {
+      return next();
+    }
+    res.redirect('/');
+  }
 
 function addresses(ids){
   var email = "";
@@ -118,6 +147,26 @@ async function mailer(bodyParser) {
   console.log(mailOptions);
 }
 
+// Login route
+app.get('/login', passport.authenticate('openidconnect', {
+    successReturnToOrRedirect: '/faculty',
+    scope: 'profile'
+  }));
+
+// Callback route
+app.get('/oauth/callback', passport.authenticate('openidconnect', {
+    callback: true,
+    successReturnToOrRedirect: '/faculty', // Redirect to faculty page after successful login
+    failureRedirect: '/'
+  }));
+
+
+// Logout route
+app.get('/logout', (req, res) => {
+    req.logout();
+    res.redirect('/');
+  });
+
 app.post('/project', async (req, res) => { 
   const fName = req.body.fname;
   const lName = req.body.lname;
@@ -172,7 +221,7 @@ app.post('/project', async (req, res) => {
   res.send('Thank you for your project submission.');
 });
 
-app.get('/faculty', async (req, res) => {
+app.get('/faculty', ensureAuthenticated, async (req, res) => {
 	 
    try {
 	    const allProjects = await db.getAllProjects();
@@ -186,7 +235,7 @@ app.get('/faculty', async (req, res) => {
     }
 });
 
-app.post('/faculty/Search', async (req, res) => {
+app.post('/faculty/Search',ensureAuthenticated, async (req, res) => {
     try {
         if(req.body.Search == ""){
             res.redirect('http://localhost:53140/faculty')
@@ -200,7 +249,7 @@ app.post('/faculty/Search', async (req, res) => {
 //First draft of a get function for generating and populating the left-hand table in faculty.html. still unsure of how to call this function from the html file itself, or if im supposed to be doing that in the first place
 });
 
-app.get('/faculty/company', async (req, res) => {
+app.get('/faculty/company', ensureAuthenticated, async (req, res) => {
 	 
   try {
     var allProjects;
@@ -227,7 +276,7 @@ app.get('/faculty/company', async (req, res) => {
 //First draft of a get function for generating and populating the left-hand table in faculty.html. still unsure of how to call this function from the html file itself, or if im supposed to be doing that in the first place
 });
 
-app.get('/faculty/date', async (req, res) => {
+app.get('/faculty/date', ensureAuthenticated, async (req, res) => {
 	 
   try {
     var allProjects;
@@ -254,7 +303,7 @@ if(allProjects) {
 //First draft of a get function for generating and populating the left-hand table in faculty.html. still unsure of how to call this function from the html file itself, or if im supposed to be doing that in the first place
 });
 
-app.get('/faculty/status', async (req, res) => {
+app.get('/faculty/status', ensureAuthenticated, async (req, res) => {
 	 
   try {
     var allProjects;
@@ -281,7 +330,7 @@ app.get('/faculty/status', async (req, res) => {
 //First draft of a get function for generating and populating the left-hand table in faculty.html. still unsure of how to call this function from the html file itself, or if im supposed to be doing that in the first place
 });
 
-app.get('/faculty/department', async (req, res) => {
+app.get('/faculty/department', ensureAuthenticated, async (req, res) => {
 	 
   try {
     var allProjects;
@@ -308,7 +357,7 @@ app.get('/faculty/department', async (req, res) => {
 //First draft of a get function for generating and populating the left-hand table in faculty.html. still unsure of how to call this function from the html file itself, or if im supposed to be doing that in the first place
 });
 
-app.get('/allinformation/:projectid', async (req, res) => {
+app.get('/allinformation/:projectid', ensureAuthenticated, async (req, res) => {
 	try {
     	const projectInfo = await db.getAllInformationByProjectID(Number(req.params.projectid));
     	if(projectInfo) {
@@ -323,7 +372,7 @@ app.get('/allinformation/:projectid', async (req, res) => {
   //first draft of a get function for generating a table on the right-hand side of faculty.html with all the information about a project based on what project you clicked from the left-hand table
 });
 
-app.get('/allinformation/statusupdate/:projectid', async (req, res) => {
+app.get('/allinformation/statusupdate/:projectid', ensureAuthenticated, async (req, res) => {
   try {
 	await db.updateProjectStatus(Number(req.params.projectid));
 
@@ -333,7 +382,7 @@ app.get('/allinformation/statusupdate/:projectid', async (req, res) => {
   res.redirect('/allinformation/' + req.params.projectid);
 });
 
-app.get('/allinformation/delete/:projectid', async(req, res) => {
+app.get('/allinformation/delete/:projectid', ensureAuthenticated, async(req, res) => {
   try {
     
       // Use projectIdToDelete to delete the project from your database
@@ -356,7 +405,11 @@ app.use((req, res) => {
  
 db.init()
 	.then(() => {
-    	app.listen(53140, () => console.log('The server is up and running...'));
+    	// Start the server
+        const port = 53140 || process.env.PORT ;
+        app.listen(port, () => {
+        console.log(`Server is running on port ${port}`);
+        });
 	})
 	.catch(err => {
     	console.log('Problem setting up the database');
