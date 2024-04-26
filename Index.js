@@ -1,4 +1,9 @@
 'use strict'
+
+var emailAddresses= [/*1*/"adassow@carthage.edu", /*2*/"nscharnick@carthage.edu", /*3*/"sobrien3@carthage.edu", /*4*/"rbingen@carthage.edu", 
+/*5*/"rnagel@carthage.edu",/*6*/"srubinfeld@carthage.edu", /*7*/"wsun@carthage.edu", /*8*/"jmast@carthage.edu", /*9*/"lhuaracha@carthage.edu", 
+/*10*/"ljensen@carthage.edu", /*11*/"smitchell@carthage.edu",/*12*/"jtenuta@carthage.edu", /*13*/"fig23_civic_engagement@carthage.edu" , 
+/*14*/"cpalmer5@carthage.edu", /*15*/"rmatthews@carthage.edu"]
  
 const express = require('express');
 const fileUpload = require('express-fileupload')
@@ -50,6 +55,16 @@ process.on('uncaughtException', function (err) {
   console.log(err);
 }); 
 
+function addresses(ids){
+  var email = "";
+  for (var i = 0; i < ids.length; i++) {
+    email += emailAddresses[ids[i] - 1];
+    if(i < ids.length - 1){
+      email+=  ", ";
+    }
+  }
+  return email;
+}
 
 async function mailer(bodyParser) {
 
@@ -63,8 +78,6 @@ async function mailer(bodyParser) {
     </ul>
     <h3>Project description</h3>
     <p>${bodyParser.Description}</p>
-    <br></br>
-    <p>${bodyParser.FileDrop}</p>
   `;
 
    // create reusable transporter object using the default SMTP transport
@@ -81,6 +94,9 @@ async function mailer(bodyParser) {
       rejectUnauthorized:false
     }
   });
+  console.log(bodyParser.multipleDrop);
+  var emails = addresses(bodyParser.multipleDrop);
+  console.log(emails);
 
   // setup email data with unicode symbols
   let mailOptions = {
@@ -124,7 +140,14 @@ app.post('/project', async (req, res) => {
   .then(companyID => {
     const id = companyID;
     if(id){
-      db.insertProject(Description, "Waiting", FileDrop == "" ? "Nothing" : FileDrop, Comp, radio, helpAvail, id);
+      var currentDate = new Date(); 
+        var dateTime = currentDate.getFullYear() + " / " 
+            + String(Number(currentDate.getMonth())+1) + " / "
+            + currentDate.getDate()  + " @ "  
+            + currentDate.getHours() + ":"  
+            + currentDate.getMinutes() + ":" 
+            + currentDate.getSeconds();
+      db.insertProject(Description, "Waiting", FileDrop == "" ? "Nothing" : FileDrop, Comp, radio, helpAvail, id, dateTime);
     }
     else{
       res.json({"result": "Failed to find or make company"});
@@ -310,13 +333,11 @@ app.get('/allinformation/statusupdate/:projectid', async (req, res) => {
   res.redirect('/allinformation/' + req.params.projectid);
 });
 
-app.post('/allinformation/delete', async (req, res) => {
-  const projectIdToDelete = req.body.projectIDToDelete; // Assuming projectIDToDelete is a string
-  console.log(projectIdToDelete);
+app.get('/allinformation/delete/:projectid', async(req, res) => {
   try {
     
       // Use projectIdToDelete to delete the project from your database
-      await db.deleteProject(Number(projectIdToDelete));
+      await db.deleteProject(Number(req.params.projectid));
       
       // Redirect to the desired page after successful deletion
       res.redirect('/faculty'); // Adjust the redirect URL as needed
