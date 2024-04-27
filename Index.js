@@ -81,7 +81,7 @@ passport.use(new OneLoginStrategy({
     if (req.isAuthenticated()) {
       return next();
     }
-    res.redirect('/');
+    res.redirect('/home');
   }
 
 function addresses(ids){
@@ -147,6 +147,11 @@ async function mailer(bodyParser) {
   console.log(mailOptions);
 }
 
+/* GET home page. */
+app.get('/home', function(req, res, next) {
+    res.render('index', { title: 'Civic Connect' });
+  });
+
 // Login route
 app.get('/login', passport.authenticate('openidconnect', {
     successReturnToOrRedirect: '/faculty',
@@ -157,15 +162,23 @@ app.get('/login', passport.authenticate('openidconnect', {
 app.get('/oauth/callback', passport.authenticate('openidconnect', {
     callback: true,
     successReturnToOrRedirect: '/faculty', // Redirect to faculty page after successful login
-    failureRedirect: '/'
+    failureRedirect: '/home'
   }));
 
 
-// Logout route
-app.get('/logout', (req, res) => {
-    req.logout();
-    res.redirect('/');
-  });
+// Destroy both the local session and
+// revoke the access_token at OneLogin
+app.get('/logout', function(req, res) {
+    req.logout(function(err) {
+        if(err) {
+            // Handle error
+            console.error(err);
+            return res.status(500).send('Error logging out');
+        }
+        // Successful logout
+        res.redirect('/home'); // Redirect to homepage or wherever you want
+    });
+});
 
 app.post('/project', async (req, res) => { 
   const fName = req.body.fname;

@@ -30,6 +30,17 @@
   margin-right: auto;
 }
 
+.logout-right {
+    display: flex;
+    align-items: center;
+    padding-right: 50px;
+    padding-bottom: 40px;
+    margin-top: 20px;
+    overflow-x: hidden;
+    margin-left: auto;
+  }
+
+
 /* Logo Image */
 .logo img {
   width: 40px;
@@ -39,7 +50,7 @@
 /* Title and Description Container */
 /* Title and Description Container */
 .title-description {
-  margin-right: 10%;
+  margin-right: 0%;
   text-align: center;
   overflow-x: hidden;
   flex: 1;
@@ -139,6 +150,11 @@ input:hover[type=submit] {
   height: 100%;
   font-family: Helvetica, sans-serif;
 } 
+
+.btn {
+    background-color: rgb(238, 42, 55);
+    color:white;
+}
 
 .row {
     /*display: -ms-flexbox; /* IE10 */
