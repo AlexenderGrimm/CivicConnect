@@ -1,0 +1,4 @@
+{
+    "appService.defaultWebAppToDeploy": "/subscriptions/a82cbb83-fa01-4548-b20a-9d4c5240b2c5/resourceGroups/AppServiceQS-rg/providers/Microsoft.Web/sites/CivicConnect",
+    "appService.deploySubpath": "."
+}
