@@ -149,7 +149,7 @@ async function mailer(bodyParser) {
 
 /* GET home page. */
 app.get('/home', function(req, res, next) {
-    res.render('index', { title: 'Civic Connect' });
+    res.render('index', { title: 'Civic Connect Login' });
   });
 
 // Login route
@@ -209,7 +209,7 @@ app.post('/project', async (req, res) => {
             + currentDate.getHours() + ":"  
             + currentDate.getMinutes() + ":" 
             + currentDate.getSeconds();
-      db.insertProject(Description, "Waiting", FileDrop == "" ? "Nothing" : FileDrop, Comp, radio, helpAvail, id, dateTime);
+      db.insertProject(Description, "Waiting", Comp, radio, helpAvail, id, dateTime);
     }
     else{
       res.json({"result": "Failed to find or make company"});
@@ -293,14 +293,14 @@ app.get('/faculty/date', ensureAuthenticated, async (req, res) => {
 	 
   try {
     var allProjects;
-    if(sortDate){
+    if(!sortDate){
         allProjects = await db.getAllProjectsReverseSortByDate();
-        sortDate = false;
+        sortDate = true;
     }
     else{
         allProjects = await db.getAllProjectsSortByDate();
         sortComp = false;
-        sortDate = true;
+        sortDate = false;
         sortStat = false;
         sortDep = false;
     }
@@ -410,7 +410,24 @@ app.get('/allinformation/delete/:projectid', ensureAuthenticated, async(req, res
   }
 });
 
+app.get('/allinformation/deleteDep/:projectid/:depName', ensureAuthenticated, async(req, res) => {
+  try {
 
+    var depID = db.getDepartmentID(req.params.depName);
+
+    if(depID){
+      // Use projectIdToDelete to delete the project from your database
+      await db.deleteProjectDep(Number(req.params.projectid), depID);
+      // Redirect to the desired page after successful deletion
+      res.redirect(`/allinformation/${req.params.projectid}`); // Adjust the redirect URL as needed
+    }
+      
+  } catch (error) {
+      // Handle any errors that occur during deletion
+      console.error('Error deleting project:', error);
+      res.status(500).send('Internal Server Error'); // Respond with an appropriate error message
+  }
+});
  
 app.use((req, res) => {
 	res.status(404).send(`<h2>Uh Oh!</h2><p>Sorry ${req.url} cannot be found here</p>`);

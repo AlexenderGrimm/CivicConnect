@@ -1,53 +1,58 @@
-<table class="table-striped table-hover">  
+<a href="/faculty">
+<button class="btn" style="margin: 15px;">Back</button>
+</a>
+
+<body>
+    <h3>Project ID: {{information.1.projectID}}</h3>
+    <h3>Project Status: <a href="statusupdate/{{information.1.projectID}}" tabindex="2">{{information.1.pstatus}}</a></h3>
+    <h3>Company Name:</h3>
+        <td>{{information.1.name}}</td>
+    <h3>Contact: </h3>
+        <td>{{information.1.first}} {{information.1.last}}</td>
+    <h3>Contact Email:</h3>
+        <td><a href="mailto:{{information.1.email}}">{{information.1.email}}</a></td>
+    <h3>Contact Phone number:</h3>
+        <td>{{information.1.phone}}</td>
+    <h3>Project description:</h3>
+        <td>{{information.1.Description}}</td>
+    <h3>Expected Timeline:</h3>
+        <td>{{information.1.TimeLine}}</td>
+    <h3>Can Students Contact Them:</h3>
+        <td>{{information.1.radio}}</td>
+    <h3>How often (If yes):</h3>
+        <td>{{information.1.helpAvail}}</td>
+    <h3>Street city, state, zip:</h3>
+        <td>{{information.1.street}} {{information.1.city}}, {{information.1.state}}, {{information.1.zip}}</td>
+    
+    <h3>Company Webpage:</h3>
+    <a href="https://{{information.1.companyWeb}}">
+        <td>{{information.1.companyWeb}}</td>
+    </a>
+    <h3>Project submission Date:</h3>
+        <td>{{information.1.Date}}</td>
+</body>
+
+
+<table style="margin-top: 15px;" class="table-striped table-hover">  
 
     <thead> 
-        <th>Project ID</th><th width="25%" overflow-wrap="break-word">Project Description</th><th>Status</th><th>Timeline</th><th>Date</th><th>Contactable</th><th>Available Time</th>
-        <th>Company Name</th><th>Address</th><th>City</th><th>State</th><th>Zip Code</th><th>First Name</th><th>Last Name</th><th>Phone Number</th><th>Email</th><th>Website</th>
-        <th>Department</th><th>Department Head</th><th>Department Head Email</th><th>Delete</th>
+        <th width="30%" style="font-size: 20px;">Departments</th><th width="30%" style="font-size: 20px;">
+        Department Chair</th><th width="30%"style="font-size: 20px;">Department Chair Email</th>
+        <th>Remove Department from Project</th>
     </thead> 
  
     {{#each information}} 
         <tr height="30px">
-            <td>{{this.projectID}}</td>
-            <td>{{this.Description}}</td> 
-            <td><a href="statusupdate/{{this.projectID}}" tabindex="2">{{this/pstatus}}</a> </td> 
-            <td>{{this.TimeLine}}</td>
-            <td>{{this.Date}}</td>
-            <td>{{this.radio}}</td>
-            <td>{{this.helpAvail}}</td>
-            <td>{{this.name}}</td>
-            <td>{{this.street}}</td>
-            <td>{{this.city}}</td>
-            <td>{{this.state}}</td>
-            <td>{{this.zip}}</td>
-            <td>{{this.first}}</td>
-            <td>{{this.last}}</td>
-            <td>{{this.phone}}</td>
-            <td>{{this.email}}</td>
-            <td>{{this.companyWeb}}</td>
             <td>{{this.depName}}</td>
             <td>{{this.head}}</td>
-            <td>{{this.depEmail}}</td>  
-            <td><a href="/allinformation/delete/{{this.projectID}}" tabindex="2">Delete</a></td>   
+            <td><a href="mailto:{{this.depEmail}}">{{this.depEmail}}</a></td>  
+            <td><a href="/allinformation/deleteDep/{{this.projectID}}/{{this.depName}}" tabindex="2">Not yet Implimeted</a></td>   
         </tr> 
     {{/each}} 
 
 </table>
 
-{{!-- <!-- Form for deletion -->
-<form id="deleteForm" action="/allinformation/delete" method="RUN" style="margin: 50px;">
-    <!-- Hidden input field to store projectID -->
-    <input type="hidden" id="projectIDToDelete" name="projectIDToDelete">
-    <button type="submit" tabindex="3">Delete</button>
-</form>
 
-<script>
-    // Populate the hidden input field with the first projectID
-    document.addEventListener("DOMContentLoaded", function() {
-        // Get the first projectID
-        var firstProjectID = document.querySelector('.table-striped.table-hover tbody tr:first-child td:first-child').innerText;
-        
-        // Set the value of the hidden input field
-        document.getElementById('projectIDToDelete').value = firstProjectID;
-    });
-</script> --}}
+<form id="deleteForm" action="/allinformation/delete/{{information.1.projectID}}"  style="margin: 50px;">
+    <button type="submit" tabindex="3" class="btn">Delete Project</button>
+</form>

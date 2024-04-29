@@ -59,14 +59,14 @@ class DBAbstraction {
     	});
 	}
 
-    insertProject(Description, pstatus, file, comp, radio, helpAvail, id, dateTime) 
+    insertProject(Description, pstatus, comp, radio, helpAvail, id, dateTime) 
     {
         
-        const sql = 'INSERT OR IGNORE INTO Project (Description, pstatus, file, TimeLine, Date, radio, helpAvail, CompanyID) VALUES (?, ?, ?, ?, ?, ?, ?, ?);';
+        const sql = 'INSERT OR IGNORE INTO Project (Description, pstatus, TimeLine, Date, radio, helpAvail, CompanyID) VALUES (?, ?, ?, ?, ?, ?, ?);';
         
 		console.log(dateTime);
         return new Promise((resolve, reject) => { 
-            this.db.run(sql, [Description, pstatus, file, comp, dateTime, radio, helpAvail, id], (err) => {                 
+            this.db.run(sql, [Description, pstatus, comp, dateTime, radio, helpAvail, id], (err) => {                 
                 if(err) { 
                     reject(err); 
                 } else { 
@@ -96,6 +96,24 @@ class DBAbstraction {
         });
     }
 
+	getDepartmentID(name) {
+		const sql = `
+			SELECT Department.departmentID
+			from Department
+			WHERE Department.depName = ? COLLATE NOCASE; 
+		`;
+
+		return new Promise((resolve, reject) => {
+			this.db.get(sql, [name], (err, row) => {
+				if (err) {
+					reject(err);
+				} else {
+					resolve(row ? row.companyID : null);
+				}
+			});
+		});
+	}
+
     insertUser(first, last, role, email, phone) 
     {
         const sql = 'INSERT INTO User (first, last, role, email, phone) VALUES (?, ?, ?, ?, ?, ?);';
@@ -113,7 +131,7 @@ class DBAbstraction {
 	getAllProjects()
 	{
     	const sql = `
-		SELECT Company.name, Company.phone, Project.Description, Project.Date, Project.pstatus, Department.depName, Project.projectID
+		SELECT Company.name, Company.first, Company.last, Project.Description, Project.Date, Project.pstatus, Department.depName, Project.projectID
 		FROM Project, Company, Department, ProjectDepartment
 		WHERE Project.CompanyID = Company.companyID
 		AND Project.projectID = ProjectDepartment.projectID
@@ -134,7 +152,7 @@ class DBAbstraction {
 
     getAllProjectsSearch(Search)
     {
-        const sql = `SELECT Company.name, Company.phone, Project.Description, Project.Date, Project.pstatus, Department.depName, Project.projectID
+        const sql = `SELECT Company.name, Company.first, Company.last, Project.Description, Project.Date, Project.pstatus, Department.depName, Project.projectID
 		FROM Project, Company, Department, ProjectDepartment
 		WHERE Project.CompanyID = Company.companyID
 		AND Project.projectID = ProjectDepartment.projectID
@@ -145,10 +163,11 @@ class DBAbstraction {
             OR Project.Description like ? COLLATE NOCASE
             OR Company.Name like ? COLLATE NOCASE
             OR Company.first like ? COLLATE NOCASE
+			OR Project.ProjectID like ? COLLATE NOCASE
         );
         `;
         return new Promise((resolve, reject) => { 
-            this.db.all(sql, [Search, Search, Search, Search, Search], (err, row) => {                 
+            this.db.all(sql, [Search, Search, Search, Search, Search, Search], (err, row) => {                 
                 if(err) { 
                     reject(err); 
                 } else { 
@@ -161,7 +180,7 @@ class DBAbstraction {
 	getAllProjectsSortByCompany()
 	{
     	const sql = `
-		SELECT Company.name, Company.phone, Project.Description, Project.Date, Project.pstatus, Department.depName, Project.projectID
+		SELECT Company.name, Company.first, Company.last, Project.Description, Project.Date, Project.pstatus, Department.depName, Project.projectID
 		FROM Project, Company, Department, ProjectDepartment
 		WHERE Project.CompanyID = Company.companyID
 		AND Project.projectID = ProjectDepartment.projectID
@@ -183,7 +202,7 @@ class DBAbstraction {
     getAllProjectsReverseSortByCompany()
 	{
     	const sql = `
-		SELECT Company.name, Company.phone, Project.Description, Project.Date, Project.pstatus, Department.depName, Project.projectID
+		SELECT Company.name, Company.first, Company.last, Project.Description, Project.Date, Project.pstatus, Department.depName, Project.projectID
 		FROM Project, Company, Department, ProjectDepartment
 		WHERE Project.CompanyID = Company.companyID
 		AND Project.projectID = ProjectDepartment.projectID
@@ -205,12 +224,12 @@ class DBAbstraction {
 	getAllProjectsSortByDate()
 	{
     	const sql = `
-		SELECT Company.name, Company.phone, Project.Description, Project.Date, Project.pstatus, Department.depName, Project.projectID
+		SELECT Company.name, Company.first, Company.last, Project.Description, Project.Date, Project.pstatus, Department.depName, Project.projectID
 		FROM Project, Company, Department, ProjectDepartment
 		WHERE Project.CompanyID = Company.companyID
 		AND Project.projectID = ProjectDepartment.projectID
 		AND Department.departmentID = ProjectDepartment.departmentID
-		ORDER BY Project.Date
+		ORDER BY Project.ProjectID
 		;`;
 
     	return new Promise((resolve, reject) => {
@@ -227,12 +246,12 @@ class DBAbstraction {
     getAllProjectsReverseSortByDate()
 	{
     	const sql = `
-		SELECT Company.name, Company.phone, Project.Description, Project.Date, Project.pstatus, Department.depName, Project.projectID
+		SELECT Company.name, Company.first, Company.last, Project.Description, Project.Date, Project.pstatus, Department.depName, Project.projectID
 		FROM Project, Company, Department, ProjectDepartment
 		WHERE Project.CompanyID = Company.companyID
 		AND Project.projectID = ProjectDepartment.projectID
 		AND Department.departmentID = ProjectDepartment.departmentID
-		ORDER BY Project.Date DESC
+		ORDER BY Project.ProjectID DESC
 		;`;
 
     	return new Promise((resolve, reject) => {
@@ -249,7 +268,7 @@ class DBAbstraction {
     getAllProjectsSortByStatus()
 	{
     	const sql = `
-		SELECT Company.name, Company.phone, Project.Description, Project.Date, Project.pstatus, Department.depName, Project.projectID
+		SELECT Company.name, Company.first, Company.last, Project.Description, Project.Date, Project.pstatus, Department.depName, Project.projectID
 		FROM Project, Company, Department, ProjectDepartment
 		WHERE Project.CompanyID = Company.companyID
 		AND Project.projectID = ProjectDepartment.projectID
@@ -272,7 +291,7 @@ class DBAbstraction {
 	getAllProjectsReverseSortByStatus()
 	{
     	const sql = `
-		SELECT Company.name, Company.phone, Project.Description, Project.Date, Project.pstatus, Department.depName, Project.projectID
+		SELECT Company.name, Company.first, Company.last, Project.Description, Project.Date, Project.pstatus, Department.depName, Project.projectID
 		FROM Project, Company, Department, ProjectDepartment
 		WHERE Project.CompanyID = Company.companyID
 		AND Project.projectID = ProjectDepartment.projectID
@@ -296,7 +315,7 @@ class DBAbstraction {
 	getAllProjectsSortByDepartment()
 	{
     	const sql = `
-		SELECT Company.name, Company.phone, Project.Description, Project.Date, Project.pstatus, Department.depName, Project.projectID
+		SELECT Company.name, Company.first, Company.last, Project.Description, Project.Date, Project.pstatus, Department.depName, Project.projectID
 		FROM Project, Company, Department, ProjectDepartment
 		WHERE Project.CompanyID = Company.companyID
 		AND Project.projectID = ProjectDepartment.projectID
@@ -318,7 +337,7 @@ class DBAbstraction {
     getAllProjectsReverseSortByDepartment()
 	{
     	const sql = `
-		SELECT Company.name, Company.phone, Project.Description, Project.Date, Project.pstatus, Department.depName, Project.projectID
+		SELECT Company.name, Company.first, Company.last, Project.Description, Project.Date, Project.pstatus, Department.depName, Project.projectID
 		FROM Project, Company, Department, ProjectDepartment
 		WHERE Project.CompanyID = Company.companyID
 		AND Project.projectID = ProjectDepartment.projectID
@@ -408,6 +427,26 @@ class DBAbstraction {
         	});
    	 });
 
+    }
+
+	deleteProjectDep(proID, depName)
+    {
+   	 const sql = `
+   		DELETE ProjectDepartment
+		FROM ProjectDepartment 
+		WHERE projectID = ? COLLATE NOCASE
+		AND departmentID = ? COLLATE NOCASE;
+   	 `;
+
+   	 return new Promise((resolve, reject) => {
+   		 this.db.run(sql, [proID, depName], (err) => {            	 
+            	if(err) {
+                	reject(err);
+            	} else {
+                	resolve();
+            	}
+        	});
+   	 });
     }
 
 	getCompanyByName(cname)
