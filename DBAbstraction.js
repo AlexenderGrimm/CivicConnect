@@ -363,7 +363,7 @@ class DBAbstraction {
         }
 		 
     	const sql = `
-		SELECT Project.projectID, Project.Description, Project.pstatus, Project.file, Project.TimeLine, Project.Date, Project.radio, Project.helpAvail, Company.name, Company.street, Company.city, Company.state, Company.zip, Company.first, Company.last, Company.phone, Company.email, Company.companyWeb, Department.depName, Department.head, Department.depEmail
+		SELECT Project.projectID, Project.Description, Project.pstatus, Project.TimeLine, Project.Date, Project.radio, Project.helpAvail, Company.name, Company.street, Company.city, Company.state, Company.zip, Company.first, Company.last, Company.phone, Company.email, Company.companyWeb, Department.depName, Department.head, Department.depEmail
 		FROM Project, Company, Department, ProjectDepartment
 		WHERE Project.CompanyID = Company.companyID 
 		AND Project.projectID = ?
@@ -448,7 +448,27 @@ class DBAbstraction {
         	});
    	 });
     }
+    
+deleteUnusedCompany()
+{
+    const sql = `
+    DELETE FROM company
+    WHERE NOT EXISTS (
+        SELECT 1 
+        FROM project 
+        WHERE project.companyId = company.companyId
+    );`;
 
+    return new Promise((resolve, reject) => {
+        this.db.run(sql, [], (err) => {            	 
+            if(err) {
+                reject(err);
+            } else {
+                resolve();
+            }
+        });
+    });
+}
 	getCompanyByName(cname)
 	{
     	const sql = `

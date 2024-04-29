@@ -3,33 +3,30 @@
 </a>
 
 <body>
-    <h3>Project ID: {{information.1.projectID}}</h3>
-    <h3>Project Status: <a href="statusupdate/{{information.1.projectID}}" tabindex="2">{{information.1.pstatus}}</a></h3>
+    <h3>Project ID: {{information.0.projectID}}</h3>
+    <h3>Project Status: <a href="statusupdate/{{information.0.projectID}}" tabindex="2">{{information.0.pstatus}}</a></h3>
     <h3>Company Name:</h3>
-        <td>{{information.1.name}}</td>
+        <td>{{information.0.name}}</td>
     <h3>Contact: </h3>
-        <td>{{information.1.first}} {{information.1.last}}</td>
+        <td>{{information.0.first}} {{information.0.last}}</td>
     <h3>Contact Email:</h3>
-        <td><a href="mailto:{{information.1.email}}">{{information.1.email}}</a></td>
+        <td><a href="mailto:{{information.0.email}}">{{information.0.email}}</a></td>
     <h3>Contact Phone number:</h3>
-        <td>{{information.1.phone}}</td>
+        <td>{{information.0.phone}}</td>
     <h3>Project description:</h3>
-        <td>{{information.1.Description}}</td>
+        <td>{{information.0.Description}}</td>
     <h3>Expected Timeline:</h3>
-        <td>{{information.1.TimeLine}}</td>
-    <h3>Can Students Contact Them:</h3>
-        <td>{{information.1.radio}}</td>
-    <h3>How often (If yes):</h3>
-        <td>{{information.1.helpAvail}}</td>
+        <td>{{information.0.TimeLine}}</td>
+    <h3>Can Students Contact Them (if yes how often?):</h3>
+        <td><strong>{{information.0.radio}}</strong>, {{information.0.helpAvail}}</td>
     <h3>Street city, state, zip:</h3>
-        <td>{{information.1.street}} {{information.1.city}}, {{information.1.state}}, {{information.1.zip}}</td>
-    
+        <td>{{information.0.street}} {{information.0.city}}, {{information.0.state}}, {{information.0.zip}}</td>
     <h3>Company Webpage:</h3>
-    <a href="https://{{information.1.companyWeb}}">
-        <td>{{information.1.companyWeb}}</td>
+    <a href="https://{{information.0.companyWeb}}" target="_blank">
+        <td>{{information.0.companyWeb}}</td>
     </a>
     <h3>Project submission Date:</h3>
-        <td>{{information.1.Date}}</td>
+        <td>{{information.0.Date}}</td>
 </body>
 
 

@@ -372,7 +372,9 @@ app.get('/faculty/department', ensureAuthenticated, async (req, res) => {
 
 app.get('/allinformation/:projectid', ensureAuthenticated, async (req, res) => {
 	try {
+        
     	const projectInfo = await db.getAllInformationByProjectID(Number(req.params.projectid));
+        console.log(projectInfo);
     	if(projectInfo) {
         res.render('allInfoTable', {information: projectInfo});
     	} else {
@@ -400,6 +402,7 @@ app.get('/allinformation/delete/:projectid', ensureAuthenticated, async(req, res
     
       // Use projectIdToDelete to delete the project from your database
       await db.deleteProject(Number(req.params.projectid));
+      await db.deleteUnusedCompany();
       
       // Redirect to the desired page after successful deletion
       res.redirect('/faculty'); // Adjust the redirect URL as needed
