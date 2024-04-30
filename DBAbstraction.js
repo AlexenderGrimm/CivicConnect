@@ -29,44 +29,30 @@ class DBAbstraction {
         }); 
 	}
 
-    insertCompany(cname, street, city, state, zip, first, last, phone, email, web) 
-    {
-        const sql = 'INSERT OR IGNORE INTO Company (name, street, city, state, zip, first, last, phone, email, companyWeb)'
-         + ' VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);';
-        return new Promise((resolve, reject) => { 
-            this.db.run(sql, [cname, street, city, state, zip, first, last, phone, email, web], (err) => {                 
-                if(err) { 
-                    reject(err); 
-                } else { 
-                    resolve(); 
-                } 
-            }); 
-
-        }); 
+    // insertCompany function with improved error handling and returning companyID
+    insertCompany(cname, street, city, state, zip, first, last, phone, email, web) {
+        const sql = `
+            INSERT OR IGNORE INTO Company (name, street, city, state, zip, first, last, phone, email, companyWeb)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
+        `;
+        return new Promise((resolve, reject) => {
+            this.db.run(sql, [cname, street, city, state, zip, first, last, phone, email, web], function(err) {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve(this.lastID); // Return the ID of the inserted row
+                }
+            });
+        });
     }
 
-	insertDepartment(dname, head)
-	{
-    	const sql = 'INSERT INTO Department (name, head) VALUES (?, ?, ?);';
-    	return new Promise((resolve, reject) => {
-        	this.db.run(sql, [dname, head], (err) => {            	 
-            	if(err) {
-                	reject(err);
-            	} else {
-                	resolve();
-            	}
-        	});
-    	});
-	}
-
-    insertProject(Description, pstatus, comp, radio, helpAvail, id, dateTime) 
+    insertProject(Description, pStatus, comp, radio, helpAvail, id, dateTime) 
     {
         
         const sql = 'INSERT OR IGNORE INTO Project (Description, pstatus, TimeLine, Date, radio, helpAvail, CompanyID) VALUES (?, ?, ?, ?, ?, ?, ?);';
         
-		console.log(dateTime);
         return new Promise((resolve, reject) => { 
-            this.db.run(sql, [Description, pstatus, comp, dateTime, radio, helpAvail, id], (err) => {                 
+            this.db.run(sql, [Description, pStatus, comp, dateTime, radio, helpAvail, id], (err) => {                 
                 if(err) { 
                     reject(err); 
                 } else { 
@@ -76,6 +62,7 @@ class DBAbstraction {
         });
     }
 
+    // getCompanyID function with case insensitivity
     getCompanyID(name, fname, lname) {
         const sql = `
             SELECT companyID
@@ -84,13 +71,12 @@ class DBAbstraction {
             AND first = ? COLLATE NOCASE
             AND last = ? COLLATE NOCASE;
         `;
-    
         return new Promise((resolve, reject) => {
             this.db.get(sql, [name, fname, lname], (err, row) => {
                 if (err) {
                     reject(err);
                 } else {
-                    resolve(row ? row.companyID : null);
+                    resolve(row ? row.companyID : null); // Return null if no company found
                 }
             });
         });

@@ -19,7 +19,7 @@ const fs = require('fs').promises;
 const path = require('path');
 const nodemailer = require("nodemailer");
 const process = require('process');
-const db = new DBAbstraction('./software_Data.db'); 
+const db = new DBAbstraction('software_Data.db'); 
 const passport = require('passport');
 const OneLoginStrategy = require('passport-openidconnect').Strategy;
 const session = require('express-session');
@@ -40,7 +40,7 @@ app.engine('handlebars', handlebars.engine);
 app.set('view engine', 'handlebars');
 app.use(morgan('dev'));
 app.use(express.static('public'));  
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 // Configure session middleware
@@ -121,9 +121,7 @@ async function mailer(bodyParser) {
       rejectUnauthorized:false
     }
   });
-  console.log(bodyParser.multipleDrop);
   var emails = addresses(bodyParser.multipleDrop);
-  console.log(emails);
 
   // setup email data with unicode symbols
   let mailOptions = {
@@ -179,58 +177,55 @@ app.get('/logout', function(req, res) {
 });
 
 app.post('/project', async (req, res) => { 
-  const fName = req.body.fname;
-  const lName = req.body.lname;
-  const email = req.body.email;
-  const cityTown = req.body.cityTown;
-  const OrgSite = req.body.OrgSite;
-  const pNumber = req.body.pNumber;
-  const state = req.body.state;
-  const radio = req.body.radio;
-  const OrgName = req.body.OrgName;
-  const Comp = req.body.Comp;
-  const streetAddr = req.body.streetAddr;
-  const zip = req.body.zip;
-  const helpAvail = req.body.helpAvail;
-  const Description = req.body.Description;
-  const depart = req.body.multipleDrop;
-  console.log(req.body);
-  await db.insertCompany(OrgName, streetAddr, cityTown, state, zip, fName, lName, pNumber, email, OrgSite);
-  await db.getCompanyID(OrgName, fName, lName)
-  .then(companyID => {
-    const id = companyID;
-    if(id){
-      var currentDate = new Date(); 
-        var dateTime = currentDate.getFullYear() + " / " 
-            + String(Number(currentDate.getMonth())+1) + " / "
-            + currentDate.getDate()  + " @ "  
-            + currentDate.getHours() + ":"  
-            + currentDate.getMinutes() + ":" 
-            + currentDate.getSeconds();
-      db.insertProject(Description, "Waiting", Comp, radio, helpAvail, id, dateTime);
-    }
-    else{
-      res.json({"result": "Failed to find or make company"});
-    }
-  });
-  await db.getProjectID(Description)
-  .then(projectID => {
-    const id = projectID;
-    if(id){
-      for (var i = 0; i < depart.length; i++) {
-        db.insertProjectDepartment(depart[i], id);
+    const fName = req.body.fname;
+    const lName = req.body.lname;
+    const email = req.body.email;
+    const cityTown = req.body.cityTown;
+    const OrgSite = req.body.OrgSite;
+    const pNumber = req.body.pNumber;
+    const state = req.body.state;
+    const radio = req.body.radio;
+    const OrgName = req.body.OrgName;
+    const Comp = req.body.Comp;
+    const streetAddr = req.body.streetAddr;
+    const zip = req.body.zip;
+    const helpAvail = req.body.helpAvail;
+    const Description = req.body.Description;
+    const depart = req.body.multipleDrop;
+  
+    try {
+      await db.insertCompany(OrgName, streetAddr, cityTown, state, zip, fName, lName, pNumber, email, OrgSite);
+      const companyID = await db.getCompanyID(OrgName, fName, lName);
+      if (!companyID) {
+        return res.json({"result": "Failed to find or make company"});
       }
-    }
-    else{
-      res.json({"result": "Failed to find or make Project"});
-      exit();
+  
+      var currentDate = new Date(); 
+      var dateTime = currentDate.getFullYear() + " / " 
+          + String(Number(currentDate.getMonth())+1) + " / "
+          + currentDate.getDate()  + " @ "  
+          + currentDate.getHours() + ":"  
+          + currentDate.getMinutes() + ":" 
+          + currentDate.getSeconds();
+      await db.insertProject(Description, "Waiting", Comp, radio, helpAvail, companyID, dateTime);
+  
+      const projectID = await db.getProjectID(Description);
+      if (!projectID) {
+        return res.json({"result": "Failed to find or make Project"});
+      }
+  
+      for (var i = 0; i < depart.length; i++) {
+        await db.insertProjectDepartment(depart[i], projectID);
+      }
+  
+      mailer(req.body);
+  
+      res.send('Thank you for your project submission.');
+    } catch (error) {
+      console.error(error);
+      res.status(500).send('Internal Server Error');
     }
   });
-
-  mailer(req.body);
-
-  res.send('Thank you for your project submission.');
-});
 
 app.get('/faculty', ensureAuthenticated, async (req, res) => {
 	 
@@ -373,7 +368,6 @@ app.get('/allinformation/:projectid', ensureAuthenticated, async (req, res) => {
 	try {
         
     	const projectInfo = await db.getAllInformationByProjectID(Number(req.params.projectid));
-        console.log(projectInfo);
     	if(projectInfo) {
         res.render('allInfoTable', {information: projectInfo});
     	} else {

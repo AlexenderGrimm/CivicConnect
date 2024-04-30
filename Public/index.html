@@ -26,183 +26,183 @@
 <!--Future me, think I want to change header to have a gradient on the bottom
 fading from the pic to white to better transition from the header to the form-->
 <body>
-<form action="/project" method="post" enctype="multipart/form-data" enctype="application/x-www-form-urlencoded" style="margin-bottom: 5%;">
-<div class="row" style="margin-left:5%" >
-    <div class="col2">
-        <label for="fname" class="label-style">First Name*</label>
-        <input selected type="text" id="fname" name="fname" class="length1"  tabindex="2" required>
-    </div>
-    <div class="col2">
-        <label for="lname" class="label-style">Last Name*</label>
-        <input type="text" id="lname" name="lname" class="length1"  tabindex="3" required>
-    </div>
-    <div class="col2">
-        <label for="OrgName" class="label-style">Business/Organization Name*</label>
-        <input type="text" id="OrgName" name="OrgName" class="length2"  tabindex="4" required>
-    </div>
-</div>
-<div class="row" style="margin-left:5%">
-    <div class="col2">
-        <label for="email" class="label-style">Contact Email*</label>
-        <input type="text" id="email" name="email" class="length3"  tabindex="5" required>
-    </div>
-    <div class="col2">
-        <label for="pNumber" class="label-style">Phone Number*</label>
-        <input type="text" id="pNumber" name="pNumber" class="length2"  tabindex="6" required>
-    </div>
-    <div class="col2">
-        <label for="streetAddr" class="label-style">Street Address* (of Business/Org)</label>
-        <input type="text" id="streetAddr" name="streetAddr" class="length3" tabindex="7" required>
-    </div>
-</div>
-<div class="row" style="margin-left:5%">
-    <div class="col2">
-        <label for="cityTown" class="label-style">City/Town*</label>
-        <input type="text" id="cityTown" name="cityTown" class="length2" tabindex="8" required>
-    </div>
-    <div class="col2">
-        <br><br>
-        <div class="dropdown">
-            <select class="btn btn-secondary dropdown-toggle" type="button" name="state" id="state" tabindex="9" 
-            style="background-color:rgb(238, 39, 56);color: white;" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" required>
-              <div class="dropdown-menu"  aria-labelledby="dropdownMenuButton">
-                <option class="dropdown-item" selected="selected" hidden="hidden">State*</option>
-                <option class="dropdown-item" value="alabama">Alabama</option>
-                <option class="dropdown-item" value="alaska">Alaska</option>
-                <option class="dropdown-item" value="arizona">Arizona</option>
-                <option class="dropdown-item" value="arkansas">Arkansas</option>
-                <option class="dropdown-item" value="california">California</option>
-                <option class="dropdown-item" value="colorado">Colorado</option>
-                <option class="dropdown-item" value="connecticut">Connecticut</option>
-                <option class="dropdown-item" value="delaware">Delaware</option>
-                <option class="dropdown-item" value="florida">Florida</option>
-                <option class="dropdown-item" value="georgia">Georgia</option>
-                <option class="dropdown-item" value="hawaii">Hawaii</option>
-                <option class="dropdown-item" value="idaho">Idaho</option>
-                <option class="dropdown-item" value="illinois">Illinois</option>
-                <option class="dropdown-item" value="indiana">Indiana</option>
-                <option class="dropdown-item" value="iowa">Iowa</option>
-                <option class="dropdown-item" value="kansas">Kansas</option>
-                <option class="dropdown-item" value="kentucky">Kentucky</option>
-                <option class="dropdown-item" value="louisiana">Louisiana</option>
-                <option class="dropdown-item" value="maine">Maine</option>
-                <option class="dropdown-item" value="maryland">Maryland</option>
-                <option class="dropdown-item" value="massachusetts">Massachusetts</option>
-                <option class="dropdown-item" value="michigan">Michigan</option>
-                <option class="dropdown-item" value="minnesota">Minnesota</option>
-                <option class="dropdown-item" value="mississippi">Mississippi</option>
-                <option class="dropdown-item" value="missouri">Missouri</option>
-                <option class="dropdown-item" value="montana">Montana</option>
-                <option class="dropdown-item" value="nebraska">Nebraska</option>
-                <option class="dropdown-item" value="nevada">Nevada</option>
-                <option class="dropdown-item" value="new-hampshire">New Hampshire</option>
-                <option class="dropdown-item" value="new-jersey">New Jersey</option>
-                <option class="dropdown-item" value="new-mexico">New Mexico</option>
-                <option class="dropdown-item" value="new-york">New York</option>
-                <option class="dropdown-item" value="north-carolina">North Carolina</option>
-                <option class="dropdown-item" value="north-dakota">North Dakota</option>
-                <option class="dropdown-item" value="ohio">Ohio</option>
-                <option class="dropdown-item" value="oklahoma">Oklahoma</option>
-                <option class="dropdown-item" value="oregon">Oregon</option>
-                <option class="dropdown-item" value="pennsylvania">Pennsylvania</option>
-                <option class="dropdown-item" value="rhode-island">Rhode Island</option>
-                <option class="dropdown-item" value="south-carolina">South Carolina</option>
-                <option class="dropdown-item" value="south-dakota">South Dakota</option>
-                <option class="dropdown-item" value="tennessee">Tennessee</option>
-                <option class="dropdown-item" value="texas">Texas</option>
-                <option class="dropdown-item" value="utah">Utah</option>
-                <option class="dropdown-item" value="vermont">Vermont</option>
-                <option class="dropdown-item" value="virginia">Virginia</option>
-                <option class="dropdown-item" value="washington">Washington</option>
-                <option class="dropdown-item" value="west-virginia">West Virginia</option>
-                <option class="dropdown-item" value="wisconsin">Wisconsin</option>
-                <option class="dropdown-item" value="wyoming">Wyoming</option>
-              </div>
-            </select>
-          </div>
-    </div>
-    <div class="col2">
-        <label for="zip" class="label-style">Zip Code*</label>
-        <input type="text" id="zip" name="zip" class="length1" tabindex="10" required>
-    </div>
-</div>
-<div class="row" style="margin-left:5%">
-    <div class="col2">
-        <label for="OrgSite" class="label-style">Website of Business/Org</label>
-        <input type="text" id="OrgSite" name="OrgSite" class="length3" tabindex="11"> 
-    </div>
-    <div class="col2">
-        <div>
-            <p class="label-style">Can students contact you for assistance?</p>
-            <label class="radioButtons">Yes
-              <input type="radio" name="radio" value="Yes">
-              <span class="checkmark" tabindex="12"></span>
-            </label>
-            <label class="radioButtons">No
-              <input type="radio" name="radio" value="No">
-              <span class="checkmark" tabindex="12"></span>
-            </label>
-          </div>
-    </div>
-    <div class="col2">
-        <label for="helpAvail" class="label-style">If yes, how often can they contact you?</label>
-        <input type="text" id="helpAvail" name="helpAvail" class="length3" tabindex="13">
-    </div>    
-</div>
-<div class="row" style="margin-left:5%">
-    <div class="col2">
-        <label for="Comp" class="label-style">Anticipated Completion/Timeline*</label>
-        <input type="text" id="Comp" name="Comp" class="length1" tabindex="14" required>
-    </div>
-    <div class="col2"></div>
-</div>
-<div class="row" style="margin-left:5%;margin-top:1%">
-    <div class="lastFormElems">
-      <label for="Description" class="label-style">Please provide a description of the project (be as specific as you'd like):</label>
-      <textarea class="description" id="Description" name="Description" rows="8" cols="95" onfocus="this.focus();this.select();"
-       tabindex="15" style="text-align: left;max-width:90%;">Provide a description here...</textarea>
-    </div>
-    <div class="test-dropdown" style="margin-left: 2%;">
-      <label for="multipleDrop" class="label-style">Select department(s)* (CTRL click to select multiple):</label>
-      <select name="multipleDrop" id="multipleDrop" class="test-dropdown-select" tabindex="16" multiple required>  
-        <div class="test-dropdown-options">    
-  <!--####################################################################################################################################
-  ########################################################################################################################################
-  
-                                        Code Break 1
-  
-  ########################################################################################################################################
-  ########################################################################################################################################-->
-          <option class="test-dropdown-option" value="1">Biology</option>
-          <option class="test-dropdown-option" value="2">Carthage Honors Program</option>
-          <option class="test-dropdown-option" value="3">Clinical/Counseling Psychology</option>
-          <option class="test-dropdown-option" value="4">Computer Science</option>
-          <option class="test-dropdown-option" value="5">Engineering</option>
-          <option class="test-dropdown-option" value="6">Environmental Science</option>
-          <option class="test-dropdown-option" value="7">GIS, mapping, spatial analytics</option>
-          <option class="test-dropdown-option" value="8">Geoscience</option>
-          <option class="test-dropdown-option" value="9">Graphic Design and Photography</option>
-          <option class="test-dropdown-option" value="10">Healthcare pre-professions-Allied Health Science</option>
-          <option class="test-dropdown-option" value="11">History</option>
-          <option class="test-dropdown-option" value="12">Operations Management, Strategic Planning, Human Capital, and Start-Ups</option>
-          <option class="test-dropdown-option" value="14">Public Relation (press releases, social media calendars, feature articles, event plans)</option>
-          <option class="test-dropdown-option" value="15">Sociology & Criminal Justice</option>
-          <option class="test-dropdown-option" value="13">Other</option>
-  <!--####################################################################################################################################
-  ########################################################################################################################################
-  
-                                        End of Code Break 1
-  
-  ########################################################################################################################################
-  ########################################################################################################################################-->
+<form action="/project" method="post" enctype="application/x-www-form-urlencoded" style="margin-bottom: 5%;">
+    <div class="row" style="margin-left:5%" >
+        <div class="col2">
+            <label for="fname" class="label-style">First Name*</label>
+            <input selected type="text" id="fname" name="fname" class="length1"  tabindex="2" required>
         </div>
-      </select>
-  </div>
-  <div>
-    <br><br><br>
-    <input type="submit" value="Submit" tabindex="17">
-  </div>
-</div>  
+        <div class="col2">
+            <label for="lname" class="label-style">Last Name*</label>
+            <input type="text" id="lname" name="lname" class="length1"  tabindex="3" required>
+        </div>
+        <div class="col2">
+            <label for="OrgName" class="label-style">Business/Organization Name*</label>
+            <input type="text" id="OrgName" name="OrgName" class="length2"  tabindex="4" required>
+        </div>
+    </div>
+    <div class="row" style="margin-left:5%">
+        <div class="col2">
+            <label for="email" class="label-style">Contact Email*</label>
+            <input type="text" id="email" name="email" class="length3"  tabindex="5" required>
+        </div>
+        <div class="col2">
+            <label for="pNumber" class="label-style">Phone Number*</label>
+            <input type="text" id="pNumber" name="pNumber" class="length2"  tabindex="6" required>
+        </div>
+        <div class="col2">
+            <label for="streetAddr" class="label-style">Street Address* (of Business/Org)</label>
+            <input type="text" id="streetAddr" name="streetAddr" class="length3" tabindex="7" required>
+        </div>
+    </div>
+    <div class="row" style="margin-left:5%">
+        <div class="col2">
+            <label for="cityTown" class="label-style">City/Town*</label>
+            <input type="text" id="cityTown" name="cityTown" class="length2" tabindex="8" required>
+        </div>
+        <div class="col2">
+            <br><br>
+            <div class="dropdown">
+                <select class="btn btn-secondary dropdown-toggle" type="button" name="state" id="state" tabindex="9" 
+                style="background-color:rgb(238, 39, 56);color: white;" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" required>
+                  <div class="dropdown-menu"  aria-labelledby="dropdownMenuButton">
+                    <option class="dropdown-item" selected="selected" hidden="hidden">State*</option>
+                    <option class="dropdown-item" value="alabama">Alabama</option>
+                    <option class="dropdown-item" value="alaska">Alaska</option>
+                    <option class="dropdown-item" value="arizona">Arizona</option>
+                    <option class="dropdown-item" value="arkansas">Arkansas</option>
+                    <option class="dropdown-item" value="california">California</option>
+                    <option class="dropdown-item" value="colorado">Colorado</option>
+                    <option class="dropdown-item" value="connecticut">Connecticut</option>
+                    <option class="dropdown-item" value="delaware">Delaware</option>
+                    <option class="dropdown-item" value="florida">Florida</option>
+                    <option class="dropdown-item" value="georgia">Georgia</option>
+                    <option class="dropdown-item" value="hawaii">Hawaii</option>
+                    <option class="dropdown-item" value="idaho">Idaho</option>
+                    <option class="dropdown-item" value="illinois">Illinois</option>
+                    <option class="dropdown-item" value="indiana">Indiana</option>
+                    <option class="dropdown-item" value="iowa">Iowa</option>
+                    <option class="dropdown-item" value="kansas">Kansas</option>
+                    <option class="dropdown-item" value="kentucky">Kentucky</option>
+                    <option class="dropdown-item" value="louisiana">Louisiana</option>
+                    <option class="dropdown-item" value="maine">Maine</option>
+                    <option class="dropdown-item" value="maryland">Maryland</option>
+                    <option class="dropdown-item" value="massachusetts">Massachusetts</option>
+                    <option class="dropdown-item" value="michigan">Michigan</option>
+                    <option class="dropdown-item" value="minnesota">Minnesota</option>
+                    <option class="dropdown-item" value="mississippi">Mississippi</option>
+                    <option class="dropdown-item" value="missouri">Missouri</option>
+                    <option class="dropdown-item" value="montana">Montana</option>
+                    <option class="dropdown-item" value="nebraska">Nebraska</option>
+                    <option class="dropdown-item" value="nevada">Nevada</option>
+                    <option class="dropdown-item" value="new-hampshire">New Hampshire</option>
+                    <option class="dropdown-item" value="new-jersey">New Jersey</option>
+                    <option class="dropdown-item" value="new-mexico">New Mexico</option>
+                    <option class="dropdown-item" value="new-york">New York</option>
+                    <option class="dropdown-item" value="north-carolina">North Carolina</option>
+                    <option class="dropdown-item" value="north-dakota">North Dakota</option>
+                    <option class="dropdown-item" value="ohio">Ohio</option>
+                    <option class="dropdown-item" value="oklahoma">Oklahoma</option>
+                    <option class="dropdown-item" value="oregon">Oregon</option>
+                    <option class="dropdown-item" value="pennsylvania">Pennsylvania</option>
+                    <option class="dropdown-item" value="rhode-island">Rhode Island</option>
+                    <option class="dropdown-item" value="south-carolina">South Carolina</option>
+                    <option class="dropdown-item" value="south-dakota">South Dakota</option>
+                    <option class="dropdown-item" value="tennessee">Tennessee</option>
+                    <option class="dropdown-item" value="texas">Texas</option>
+                    <option class="dropdown-item" value="utah">Utah</option>
+                    <option class="dropdown-item" value="vermont">Vermont</option>
+                    <option class="dropdown-item" value="virginia">Virginia</option>
+                    <option class="dropdown-item" value="washington">Washington</option>
+                    <option class="dropdown-item" value="west-virginia">West Virginia</option>
+                    <option class="dropdown-item" value="wisconsin">Wisconsin</option>
+                    <option class="dropdown-item" value="wyoming">Wyoming</option>
+                  </div>
+                </select>
+              </div>
+        </div>
+        <div class="col2">
+            <label for="zip" class="label-style">Zip Code*</label>
+            <input type="text" id="zip" name="zip" class="length1" tabindex="10" required>
+        </div>
+    </div>
+    <div class="row" style="margin-left:5%">
+        <div class="col2">
+            <label for="OrgSite" class="label-style">Website of Business/Org</label>
+            <input type="text" id="OrgSite" name="OrgSite" class="length3" tabindex="11"> 
+        </div>
+        <div class="col2">
+            <div>
+                <p class="label-style">Can students contact you for assistance?</p>
+                <label class="radioButtons">Yes
+                  <input type="radio" name="radio" value="Yes">
+                  <span class="checkmark" tabindex="12"></span>
+                </label>
+                <label class="radioButtons">No
+                  <input type="radio" name="radio" value="No">
+                  <span class="checkmark" tabindex="12"></span>
+                </label>
+              </div>
+        </div>
+        <div class="col2">
+            <label for="helpAvail" class="label-style">If yes, how often can they contact you?</label>
+            <input type="text" id="helpAvail" name="helpAvail" class="length3" tabindex="13">
+        </div>    
+    </div>
+    <div class="row" style="margin-left:5%">
+        <div class="col2">
+            <label for="Comp" class="label-style">Anticipated Completion/Timeline*</label>
+            <input type="text" id="Comp" name="Comp" class="length1" tabindex="14" required>
+        </div>
+        <div class="col2"></div>
+    </div>
+    <div class="row" style="margin-left:5%;margin-top:1%">
+        <div class="lastFormElems">
+          <label for="Description" class="label-style">Please provide a description of the project (be as specific as you'd like):</label>
+          <textarea class="description" id="Description" name="Description" rows="8" cols="95" onfocus="this.focus();this.select();"
+           tabindex="15" style="text-align: left;max-width:90%;">Provide a description here...</textarea>
+        </div>
+        <div class="test-dropdown" style="margin-left: 2%;">
+          <label for="multipleDrop" class="label-style">Select department(s)* (CTRL click to select multiple):</label>
+          <select name="multipleDrop" id="multipleDrop" class="test-dropdown-select" tabindex="16" multiple required>  
+            <div class="test-dropdown-options">    
+      <!--####################################################################################################################################
+      ########################################################################################################################################
+    
+                                            Code Break 1
+    
+      ########################################################################################################################################
+      ########################################################################################################################################-->
+              <option class="test-dropdown-option" value="1">Biology</option>
+              <option class="test-dropdown-option" value="2">Carthage Honors Program</option>
+              <option class="test-dropdown-option" value="3">Clinical/Counseling Psychology</option>
+              <option class="test-dropdown-option" value="4">Computer Science</option>
+              <option class="test-dropdown-option" value="5">Engineering</option>
+              <option class="test-dropdown-option" value="6">Environmental Science</option>
+              <option class="test-dropdown-option" value="7">GIS, mapping, spatial analytics</option>
+              <option class="test-dropdown-option" value="8">Geoscience</option>
+              <option class="test-dropdown-option" value="9">Graphic Design and Photography</option>
+              <option class="test-dropdown-option" value="10">Healthcare pre-professions-Allied Health Science</option>
+              <option class="test-dropdown-option" value="11">History</option>
+              <option class="test-dropdown-option" value="12">Operations Management, Strategic Planning, Human Capital, and Start-Ups</option>
+              <option class="test-dropdown-option" value="14">Public Relation (press releases, social media calendars, feature articles, event plans)</option>
+              <option class="test-dropdown-option" value="15">Sociology & Criminal Justice</option>
+              <option class="test-dropdown-option" value="13">Other</option>
+      <!--####################################################################################################################################
+      ########################################################################################################################################
+    
+                                            End of Code Break 1
+    
+      ########################################################################################################################################
+      ########################################################################################################################################-->
+            </div>
+          </select>
+      </div>
+      <div>
+        <br><br><br>
+        <input type="submit" value="Submit" tabindex="17">
+      </div>
+    </div>  
 
 </form>
 </body>
