@@ -36,9 +36,6 @@ var sortStat = false;
 var sortDep = true;
 
 app.use(cors());
-app.use(fileUpload({
-    createParentPath: true
-}));
 app.engine('handlebars', handlebars.engine); 
 app.set('view engine', 'handlebars');
 app.use(morgan('dev'));
