@@ -23,6 +23,7 @@ const db = new DBAbstraction('./software_Data.db');
 const passport = require('passport');
 const OneLoginStrategy = require('passport-openidconnect').Strategy;
 const session = require('express-session');
+const { date } = require('assert-plus');
 require('dotenv').config();
 const router = express.Router();
 
@@ -237,7 +238,8 @@ app.post('/project', async (req, res) => {
 app.get('/faculty', ensureAuthenticated, async (req, res) => {
 	 
    try {
-	    const allProjects = await db.getAllProjects();
+	    const allProjects = await db.getAllProjectsReverseSortByDate();
+        sortDate = true;
 	    if(allProjects) {
         	res.render('leftHandTable', {projects: allProjects});
 	    } else {
@@ -251,7 +253,7 @@ app.get('/faculty', ensureAuthenticated, async (req, res) => {
 app.post('/faculty/Search',ensureAuthenticated, async (req, res) => {
     try {
         if(req.body.Search == ""){
-            res.redirect('http://localhost:53140/faculty')
+            res.redirect('/faculty')
         }
         const allProjects = await db.getAllProjectsSearch("%" + req.body.Search + "%");
         res.render('leftHandTable', {projects: allProjects});        

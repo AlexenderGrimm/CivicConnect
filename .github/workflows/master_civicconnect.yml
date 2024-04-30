@@ -58,5 +58,5 @@ jobs:
         with:
           app-name: 'CivicConnect'
           slot-name: 'Production'
-          package: .
+          package: ..
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_0464B589373348A89089229179A8760D }}

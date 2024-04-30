@@ -1,4 +1,4 @@
-<form action="http://localhost:53140/faculty/Search" method="post" enctype="application/x-www-form-urlencoded">
+<form action="http://localhost:53140/faculty/Search" method="post" enctype="application/x-www-form-urlencoded" >
       <input type="text" id="Search" name="Search" class="length1" placeholder="Search" tabindex="1">
       <button type="submit" tabindex="2">Search</button>
 </form>
@@ -6,18 +6,18 @@
 
 <table class="table-striped table-hover table-interactive" overflow-y="hidden" > 
     <thead> 
-        <th width="5%">Project ID</th>
-        <th width="8%"><a href="http://localhost:53140/faculty/company" tabindex="1" class="noVisual">Company</a></th>
+        <th width="5%"><a href="/faculty/date" tabindex="1" class="noVisual">Project ID</a></th>
+        <th width="8%"><a href="/faculty/company" tabindex="1" class="noVisual">Company</a></th>
         <th width="7%">Contact</th>
         <th width="40%">Description</th>
-        <th width="10%"><a href="http://localhost:53140/faculty/date" tabindex="1" class="noVisual">Submission Date</a></th>
-        <th width="10%"><a href="http://localhost:53140/faculty/status" tabindex="1" class="noVisual">Status</a></th>
-        <th width="20%"><a href="http://localhost:53140/faculty/department" tabindex="1" class="noVisual">Department</a></th>
+        <th width="10%"><a href="/faculty/date" tabindex="1" class="noVisual">Submission Date</a></th>
+        <th width="10%"><a href="/faculty/status" tabindex="1" class="noVisual">Status</a></th>
+        <th width="20%"><a href="/faculty/department" tabindex="1" class="noVisual">Department</a></th>
     </thead> 
  
     {{#each projects}} 
         <tr> 
-            <td>{{this/projectID}}</td>
+            <td><a href="http://localhost:53140/allinformation/{{this/projectID}}" tabindex="1">{{this/projectID}}</a></td>
             <td>{{this/name}}</td> 
             <td>{{this/first}} {{this/last}}</td> 
             <td class="descrip-text"><a href="http://localhost:53140/allinformation/{{this/projectID}}" tabindex="1">{{this/Description}}</a></td>
