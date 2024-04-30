@@ -438,7 +438,7 @@ app.use((req, res) => {
 db.init()
 	.then(() => {
     	// Start the server
-        const port = 53140 || process.env.PORT ;
+        const port = process.env.PORT  || 53140;
         app.listen(port, () => {
         console.log(`Server is running on port ${port}`);
         });
