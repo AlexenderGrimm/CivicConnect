@@ -143,6 +143,11 @@ async function mailer(bodyParser) {
   console.log(mailOptions);
 }
 
+/* GET form page. */
+app.get('/', function(req, res, next) {
+    res.render('form', { layout: false });
+});
+
 /* GET home page. */
 app.get('/home', function(req, res, next) {
     res.render('index', { title: 'Civic Connect Login' });

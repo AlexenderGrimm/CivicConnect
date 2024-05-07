@@ -3,96 +3,81 @@
 </a>
 
 <body>
-    <div class="row" style="margin-left: 0%;">
+    <div class="row" style="margin-left: 0%;width:100%">
         <div class="col2">
-            <h3>Project ID: <strong>{{information.0.projectID}}</strong></h3>
+            <h3>&nbsp;Project ID: <strong>{{information.0.projectID}}</strong></h3>
         </div>
         <div class="col2">
-            <h3>Project Status: 
+            <h3>&nbsp;Project Status: 
                 <a href="statusupdate/{{information.0.projectID}}" tabindex="2">{{information.0.pstatus}}</a>
             </h3>
         </div>
     </div>
-    <div class="row" style="margin-left: 0%;background-color: #d3ccbd;" >
+    <div class="row" style="margin-left: 0%;background-color: #d3ccbd;width:100%" >
         <div class="col2">
-            <h3>Company Name:</h3>
-            <td>{{information.0.name}}</td>
+            <h3>&nbsp;Company Name:</h3>
+            <td>&emsp;{{information.0.name}}</td>
         </div>
         <div class="col2">
-             <h3>Contact: </h3>
-            <td>{{information.0.first}} {{information.0.last}}</td>
+             <h3>&nbsp;Contact: </h3>
+            <td>&emsp;{{information.0.first}} {{information.0.last}}</td>
         </div>
         <div class="col2">
-            <h3>Contact Email:</h3>
-            <td><a href="mailto:{{information.0.email}}">{{information.0.email}}</a></td>
+            <h3>&nbsp;Contact Email:</h3>
+            <td>&emsp;<a href="mailto:{{information.0.email}}">{{information.0.email}}</a></td>
         </div>
     </div>
-    <div class="row" style="margin-left: 0%;background-color: white;">
+    <div class="row" style="margin-left: 0%;background-color: white;width:100%">
         <div class="col2">
-            <h3>Contact Phone number:</h3>
-            <td>{{information.0.phone}}</td>
+            <h3>&nbsp;Contact Phone number:</h3>
+            <td>&emsp;{{information.0.phone}}</td>
         </div>
          <div class="col2">
-            <h3>Expected Timeline:</h3>
-            <td>{{information.0.TimeLine}}</td>
+            <h3>&nbsp;Expected Timeline:</h3>
+            <td>&emsp;{{information.0.TimeLine}}</td>
         </div>
         <div class="col2">
-            <h3>Can Students Contact Them (if yes how often?):</h3>
-            <td><strong>{{information.0.radio}}</strong>, {{information.0.helpAvail}}</td>
+            <h3>&nbsp;Can Students Contact Them (if yes how often?):</h3>
+            <td>&emsp;<strong>{{information.0.radio}}</strong>, {{information.0.helpAvail}}</td>
         </div>
     </div>
-    <div class="row" style="margin-left: 0%;background-color: #d3ccbd;">
+    <div class="row" style="margin-left: 0%;background-color: #d3ccbd;width:100%">
         <div class="col2">
-            <h3>Street city, state, zip:</h3>
-            <td>{{information.0.street}} {{information.0.city}}, {{information.0.state}}, {{information.0.zip}}</td>
+            <h3>&nbsp;Street city, state, zip:</h3>
+            <td>&emsp;{{information.0.street}} {{information.0.city}}, {{information.0.state}}, {{information.0.zip}}</td>
         </div>
         <div class="col2">
-            <h3>Company Webpage:</h3>
-            <a href="https://{{information.0.companyWeb}}" target="_blank">
-                <td>{{information.0.companyWeb}}</td>
-            </a>
+            <h3>&nbsp;Company Webpage:</h3>
+                <td>&emsp;<a href="https://{{information.0.companyWeb}}" target="_blank">{{information.0.companyWeb}}</a></td>
         </div>
         <div class="col2">
-            <h3>Project submission Date:</h3>
-            <td>{{information.0.Date}}</td>
+            <h3>&nbsp;Project submission Date:</h3>
+            <td>&emsp;{{information.0.Date}}</td>
         </div>
     </div>
-    <div class="row" style="margin-left: 0%;">
+    <div class="row" style="margin-left: 0%;width:100%">
         <div class="col2">
-            <h3>Project description:</h3>
-            <td>{{information.0.Description}}</td>
+            <h3>&nbsp;Project description:</h3>
+            <td>&emsp;{{information.0.Description}}</td>
         </div>
     </div>
-    
-   
-    
-    
-    
-    
-    
-    
-    
-    
 </body>
 
-
 <table style="margin-top: 15px;" class="table-striped table-hover">  
-
     <thead> 
-        <th width="30%" style="font-size: 20px;">Departments</th><th width="30%" style="font-size: 20px;">
-        Department Chair</th><th width="30%"style="font-size: 20px;">Department Chair Email</th>
+        <th width="30%" style="font-size: 20px;">&nbsp;Departments</th><th width="30%" style="font-size: 20px;">
+        &nbsp;Department Chair</th><th width="30%"style="font-size: 20px;">&nbsp;Department Chair Email</th>
         <th>Remove Department from Project</th>
     </thead> 
  
     {{#each information}} 
         <tr height="30px">
-            <td>{{this.depName}}</td>
-            <td>{{this.head}}</td>
-            <td><a href="mailto:{{this.depEmail}}">{{this.depEmail}}</a></td>  
-            <td><a href="/allinformation/deleteDep/{{this.projectID}}/{{this.depName}}" tabindex="2">Not yet Implimeted</a></td>   
+            <td>&emsp;{{this.depName}}</td>
+            <td>&emsp;{{this.head}}</td>
+            <td><a href="mailto:{{this.depEmail}}">&emsp;{{this.depEmail}}</a></td>  
+            <td><a href="/allinformation/deleteDep/{{this.projectID}}/{{this.depName}}" tabindex="2">&nbsp;Not yet Implimeted</a></td>   
         </tr> 
     {{/each}} 
-
 </table>
 
 
