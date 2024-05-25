@@ -22,12 +22,13 @@ const process = require('process');
 const db = new DBAbstraction('software_Data.db'); 
 const passport = require('passport');
 const OneLoginStrategy = require('passport-openidconnect').Strategy;
-const session = require('express-session');
+const session = require('cookie-session');
 const { date } = require('assert-plus');
 require('dotenv').config();
 const router = express.Router();
 
 const app = express(); 
+app.set('trust proxy', 1);
 //let transporter = nodemailer.createTransport(options[, defaults])
 const handlebars = require('express-handlebars').create({defaultLayout: 'main'});
 var sortComp = false;
@@ -45,9 +46,13 @@ app.use(bodyParser.json());
 
 // Configure session middleware
 app.use(session({
-    secret: 'secret squirrel',
-    resave: false,
-    saveUninitialized: true
+  secret: 'secret',
+  saveUninitialized: true,
+  resave: false,
+  maxAge: 1000 * 60 * 15,
+  cookie:{
+      secure: true
+         }
   }));
 
 // Configure Passport.js
