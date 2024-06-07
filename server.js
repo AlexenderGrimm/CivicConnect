@@ -444,7 +444,7 @@ db.init()
     	// Start the server
         const port = process.env.PORT  || 53140;
         app.listen(port, () => {
-        console.log(`Server is running on port ${port}`);
+          console.log('Express server listening on %d, in %s mode', port, app.get('env'));
         });
 	})
 	.catch(err => {

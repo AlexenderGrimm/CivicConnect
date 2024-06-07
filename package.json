@@ -44,6 +44,7 @@
     "googleapis": "^105.0.0",
     "har-schema": "^2.0.0",
     "har-validator": "^5.1.5",
+    "heroku": "^8.11.5",
     "http-signature": "^1.4.0",
     "is-typedarray": "^1.0.0",
     "isstream": "^0.1.2",
