@@ -26,6 +26,7 @@ const session = require('cookie-session');
 const { date } = require('assert-plus');
 require('dotenv').config();
 const router = express.Router();
+const port = process.env.PORT  || 53140;
 
 const app = express(); 
 app.set('trust proxy', 1);
@@ -442,7 +443,7 @@ app.use((req, res) => {
 db.init()
 	.then(() => {
     	// Start the server
-        const port = process.env.PORT  || 53140;
+      // const port = process.env.PORT  || 53140;
         app.listen(port, () => {
           console.log('Express server listening on %d, in %s mode', port, app.get('env'));
         });
