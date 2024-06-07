@@ -22,14 +22,12 @@ const process = require('process');
 const db = new DBAbstraction('software_Data.db'); 
 const passport = require('passport');
 const OneLoginStrategy = require('passport-openidconnect').Strategy;
-const session = require('cookie-session');
+const session = require('express-session');
 const { date } = require('assert-plus');
 require('dotenv').config();
 const router = express.Router();
-const port = process.env.PORT  || 5000;
 
 const app = express(); 
-app.set('trust proxy', 1);
 //let transporter = nodemailer.createTransport(options[, defaults])
 const handlebars = require('express-handlebars').create({defaultLayout: 'main'});
 var sortComp = false;
@@ -47,13 +45,9 @@ app.use(bodyParser.json());
 
 // Configure session middleware
 app.use(session({
-  secret: 'secret',
-  saveUninitialized: true,
-  resave: false,
-  maxAge: 1000 * 60 * 15,
-  cookie:{
-      secure: true
-         }
+    secret: 'secret squirrel',
+    resave: false,
+    saveUninitialized: true
   }));
 
 // Configure Passport.js
@@ -443,9 +437,9 @@ app.use((req, res) => {
 db.init()
 	.then(() => {
     	// Start the server
-      // const port = process.env.PORT  || 53140;
+        const port = process.env.PORT  || 53140;
         app.listen(port, () => {
-          console.log('Express server listening on %d, in %s mode', port, app.get('env'));
+        console.log(`Server is running on port ${port}`);
         });
 	})
 	.catch(err => {
