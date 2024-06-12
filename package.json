@@ -4,9 +4,8 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "debug": "node --inspect ./server.js",
     "start": "node server.js",
-    "build": "node server.js"
+    "heroku-postbuild": "npm run build"
   },
   "keywords": [],
   "author": "",
