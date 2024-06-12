@@ -39,7 +39,7 @@ app.use(cors());
 app.engine('handlebars', handlebars.engine); 
 app.set('view engine', 'handlebars');
 app.use(morgan('dev'));
-app.use(express.static('public'));  
+app.use(express.static(path.join(__dirname, 'Public'))); 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
