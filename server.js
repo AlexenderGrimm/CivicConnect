@@ -97,7 +97,7 @@ async function mailer(bodyParser) {
 
   const output = `
     <p>You have a new project request</p>
-    <h3>Contact deatils</h3>
+    <h3>Contact details</h3>
     <ul>
       <li>Name: ${bodyParser.fname} ${bodyParser.lname}</li>
       <li>Company: ${bodyParser.OrgName}</li>
