@@ -1,13 +1,35 @@
 'use strict'
 
-var emailAddresses= [/*1*/"adassow@carthage.edu", /*2*/"nscharnick@carthage.edu", /*3*/"sobrien3@carthage.edu", /*4*/"rbingen@carthage.edu", 
-/*5*/"rnagel@carthage.edu",/*6*/"srubinfeld@carthage.edu", /*7*/"wsun@carthage.edu", /*8*/"jmast@carthage.edu", /*9*/"lhuaracha@carthage.edu", 
-/*10*/"ljensen@carthage.edu", /*11*/"smitchell@carthage.edu",/*12*/"jtenuta@carthage.edu", /*13*/"fig23_civic_engagement@carthage.edu" , 
-/*14*/"cpalmer5@carthage.edu", /*15*/"rmatthews@carthage.edu"]
+/*####################################################################################################################################
+########################################################################################################################################
 
-var USER = 'afischer1@carthage.edu'; // generated ethereal user fig23_civic_engagement@carthage.edu austinf0912@gmail.com
-var PASS = 'csrl lbqr uape wlkk';
+                                      Code Break 1
+
+########################################################################################################################################
+########################################################################################################################################*/
+
+
+// all emails are listed in order of their value in the index.html code break 1 section.
+var emailAddresses= [/*1*/"adassow@carthage.edu", /*2*/"nscharnick@carthage.edu", /*3*/"sobrien3@carthage.edu", /*4*/"rbingen@carthage.edu", 
+  /*5*/"rnagel@carthage.edu",/*6*/"srubinfeld@carthage.edu", /*7*/"wsun@carthage.edu", /*8*/"jmast@carthage.edu", /*9*/"lhuaracha@carthage.edu", 
+  /*10*/"ljensen@carthage.edu", /*11*/"smitchell@carthage.edu",/*12*/"jtenuta@carthage.edu", /*13*/"fig23_civic_engagement@carthage.edu" , 
+  /*14*/"cpalmer5@carthage.edu", /*15*/"rmatthews@carthage.edu"]
+
+// user is the email that is controlling the account of which all automated emails will be sent from.
+var USER = 'afischer1@carthage.edu'; //  fig23_civic_engagement@carthage.edu is an available email to be used for the account.
+
+// to generate the password for the account go to myaccount.google.com >> Security >> 2-Step Verification (account must have 2-Step verification enabled.)
+// then open App Passwords at the bottom of the page and name the application. copy the generated password and past in the space below.
+var PASS = 'csrl lbqr uape wlkk'; 
  
+
+/*####################################################################################################################################
+########################################################################################################################################
+
+                                      End of Code Break 1
+
+########################################################################################################################################
+########################################################################################################################################*/
 const express = require('express');
 const fileUpload = require('express-fileupload')
 const morgan = require('morgan');
@@ -94,7 +116,7 @@ function addresses(ids){
 }
 
 async function mailer(bodyParser) {
-
+  // email body setup using HTML tags.
   const output = `
     <p>You have a new project request</p>
     <h3>Contact details</h3>
@@ -114,8 +136,8 @@ async function mailer(bodyParser) {
     port: 465,
     secure: true, // true for 465, false for other ports
     auth: {
-        user: USER, // generated ethereal user fig23_civic_engagement@carthage.edu austinf0912@gmail.com
-        pass: PASS  // generated ethereal password AustinCarolinaRickWenjie2023    dkaw pkvq rxin lwzl
+        user: USER, // provided user 
+        pass: PASS  // provided password
     },
     tls:{
       rejectUnauthorized:false
@@ -125,9 +147,29 @@ async function mailer(bodyParser) {
 
   // setup email data with unicode symbols
   let mailOptions = {
-      from: '"Civic Connect mailer" <afischer1@carthage.edu>', // sender address
+/*####################################################################################################################################
+########################################################################################################################################
+
+                                      Code Break 2
+
+########################################################################################################################################
+########################################################################################################################################*/
+      from: '"Civic Connect mailer" <' + USER + '>', // sender address change to the account sending the emails
+
+      //  Switch the commented and uncommented lines below when ready to launch or change the to emails for testing. 
       to: 'afischer1@carthage.edu, austinf0912@gmail.com', // list of receivers
-      subject: 'Civic Connect Request', // Subject line
+      // to: emails,
+
+      // email subject line can be changed here.
+      subject: 'Civic Connect Request',
+
+/*####################################################################################################################################
+########################################################################################################################################
+
+                                      Code Break 2
+
+########################################################################################################################################
+########################################################################################################################################*/
       html: output // html body
   };
 
